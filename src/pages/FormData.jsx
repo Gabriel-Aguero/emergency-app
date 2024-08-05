@@ -1,6 +1,8 @@
 import { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import FormMedicacion from '../components/FormMedicacion';
+import FormDescartable from '../components/FormDescartable';
 
 const FormData = () => {
   // const [medication, setMedication] = useState('');
@@ -47,7 +49,7 @@ const FormData = () => {
       </button>
       <h2 className="text-2xl font-bold text-blue-500 mb-4">Completa el formulario de datos</h2>
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md w-full max-w-2xl">
-        <div className="mb-6">
+        {/* <div className="mb-6">
           <h3 className="text-xl font-semibold text-blue-600 mb-2">Medicación</h3>
           <div className="flex flex-col gap-4">
             <input
@@ -79,8 +81,9 @@ const FormData = () => {
               className="border-2 border-blue-300 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
             />
           </div>
-        </div>
-        <div className="mb-6">
+        </div> */}
+
+        {/* <div className="mb-6">
           <h3 className="text-xl font-semibold text-blue-600 mb-2">Material Descartable</h3>
           <div className="flex flex-col gap-4">
             <input
@@ -105,7 +108,9 @@ const FormData = () => {
               className="border-2 border-blue-300 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
             />
           </div>
-        </div>
+        </div> */}
+        <FormMedicacion />
+        <FormDescartable />
         <button type="submit" className="bg-blue-500 text-white rounded-md p-2 hover:bg-blue-600 transition duration-200">
           Enviar
         </button>
