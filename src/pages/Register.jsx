@@ -1,37 +1,46 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { auth, db } from '../firebase/config';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { collection, addDoc } from 'firebase/firestore';
+import { AuthContext } from '../context/AuthContext';
 
 const Register = () => {
+
+  const [user, setUser] = useState({
+    email: '',
+    password: '',    
+    firstName: '',
+    lastName: '',
+    legajo: 0  
+  });
+
+  const { signup, addProfileUser } = useContext(AuthContext);
   
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');  
-  const [password, setPassword] = useState('');  
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [legajo, setLegajo] = useState('');
+ 
+  const handleChangeUsers = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });               
+  }  
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-
-      // Guardar datos adicionales en Firestore
-      await addDoc(collection(db, 'usuarios'), {
-        uid: user.uid,
-        firstName,
-        lastName,
-        legajo,
-        email
+      // Registrar usuario en la base de datos
+      const userCredential = await signup(user.email, user.password);            
+      const uid = userCredential.user.uid;
+       // Guardar datos adicionales en la tabla usuarios
+      await addProfileUser({
+        uid: uid,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        legajo: user.legajo,
+        email: user.email        
+        
       });
-
-      console.log("User registered and data saved in Firestore");
+       
+      // Agrgrar algun popus de visualización de datos
+      navigate('/');
+      
     } catch (error) {
-      console.error("Error registering user: ", error);
+      console.error("Error:", error.message);
     }   
   }
 
@@ -46,39 +55,39 @@ const Register = () => {
             type="text" 
             name='firstName'
             placeholder='Nombre' 
-            onChange={(e) => setFirstName(e.target.value)}
+            onChange={handleChangeUsers}
           />
           <input 
             className='border-2 border-purple-600 rounded-lg p-2 w-full focus:outline-none focus:border-purple-800' 
             type="text" 
             name='lastName'
             placeholder='Apellido' 
-            onChange={(e) => setLastName(e.target.value)}
+            onChange={handleChangeUsers}
           />
           <input 
             className='border-2 border-purple-600 rounded-lg p-2 w-full focus:outline-none focus:border-purple-800' 
             type="text" 
             name='legajo'
             placeholder='Legajo' 
-            onChange={(e) => setLegajo(e.target.value)}
+            onChange={handleChangeUsers}
           />
           <input 
             className='border-2 border-purple-600 rounded-lg p-2 w-full focus:outline-none focus:border-purple-800' 
             type="email" 
             name='email' 
             placeholder='correo@site.com' 
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={handleChangeUsers}
           />
           <input 
             className='border-2 border-purple-600 rounded-lg p-2 w-full focus:outline-none focus:border-purple-800' 
             type="password" 
             name='password' 
             placeholder='Contraseña' 
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handleChangeUsers}
           />
           <button className='bg-purple-700 text-white rounded-lg p-2 hover:bg-purple-800 transition duration-200'>Registrarse</button>
         </form>
-        <button className='bg-purple-700 text-white rounded-lg p-2 mt-2 hover:bg-purple-800 transition duration-200' onClick={() => navigate('/')}>Ir a Login</button>
+        <button className='bg-purple-700 text-white rounded-lg p-2 mt-2 hover:bg-purple-800 transition duration-200 w-full' onClick={() => navigate('/')}>Ir a Login</button>
       </div>
     </div>
   )

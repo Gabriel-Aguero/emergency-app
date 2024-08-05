@@ -5,18 +5,23 @@ import Home from './pages/Home.jsx';
 import NotFound from './pages/NotFound.jsx';
 import { Routes, Route } from 'react-router-dom';
 import FormData from './pages/FormData.jsx';
+import Navbar from './components/Navbar.jsx';
+import { ProtectedRoutes } from './components/ProtectedRoutes.jsx';
 function App() {
 
   
   return (    
     <div>
-      <Routes>
+      <Navbar/>
+      <Routes>        
         <Route path='/' element={<Home/>}/>
-        <Route path='/login' element={<Login/>}/>
         <Route path='/register' element={<Register/>}/>
         <Route path='*' element={<NotFound/>}/>
-        <Route path='/Formulario' element={<FormData/>}/>
-
+        <Route path='/formulario_de_datos' element={
+          <ProtectedRoutes>
+            <FormData/>
+          </ProtectedRoutes>
+          }/>
       </Routes>
     </div>
   )

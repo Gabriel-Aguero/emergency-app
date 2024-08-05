@@ -1,31 +1,50 @@
-import React, { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
-const FormData = ({ username }) => {
-  const [medication, setMedication] = useState('');
-  const [lot, setLot] = useState('');
-  const [medExpiration, setMedExpiration] = useState('');
-  const [medQuantity, setMedQuantity] = useState('');
-  const [material, setMaterial] = useState('');
-  const [matExpiration, setMatExpiration] = useState('');
-  const [matQuantity, setMatQuantity] = useState('');
-
+const FormData = () => {
+  // const [medication, setMedication] = useState('');
+  // const [lot, setLot] = useState('');
+  // const [medExpiration, setMedExpiration] = useState('');
+  // const [medQuantity, setMedQuantity] = useState('');
+  // const [material, setMaterial] = useState('');
+  // const [matExpiration, setMatExpiration] = useState('');
+  // const [matQuantity, setMatQuantity] = useState('');
+  const { user, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+  
+  const handleLogout = async () => {
+    await logout(); 
+    navigate('/');
+  }
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aquí puedes manejar el envío de datos, por ejemplo, enviándolos a una base de datos.
-    console.log({
-      medication,
-      lot,
-      medExpiration,
-      medQuantity,
-      material,
-      matExpiration,
-      matQuantity
-    });
+    
+    // // Aquí puedes manejar el envío de datos, por ejemplo, enviándolos a una base de datos.
+    // console.log({
+    //   medication,
+    //   lot,
+    //   medExpiration,
+    //   medQuantity,
+    //   material,
+    //   matExpiration,
+    //   matQuantity
+    // });
   };
+
+  useEffect(() => {
+    if (user) {
+      navigate('/formulario_de_datos');
+    }
+  }, [user]);
+
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-blue-100">
-      <h1 className="text-4xl font-bold text-blue-600 mb-8">Bienvenido {username}</h1>
+      <h1 className="text-4xl font-bold text-blue-600 mb-8">Bienvenido {user.email}</h1>
+      <button onClick={handleLogout} className="bg-red-500 text-white rounded-md p-2 hover:bg-red-600 transition duration-200">
+        Cerrar sesión
+      </button>
       <h2 className="text-2xl font-bold text-blue-500 mb-4">Completa el formulario de datos</h2>
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md w-full max-w-2xl">
         <div className="mb-6">
@@ -34,29 +53,29 @@ const FormData = ({ username }) => {
             <input
               type="text"
               placeholder="Medicación"
-              value={medication}
-              onChange={(e) => setMedication(e.target.value)}
+              // value={medication}
+              // onChange={(e) => setMedication(e.target.value)}
               className="border-2 border-blue-300 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
             />
             <input
               type="text"
               placeholder="Lote"
-              value={lot}
-              onChange={(e) => setLot(e.target.value)}
+              // value={lot}
+              // onChange={(e) => setLot(e.target.value)}
               className="border-2 border-blue-300 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
             />
             <input
               type="date"
               placeholder="Vencimiento"
-              value={medExpiration}
-              onChange={(e) => setMedExpiration(e.target.value)}
+              // value={medExpiration}
+              // onChange={(e) => setMedExpiration(e.target.value)}
               className="border-2 border-blue-300 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
             />
             <input
               type="number"
               placeholder="Cantidad"
-              value={medQuantity}
-              onChange={(e) => setMedQuantity(e.target.value)}
+              // value={medQuantity}
+              // onChange={(e) => setMedQuantity(e.target.value)}
               className="border-2 border-blue-300 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
             />
           </div>
@@ -67,22 +86,22 @@ const FormData = ({ username }) => {
             <input
               type="text"
               placeholder="Material"
-              value={material}
-              onChange={(e) => setMaterial(e.target.value)}
+              // value={material}
+              // onChange={(e) => setMaterial(e.target.value)}
               className="border-2 border-blue-300 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
             />
             <input
               type="date"
               placeholder="Vencimiento"
-              value={matExpiration}
-              onChange={(e) => setMatExpiration(e.target.value)}
+              // value={matExpiration}
+              // onChange={(e) => setMatExpiration(e.target.value)}
               className="border-2 border-blue-300 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
             />
             <input
               type="number"
               placeholder="Cantidad"
-              value={matQuantity}
-              onChange={(e) => setMatQuantity(e.target.value)}
+              // value={matQuantity}
+              // onChange={(e) => setMatQuantity(e.target.value)}
               className="border-2 border-blue-300 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
             />
           </div>

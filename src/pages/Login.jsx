@@ -1,16 +1,31 @@
-import { useState } from 'react'
+import {  useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 const Login = () => {
-  const navigate = useNavigate();
+  
+  const [user, setUser] = useState({
+    email: '',    
+    password: '',
+  });
 
-  const [email, setEmail] = useState('');  
-  const [password, setPassword] = useState('');  
+  const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
+
+
+  const handleChange = (e) => {
+    setUser({...user, [e.target.name]: e.target.value});    
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-   
-    
+    e.preventDefault();       
+
+    try {
+      await login(user.email, user.password);
+      navigate('/formulario_de_datos');  
+    } catch (error) {
+      console.error("Error logging in: ", error); 
+    }        
   }
     
   const register = () => {
@@ -23,15 +38,15 @@ const Login = () => {
             type="email"
             name='email' 
             placeholder='corre@site.com' 
-            onChange={(e)=>setEmail(e.target.value)}
+            onChange={handleChange}
           />
           <input 
             type="password" 
             name='password' 
             placeholder='Ingresa tu contrasena' 
-            onChange={(e)=>setPassword(e.target.value)}
+            onChange={handleChange}
           />
-          <button>Login</button>          
+          <button>Ingresar</button>          
         </form>        
         <button onClick={register}>Registrarme</button>
     </div>
