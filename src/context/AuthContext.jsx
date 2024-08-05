@@ -30,8 +30,7 @@ export const AuthProvider = ( { children } ) => {
       lastName,
       legajo,
       email
-    });
-    console.log("Datos guardados en la tabla con éxito");
+    });    
   };
 
   useEffect(() => {
