@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
@@ -9,30 +9,35 @@ const Register = () => {
     password: '',    
     firstName: '',
     lastName: '',
-    legajo: 0  
+    legajo: 0,
+    servicioId:''  
   });
 
-  const { signup, addProfileUser } = useContext(AuthContext);
+  const { signup, addProfileUser, checkAndAddService } = useContext(AuthContext);
   
   const navigate = useNavigate();
  
   const handleChangeUsers = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });               
-  }  
+  }   
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
+    try {      
+      // Verificar si el servicio existe en la base de datos
+      const servicioId = await checkAndAddService(user.servicioId);
+             
       // Registrar usuario en la base de datos
       const userCredential = await signup(user.email, user.password);            
       const uid = userCredential.user.uid;
-       // Guardar datos adicionales en la tabla usuarios
+      
       await addProfileUser({
         uid: uid,
         firstName: user.firstName,
         lastName: user.lastName,
         legajo: user.legajo,
-        email: user.email        
+        email: user.email,
+        servicioId: servicioId
         
       });
        
@@ -43,6 +48,7 @@ const Register = () => {
       console.error("Error:", error.message);
     }   
   }
+  
 
   return (
     <div className='flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-purple-500 to-indigo-500'>
@@ -51,24 +57,31 @@ const Register = () => {
         <h2 className='text-2xl font-bold text-purple-800'>Registrarse</h2>
         <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-full'>
           <input 
-            className='border-2 border-purple-600 rounded-lg p-2 w-full focus:outline-none focus:border-purple-800' 
+            className='border-2 border-purple-600 rounded-lg p-2 w-full focus:outline-none focus:border-purple-800 uppercase' 
             type="text" 
             name='firstName'
             placeholder='Nombre' 
             onChange={handleChangeUsers}
           />
           <input 
-            className='border-2 border-purple-600 rounded-lg p-2 w-full focus:outline-none focus:border-purple-800' 
+            className='border-2 border-purple-600 rounded-lg p-2 w-full focus:outline-none focus:border-purple-800 uppercase' 
             type="text" 
             name='lastName'
             placeholder='Apellido' 
             onChange={handleChangeUsers}
           />
           <input 
-            className='border-2 border-purple-600 rounded-lg p-2 w-full focus:outline-none focus:border-purple-800' 
+            className='border-2 border-purple-600 rounded-lg p-2 w-full focus:outline-none focus:border-purple-800 uppercase' 
             type="text" 
             name='legajo'
             placeholder='Legajo' 
+            onChange={handleChangeUsers}
+          />
+          <input 
+            className='border-2 border-purple-600 rounded-lg p-2 w-full focus:outline-none focus:border-purple-800 uppercase'
+            type="text" 
+            name='servicioId'
+            placeholder='Servicio' 
             onChange={handleChangeUsers}
           />
           <input 

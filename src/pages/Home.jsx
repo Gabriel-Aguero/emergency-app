@@ -52,7 +52,7 @@ const Home = () => {
             placeholder="Ingresa tu contraseña"
             onChange={handleChange}
           />
-          <button className="bg-purple-600 text-white rounded-lg p-2 hover:bg-purple-800 transition duration-200">
+          <button className="bg-purple-600 text-white rounded-lg p-2 hover:bg-purple-800 transition duration-200 focus:outline-none focus:shadow-outline">
             Login
           </button>
         </form>
