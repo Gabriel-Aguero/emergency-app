@@ -33,7 +33,7 @@ const Home = () => {
   };
   
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="flex flex-col items-center justify-center p-5 min-h-screen">
       <h1 className="text-4xl font-bold text-slate-800 mb-8">Emergency Card</h1>
       <div className="flex flex-col gap-4 items-center justify-center w-full max-w-md p-6 bg-white border-2 border-purple-700 rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold text-purple-800">Login</h1>

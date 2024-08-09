@@ -1,5 +1,4 @@
 import './App.css'
-import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Home from './pages/Home.jsx';
 import NotFound from './pages/NotFound.jsx';
@@ -7,11 +6,12 @@ import { Routes, Route } from 'react-router-dom';
 import FormData from './pages/FormData.jsx';
 import Navbar from './components/Navbar.jsx';
 import { ProtectedRoutes } from './components/ProtectedRoutes.jsx';
+import Footer from './components/Footer.jsx';
 function App() {
 
   
   return (    
-    <div>
+    <>
       <Navbar/>
       <Routes>        
         <Route path='/' element={<Home/>}/>
@@ -23,7 +23,8 @@ function App() {
           </ProtectedRoutes>
           }/>
       </Routes>
-    </div>
+      <Footer/>
+    </>
   )
 }
 

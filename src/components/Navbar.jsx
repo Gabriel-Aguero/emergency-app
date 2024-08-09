@@ -9,10 +9,10 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-violet-900 p-6 shadow-lg">
-      <div className="container mx-auto flex justify-between items-center">
-        <div className="text-xl text-white font-bold">
-          <Link to="/">Emergency Card</Link>
+   <nav className="bg-[#9333ea] p-10 mx-auto">
+      <div className="bg-[#9333ea] flex justify-around  items-center">
+        <div className="text-xl text-black font-bold">
+          <Link className='text-white bg-transparent' to="/">Emergency Card</Link>
         </div>
         <div className="md:hidden">
           <button onClick={toggleMenu} className="text-purple-800 focus:outline-none">
@@ -22,16 +22,18 @@ const Navbar = () => {
           </button>
         </div>
         <div className={`md:flex ${isOpen ? "block" : "hidden"} w-full md:w-auto`}>
-          <div className="flex flex-col md:flex-row md:space-x-6 mt-2 md:mt-0">
-            <Link to="/" className="text-white font-bold text-lg hover:text-yellow-300 p-2">Home</Link>
-            <Link to="/register" className="text-white text-lg hover:text-yellow-300 p-2">Register</Link>
-            <Link to="/login" className="text-white text-lg hover:text-yellow-300 p-2">Login</Link>
-            <Link to="/formdata" className="text-white text-lg hover:text-yellow-300 p-2">Form Data</Link>
+          <div className="flex flex-col md:flex-row md:space-x-6 mt-2 md:mt-0 text-white">
+            <Link to="/" className="bg-transparent text-lg hover:text-yellow-300 p-2">Home</Link>
+            <Link to="/register" className="bg-transparent text-lg hover:text-yellow-300 p-2">Register</Link>
+            <Link to="/login" className="bg-transparent text-lg hover:text-yellow-300 p-2">Login</Link>
+            <Link to="/formdata" className="bg-transparent text-lg hover:text-yellow-300 p-2">Form Data</Link>
           </div>
         </div>
       </div>
-    </nav>
+    </nav>    
   );
 };
 
 export default Navbar;
+
+
