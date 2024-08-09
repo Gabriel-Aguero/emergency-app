@@ -1,6 +1,7 @@
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import Swal from 'sweetalert2';
 
 const Register = () => {
 
@@ -10,7 +11,7 @@ const Register = () => {
     firstName: '',
     lastName: '',
     legajo: 0,
-    servicioId:''  
+    servicio:''  
   });
 
   const { signup, addProfileUser, checkAndAddService } = useContext(AuthContext);
@@ -25,8 +26,8 @@ const Register = () => {
     e.preventDefault();
     try {      
       // Verificar si el servicio existe en la base de datos
-      const servicioId = await checkAndAddService(user.servicioId);
-             
+      const servicioName = await checkAndAddService(user.servicio);
+            
       // Registrar usuario en la base de datos
       const userCredential = await signup(user.email, user.password);            
       const uid = userCredential.user.uid;
@@ -37,7 +38,7 @@ const Register = () => {
         lastName: user.lastName,
         legajo: user.legajo,
         email: user.email,
-        servicioId: servicioId
+        servicio: servicioName
         
       });
        
@@ -80,7 +81,7 @@ const Register = () => {
           <input 
             className='border-2 border-purple-600 rounded-lg p-2 w-full focus:outline-none focus:border-purple-800 uppercase'
             type="text" 
-            name='servicioId'
+            name='servicio'
             placeholder='Servicio' 
             onChange={handleChangeUsers}
           />

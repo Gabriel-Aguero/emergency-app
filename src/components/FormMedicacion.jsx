@@ -1,8 +1,8 @@
 const FormMedicacion = () => {
     return (
-        <div className="mb-6">
-            <h3 className="text-xl font-semibold text-blue-600 mb-2">Medicación</h3>
-            <div className="flex flex-col gap-4">
+        <div className="mb-6 border-2 border-slate-100 p-4">
+            <h3 className="text-xl font-semibold text-white mb-4">Medicación</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <input
                     type="text"
                     placeholder="Medicación"

@@ -21,8 +21,8 @@ const Home = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();       
     try {
-      await login(user.email, user.password);
-      navigate('/formulario_de_datos');  
+      await login(user.email, user.password);      
+      navigate('/formulario_de_datos');       
     } catch (error) {
       console.error("Error logging in: ", error);
     }        
