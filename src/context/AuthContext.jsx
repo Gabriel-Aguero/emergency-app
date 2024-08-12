@@ -8,6 +8,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ( { children } ) => {
 
   const [user, setUser] = useState(null)  
+  const [usuario, setUsuario] = useState({})
   const [loading, setLoading] = useState(true)
 
   const signup = async (email, password) => {    
@@ -39,21 +40,16 @@ export const AuthProvider = ( { children } ) => {
     return newServiceRef.id;
   };
 
-  const getUsuario = async (uid) => {
-
-    const userQuery = query(collection(db, 'usuario'), where('uid', '==', uid));
-    const userSnapshot = await getDocs(userQuery);
-    if (!userSnapshot.empty) {
-      const userDoc = userSnapshot.docs[0];
-      return { id: userDoc.id, ...userDoc.data() };       
-    } else {
-      console.log('No hay usuario con ese correo');
-      return null;
-    }
+  const getUsuario = async (email) => {  
+    const q = query(collection(db, 'usuario'), where('email', '==', email));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      setUsuario(doc.data());     
+    });
   };
 
-
-  const addProfileUser = ({uid, firstName, lastName, legajo, email, servicio}) => {
+  // Agrego datos extras a la tabla usuario 
+  const addProfileUser = ({uid, firstName, lastName, legajo, email, servicio }) => {
     addDoc(collection(db, 'usuario'), {      
       uid,
       firstName,
@@ -64,8 +60,12 @@ export const AuthProvider = ( { children } ) => {
     });    
   };
 
+  // Manejo de la tabla carro
+ 
+
+
 useEffect(() => {
-  const unsubscribe = onAuthStateChanged(auth, async (user) => {
+  const unsubscribe = onAuthStateChanged(auth, async (user) => {     
     if (user) {              
       setUser({
         uid: user.uid,
@@ -80,7 +80,7 @@ useEffect(() => {
 }, []);
   
   return (
-    <AuthContext.Provider value={{ signup, login, logout, user, loading, addProfileUser, checkAndAddService, getUsuario }}>
+    <AuthContext.Provider value={{ signup, login, logout, user, loading, addProfileUser, checkAndAddService, getUsuario, usuario }}>
       {children}
     </AuthContext.Provider>
   )

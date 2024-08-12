@@ -6,7 +6,6 @@ import FormDescartable from '../components/FormDescartable';
 import FormCart from '../components/FormCart';
 
 const FormData = () => {
-  // const [usuario, setUsuario] = useState({});
   // const [medication, setMedication] = useState('');
   // const [lot, setLot] = useState('');
   // const [medExpiration, setMedExpiration] = useState('');
@@ -14,7 +13,7 @@ const FormData = () => {
   // const [material, setMaterial] = useState('');
   // const [matExpiration, setMatExpiration] = useState('');
   // const [matQuantity, setMatQuantity] = useState('');
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout, getUsuario, usuario } = useContext(AuthContext);
 
   
   const navigate = useNavigate();
@@ -25,14 +24,19 @@ const FormData = () => {
   }
 
   // Recupero los datos del usuario a traves del id del usuario logeado 
-  // const dataUsuario = async () => {
-  //   const userData = await getUsuario(user.uid);  
-  //   setUsuario({
-  //     ...userData,
-  //     uid: user.uid,
-  //     email: user.email
-  //   });   
-  // }
+  const dataUsuario = async () => {
+    const email = user.email;    
+    await getUsuario(email);
+    // console.log({
+    //   uid: MiUsuario.uid,
+    //   email: MiUsuario.email,
+    //   firstName: MiUsuario.firstName,
+    //   lastName: MiUsuario.lastName,
+    //   legajo: MiUsuario.legajo,
+    //   servicio: MiUsuario.servicio,
+    // })
+  }
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     
@@ -48,8 +52,9 @@ const FormData = () => {
     // });
   };
 
-  useEffect(() => {    
+  useEffect(() => { 
     if (user) {                  
+      dataUsuario()   
       navigate('/formulario_de_datos');
     }
   }, [ user ]);
@@ -60,7 +65,7 @@ const FormData = () => {
       { user && (      
       <div className="flex flex-col items-center justify-center mx-auto p-4 min-h-screen max-w-2xl">     
         <div className='flex flex-col justify-center items-center gap-4'>      
-          <span className='text-2xl text-center font-bold text-[#09f] mt-4'>Usuario: {user.email}</span>        
+          <span className='text-2xl text-center font-bold text-[#09f] mt-4'>Usuario: {user.email} {usuario.servicioId}</span>        
           <h2 className="text-2xl font-bold text-slate-900 mb-4">Completa la información</h2>
         </div>
         <form onSubmit={handleSubmit} className="bg-zinc-300 p-6 rounded-lg shadow-2xl shadow-slate-700 w-full">        
