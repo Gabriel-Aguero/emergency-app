@@ -6,50 +6,47 @@ import FormDescartable from '../components/FormDescartable';
 import FormCart from '../components/FormCart';
 
 const FormData = () => {
-  // const [medication, setMedication] = useState('');
-  // const [lot, setLot] = useState('');
-  // const [medExpiration, setMedExpiration] = useState('');
-  // const [medQuantity, setMedQuantity] = useState('');
+
+  const { user, logout, getUsuario, usuario,  addMedication } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const [medicationData, setMedicationData] = useState({
+    medication: '',
+    lot: '',
+    medExpiration: '',
+    medQuantity: '',
+    material: '',
+    matExpiration: '',
+    matQuantity: '',
+  });
+
   // const [material, setMaterial] = useState('');
   // const [matExpiration, setMatExpiration] = useState('');
   // const [matQuantity, setMatQuantity] = useState('');
-  const { user, logout, getUsuario, usuario } = useContext(AuthContext);
+  
 
-  
-  const navigate = useNavigate();
-  
   const handleLogout = async () => {
     await logout(); 
     navigate('/');
   }
 
+  // const handleCartDataChange = (data) => {
+  //   setCartData(data);
+  // }
+
+  const handleMedicationDataChange = (data) => {
+    setMedicationData(data);
+  }
+
   // Recupero los datos del usuario a traves del id del usuario logeado 
   const dataUsuario = async () => {
     const email = user.email;    
-    await getUsuario(email);
-    // console.log({
-    //   uid: MiUsuario.uid,
-    //   email: MiUsuario.email,
-    //   firstName: MiUsuario.firstName,
-    //   lastName: MiUsuario.lastName,
-    //   legajo: MiUsuario.legajo,
-    //   servicio: MiUsuario.servicio,
-    // })
+    await getUsuario(email);    
   }
   
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    // // Aquí puedes manejar el envío de datos, por ejemplo, enviándolos a una base de datos.
-    // console.log({
-    //   medication,
-    //   lot,
-    //   medExpiration,
-    //   medQuantity,
-    //   material,
-    //   matExpiration,
-    //   matQuantity
-    // });
+  const handleSubmit = async (e) => {
+    e.preventDefault();          
+  
   };
 
   useEffect(() => { 
@@ -65,12 +62,12 @@ const FormData = () => {
       { user && (      
       <div className="flex flex-col items-center justify-center mx-auto p-4 min-h-screen max-w-2xl">     
         <div className='flex flex-col justify-center items-center gap-4'>      
-          <span className='text-2xl text-center font-bold text-[#09f] mt-4'>Usuario: {user.email} {usuario.servicioId}</span>        
+          <span className='text-2xl text-center font-bold text-[#09f] mt-4'>Usuario: {user.email}</span>          
           <h2 className="text-2xl font-bold text-slate-900 mb-4">Completa la información</h2>
         </div>
-        <form onSubmit={handleSubmit} className="bg-zinc-300 p-6 rounded-lg shadow-2xl shadow-slate-700 w-full">        
-          <FormCart />
-          <FormMedicacion />
+        <FormCart />
+        <form onSubmit={handleSubmit} className="bg-zinc-300 p-6 rounded-lg shadow-2xl shadow-slate-700 w-full">                  
+          <FormMedicacion onMedicationDataChange={handleMedicationDataChange} />
           <FormDescartable />
           <div className='flex items-center justify-center gap-4'>
             <button type="submit" className="w-36 bg-[#09f] text-black border-2 border-blue-600 rounded-md p-2 hover:bg-blue-600 transition duration-200">
@@ -80,7 +77,7 @@ const FormData = () => {
               Cerrar sesión
             </button>
           </div>
-        </form>
+        </form>        
       </div>
       )}
       </>       

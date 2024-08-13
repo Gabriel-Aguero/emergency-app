@@ -2,7 +2,7 @@ const FormDescartable = () => {
   return (
     <div className="mb-6 border-b-2 border-slate-400 p-6">
           <h3 className="text-xl font-semibold text-black mb-4">Material Descartable</h3>
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 md:grid md:grid-cols-2 gap-4">
             <input
               type="text"
               placeholder="Material"

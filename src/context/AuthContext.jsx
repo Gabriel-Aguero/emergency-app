@@ -9,7 +9,7 @@ export const AuthProvider = ( { children } ) => {
 
   const [user, setUser] = useState(null)  
   const [usuario, setUsuario] = useState({})
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true) 
 
   const signup = async (email, password) => {    
    const userCredential = await createUserWithEmailAndPassword(auth, email, password);    
@@ -61,6 +61,41 @@ export const AuthProvider = ( { children } ) => {
   };
 
   // Manejo de la tabla carro
+  const addCarro = async ({numCarro, precinto, cantidadCarros, fecha_inicio, fecha_ultimo_control, servicioName  }) => {
+    
+    try {
+    
+     const docRef = await addDoc(collection(db, 'carro'), {      
+        numCarro,
+        precinto,
+        cantidadCarros,
+        fecha_inicio,
+        fecha_ultimo_control,
+        servicioName
+      });        
+    } catch (error) {
+      console.log(error);
+    }
+    
+  };
+
+  const addMedication = async ({carroId, medication, lot, medExpiration, medQuantity }) => {
+    
+    try {
+     const docRef = await addDoc(collection(db, 'medicacion'), {      
+        carroId,
+        medication,
+        lot,
+        medExpiration,
+        medQuantity
+      });          
+      console.log(docRef);
+      return docRef;
+    } catch (error) {
+      console.log(error);
+    }
+    
+  };
  
 
 
@@ -80,7 +115,7 @@ useEffect(() => {
 }, []);
   
   return (
-    <AuthContext.Provider value={{ signup, login, logout, user, loading, addProfileUser, checkAndAddService, getUsuario, usuario }}>
+    <AuthContext.Provider value={{ signup, login, logout, user, loading, addProfileUser, checkAndAddService, getUsuario, usuario, addCarro, addMedication }}>
       {children}
     </AuthContext.Provider>
   )
