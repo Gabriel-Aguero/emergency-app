@@ -10,7 +10,7 @@ export const AuthProvider = ( { children } ) => {
   const [user, setUser] = useState(null)  
   const [usuario, setUsuario] = useState({})
   const [loading, setLoading] = useState(true) 
-
+  
   const signup = async (email, password) => {    
    const userCredential = await createUserWithEmailAndPassword(auth, email, password);    
    return userCredential;
@@ -72,24 +72,24 @@ export const AuthProvider = ( { children } ) => {
         fecha_inicio,
         fecha_ultimo_control,
         servicioName
-      });        
+      });  
+      return docRef.id;   
     } catch (error) {
       console.log(error);
     }
     
   };
 
-  const addMedication = async ({carroId, medication, lot, medExpiration, medQuantity }) => {
+  const addMedication = async ({idCarro, medication, lot, medExpiration, medQuantity }) => {
     
     try {
      const docRef = await addDoc(collection(db, 'medicacion'), {      
-        carroId,
+        idCarro,
         medication,
         lot,
         medExpiration,
         medQuantity
-      });          
-      console.log(docRef);
+      });                
       return docRef;
     } catch (error) {
       console.log(error);
@@ -97,7 +97,22 @@ export const AuthProvider = ( { children } ) => {
     
   };
  
-
+  const addDescartable = async ({idCarro, material, lot, matExpiration, matQuantity }) => {
+    
+    try {
+     const docRef = await addDoc(collection(db, 'descartable'), {      
+        idCarro,
+        material,
+        lot,
+        matExpiration,
+        matQuantity
+      });                
+      return docRef;
+    } catch (error) {
+      console.log(error);
+    }
+    
+  };
 
 useEffect(() => {
   const unsubscribe = onAuthStateChanged(auth, async (user) => {     
@@ -115,7 +130,7 @@ useEffect(() => {
 }, []);
   
   return (
-    <AuthContext.Provider value={{ signup, login, logout, user, loading, addProfileUser, checkAndAddService, getUsuario, usuario, addCarro, addMedication }}>
+    <AuthContext.Provider value={{ signup, login, logout, user, loading, addProfileUser, checkAndAddService, getUsuario, usuario, addCarro, addMedication, addDescartable }}>
       {children}
     </AuthContext.Provider>
   )

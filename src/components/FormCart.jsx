@@ -7,8 +7,7 @@ import CheckSquareIcon from './icons/check';
 // eslint-disable-next-line react/prop-types
 const FormCart = () => {
   
-  const { addCarro } = useContext(AuthContext);
-
+  const { addCarro } = useContext(AuthContext);  
   const [cartData, setCartData] = useState({
     numCarro: '',
     precinto: '',
@@ -27,9 +26,10 @@ const FormCart = () => {
     });   
   }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
     e.preventDefault();
-    addCarro(cartData); 
+    await addCarro(cartData);
+   
     setCartData({
       numCarro: '',
       precinto: '',
@@ -38,6 +38,8 @@ const FormCart = () => {
       fecha_ultimo_control: '',            
       servicioName: '',
     });
+    
+
   }
 
   return (

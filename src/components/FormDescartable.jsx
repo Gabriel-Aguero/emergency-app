@@ -32,7 +32,7 @@ const FormDescartable = () => {
               className="border-2 border-slate-400 rounded-md p-2 w-full focus:outline-none focus:border-blue-500"
             />
           </div>
-        </div>
+    </div>
   );
 };
 
