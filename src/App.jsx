@@ -2,6 +2,7 @@ import './App.css'
 import Register from './pages/Register.jsx';
 import Home from './pages/Home.jsx';
 import NotFound from './pages/NotFound.jsx';
+import FormCheckListCart from './pages/FormCheckListCart.jsx';
 import { Routes, Route } from 'react-router-dom';
 import FormData from './pages/FormData.jsx';
 import Navbar from './components/Navbar.jsx';
@@ -17,6 +18,11 @@ function App() {
         <Route path='/' element={<Home/>}/>
         <Route path='/register' element={<Register/>}/>
         <Route path='*' element={<NotFound/>}/>
+        <Route path='/check_carros' element={
+          <ProtectedRoutes>
+            <FormCheckListCart/>
+          </ProtectedRoutes>
+          }/>
         <Route path='/formulario_de_datos' element={
           <ProtectedRoutes>
             <FormData/>

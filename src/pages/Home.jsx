@@ -31,6 +31,10 @@ const Home = () => {
     navigate("/register");
   };
 
+  const checkCarros = () => {
+    navigate("/check_carros");
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
       <div className="flex flex-col gap-6 items-center justify-center w-full max-w-md p-20 bg-white border border-purple-700 rounded-lg shadow-xl">
@@ -63,7 +67,7 @@ const Home = () => {
         </button>
         <button
           className="w-full bg-gray-300 text-black rounded-lg py-2 hover:bg-gray-500 transition duration-200"
-          onClick={register}
+          onClick={checkCarros}
         >
           Chequear carros
         </button>

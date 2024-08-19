@@ -23,8 +23,9 @@ export const AuthProvider = ({ children }) => {
   const [usuario, setUsuario] = useState({});
   const [loading, setLoading] = useState(true);
   const [carros, setCarros] = useState([]);
+  const [servicios, setServicios] = useState([]);
 
-  // Crear un usuario en Firebase
+  // Crear un usuario en Firebase 
   const signup = async (email, password) => {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -162,16 +163,33 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Obtener los servicios
+  const getServicio = async () => {
+    const servicioSnapshot = await getDocs(collection(db, 'servicio'));
+      const serviciosList = servicioSnapshot.docs.map(doc => ({
+        id: doc.id,
+        nombre: doc.data().nombre,
+      }));
+      setServicios(serviciosList);
+  };
+
   // Recuperar el listado de segun el servicio
-  const getCarros = async (servicioName) => {
+  const getCarrosByServicio = async (servicioName) => {
     const q = query(
       collection(db, "carro"),
       where("servicioName", "==", servicioName)
     );
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      setCarros(doc.data());
-    });
+    const querySnapshot = await getDocs(q);    
+    const carrosList = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      numCarro: doc.data().numCarro,
+      precinto: doc.data().precinto,
+      cantidadCarros: doc.data().cantidadCarros,
+      fecha_inicio: doc.data().fecha_inicio,
+      fecha_ultimo_control: doc.data().fecha_ultimo_control,
+      servicioName: doc.data().servicioName,
+    }));
+    setCarros(carrosList);    
   };
 
   useEffect(() => {
@@ -199,13 +217,15 @@ export const AuthProvider = ({ children }) => {
         loading,
         usuario,
         carros,
+        servicios,
         addProfileUser,
         checkAndAddService,
         getUsuario,
         addCarro,
         addMedication,
         addDescartable,
-        getCarros,
+        getCarrosByServicio,
+        getServicio,
       }}
     >
       {children}
