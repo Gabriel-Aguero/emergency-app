@@ -55,53 +55,53 @@ const Register = () => {
         <h2 className="text-2xl font-bold text-purple-800">Registrarse</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
           <input
-            className="border-2 border-purple-600 rounded-lg p-2 w-full focus:outline-none focus:border-purple-800 uppercase"
+            className="border-b-2 border-purple-600 p-2 w-full focus:outline-none focus:border-purple-800"
             type="text"
             name="firstName"
             placeholder="Nombre"
             onChange={handleChangeUsers}
           />
           <input
-            className="border-2 border-purple-600 rounded-lg p-2 w-full focus:outline-none focus:border-purple-800 uppercase"
+            className="border-b-2 border-purple-600 p-2 w-full focus:outline-none focus:border-purple-800"
             type="text"
             name="lastName"
             placeholder="Apellido"
             onChange={handleChangeUsers}
           />
           <input
-            className="border-2 border-purple-600 rounded-lg p-2 w-full focus:outline-none focus:border-purple-800 uppercase"
+            className="border-b-2 border-purple-600 p-2 w-full focus:outline-none focus:border-purple-800"
             type="text"
             name="legajo"
             placeholder="Legajo"
             onChange={handleChangeUsers}
           />
           <input
-            className="border-2 border-purple-600 rounded-lg p-2 w-full focus:outline-none focus:border-purple-800 uppercase"
+            className="border-b-2 border-purple-600 p-2 w-full focus:outline-none focus:border-purple-800"
             type="text"
             name="servicioName"
             placeholder="Servicio"
             onChange={handleChangeUsers}
           />
           <input
-            className="border-2 border-purple-600 rounded-lg p-2 w-full focus:outline-none focus:border-purple-800"
+            className="border-b-2 border-purple-600 p-2 w-full focus:outline-none focus:border-purple-800"
             type="email"
             name="email"
             placeholder="correo@site.com"
             onChange={handleChangeUsers}
           />
           <input
-            className="border-2 border-purple-600 rounded-lg p-2 w-full focus:outline-none focus:border-purple-800"
+            className="border-b-2 border-purple-600 p-2 w-full focus:outline-none focus:border-purple-800"
             type="password"
             name="password"
             placeholder="Contraseña"
             onChange={handleChangeUsers}
           />
-          <button className="bg-purple-700 text-white rounded-lg p-2 hover:bg-purple-800 transition duration-200">
+          <button className="bg-purple-500 text-white rounded-lg p-2 hover:bg-purple-800 transition duration-200">
             Registrarse
           </button>
         </form>
         <button
-          className="bg-purple-700 text-white rounded-lg p-2 mt-2 hover:bg-purple-800 transition duration-200 w-full"
+          className="bg-purple-500 text-white rounded-lg p-2 mt-2 hover:bg-purple-800 transition duration-200 w-full"
           onClick={() => navigate("/")}
         >
           Ir a Login

@@ -22,7 +22,9 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [usuario, setUsuario] = useState({});
   const [loading, setLoading] = useState(true);
+  const [carros, setCarros] = useState([]);
 
+  // Crear un usuario en Firebase
   const signup = async (email, password) => {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -32,14 +34,17 @@ export const AuthProvider = ({ children }) => {
     return userCredential;
   };
 
+  // Iniciar sesión en Firebase
   const login = (email, password) => {
     signInWithEmailAndPassword(auth, email, password);
   };
 
+  // Cerrar sesión en Firebase
   const logout = () => {
     signOut(auth);
   };
 
+  // Verificar si el servicio existe en la colección servicio
   const checkAndAddService = async (servicioName) => {
     // Crear una consulta para buscar el servicio por nombre
     const serviceQuery = query(
@@ -61,6 +66,7 @@ export const AuthProvider = ({ children }) => {
     return newServiceRef.nombre;
   };
 
+  // Obtener el usuario por email
   const getUsuario = async (email) => {
     const q = query(collection(db, "usuario"), where("email", "==", email));
     const querySnapshot = await getDocs(q);
@@ -156,6 +162,18 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Recuperar el listado de segun el servicio
+  const getCarros = async (servicioName) => {
+    const q = query(
+      collection(db, "carro"),
+      where("servicioName", "==", servicioName)
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      setCarros(doc.data());
+    });
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -179,13 +197,15 @@ export const AuthProvider = ({ children }) => {
         logout,
         user,
         loading,
+        usuario,
+        carros,
         addProfileUser,
         checkAndAddService,
         getUsuario,
-        usuario,
         addCarro,
         addMedication,
         addDescartable,
+        getCarros,
       }}
     >
       {children}
