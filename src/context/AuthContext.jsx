@@ -24,8 +24,9 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [carros, setCarros] = useState([]);
   const [servicios, setServicios] = useState([]);
+  const [medications, setMedications] = useState([]);
 
-  // Crear un usuario en Firebase 
+  // Crear un usuario en Firebase
   const signup = async (email, password) => {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -99,18 +100,16 @@ export const AuthProvider = ({ children }) => {
   const addCarro = async ({
     numCarro,
     precinto,
-    cantidadCarros,
-    fecha_inicio,
-    fecha_ultimo_control,
+    fechaInicio,
+    fechaUltimoControl,
     servicioName,
   }) => {
     try {
       const docRef = await addDoc(collection(db, "carro"), {
         numCarro,
         precinto,
-        cantidadCarros,
-        fecha_inicio,
-        fecha_ultimo_control,
+        fechaInicio,
+        fechaUltimoControl,
         servicioName,
       });
       return docRef.id;
@@ -165,31 +164,47 @@ export const AuthProvider = ({ children }) => {
 
   // Obtener los servicios
   const getServicio = async () => {
-    const servicioSnapshot = await getDocs(collection(db, 'servicio'));
-      const serviciosList = servicioSnapshot.docs.map(doc => ({
-        id: doc.id,
-        nombre: doc.data().nombre,
-      }));
-      setServicios(serviciosList);
+    const servicioSnapshot = await getDocs(collection(db, "servicio"));
+    const serviciosList = servicioSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      nombre: doc.data().nombre,
+    }));
+    setServicios(serviciosList);
   };
 
-  // Recuperar el listado de segun el servicio
+  // Recuperar el listado de carros segun el servicio
   const getCarrosByServicio = async (servicioName) => {
     const q = query(
       collection(db, "carro"),
       where("servicioName", "==", servicioName)
     );
-    const querySnapshot = await getDocs(q);    
-    const carrosList = querySnapshot.docs.map(doc => ({
+    const querySnapshot = await getDocs(q);
+    const carrosList = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       numCarro: doc.data().numCarro,
       precinto: doc.data().precinto,
-      cantidadCarros: doc.data().cantidadCarros,
-      fecha_inicio: doc.data().fecha_inicio,
-      fecha_ultimo_control: doc.data().fecha_ultimo_control,
+      fechaInicio: doc.data().fechaInicio,
+      fechaUltimoControl: doc.data().fechaUltimoControl,
       servicioName: doc.data().servicioName,
     }));
-    setCarros(carrosList);    
+    setCarros(carrosList);
+  };
+
+  // Obtener los medicamentos por el carro
+  const getMedicationByCarro = async (idCarro) => {
+    const q = query(
+      collection(db, "medicacion"),
+      where("idCarro", "==", idCarro)
+    );
+    const querySnapshot = await getDocs(q);
+    const medicationsList = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      medication: doc.data().medication,
+      lot: doc.data().lot,
+      medExpiration: doc.data().medExpiration,
+      medQuantity: doc.data().medQuantity,
+    }));
+    setMedications(medicationsList);
   };
 
   useEffect(() => {
@@ -218,6 +233,7 @@ export const AuthProvider = ({ children }) => {
         usuario,
         carros,
         servicios,
+        medications,
         addProfileUser,
         checkAndAddService,
         getUsuario,
@@ -226,6 +242,7 @@ export const AuthProvider = ({ children }) => {
         addDescartable,
         getCarrosByServicio,
         getServicio,
+        getMedicationByCarro,
       }}
     >
       {children}

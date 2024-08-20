@@ -22,8 +22,8 @@ const FormData = () => {
     numCarro: "",
     precinto: "",
     cantidadCarros: "",
-    fecha_inicio: "",
-    fecha_ultimo_control: "",
+    fechaInicio: "",
+    fechaUltimoControl: "",
     servicioName: "",
   });
 
@@ -66,8 +66,8 @@ const FormData = () => {
       numCarro: "",
       precinto: "",
       cantidadCarros: "",
-      fecha_inicio: "",
-      fecha_ultimo_control: "",
+      fechaInicio: "",
+      fechaUltimoControl: "",
     });
   };
 
@@ -158,7 +158,7 @@ const FormData = () => {
               <div className="grid grid-cols-1 md:grid md:grid-cols-2 gap-8">
                 <div className="relative flex flex-col">
                   <label
-                    htmlFor="fecha_ultimo_control"
+                    htmlFor="fechaInicio"
                     className="absolute text-gray-300 transition-transform duration-200 ease-in-out pointer-events-none
                     transform -translate-y-5 text-md"
                   >
@@ -166,9 +166,9 @@ const FormData = () => {
                   </label>
                   <input
                     type="date"
-                    name="fecha_inicio"
+                    name="fechaInicio"
                     placeholder="Fecha de inicio"
-                    value={cartData.fecha_inicio}
+                    value={cartData.fechaInicio}
                     onChange={handleChange}
                     className="border-b-2 border-slate-200 bg-slate-700 shadow-md p-2 w-full focus:outline-none focus:bg-slate-800 text-white mt-2"
                   />
@@ -230,24 +230,6 @@ const FormData = () => {
 
                 <div className="relative flex flex-col">
                   <label
-                    htmlFor="cantidadCarros"
-                    className="absolute text-gray-300 transition-transform duration-200 ease-in-out pointer-events-none
-                    transform -translate-y-5 text-md"
-                  >
-                    Cantidad de carros
-                  </label>
-                  <input
-                    type="number"
-                    name="cantidadCarros"
-                    placeholder="Total de carros en el servicio"
-                    value={cartData.cantidadCarros}
-                    onChange={handleChange}
-                    className="border-b-2 border-slate-200 bg-slate-700 shadow-md p-2 w-full focus:outline-none focus:bg-slate-800 text-white mt-2"
-                  />
-                </div>
-
-                <div className="relative flex flex-col">
-                  <label
                     htmlFor="fecha_ultimo_control"
                     className="absolute text-gray-300 transition-transform duration-200 ease-in-out pointer-events-none
                     transform -translate-y-5 text-md"
@@ -256,8 +238,8 @@ const FormData = () => {
                   </label>
                   <input
                     type="date"
-                    name="fecha_ultimo_control"
-                    value={cartData.fecha_ultimo_control}
+                    name="fechaUltimoControl"
+                    value={cartData.fechaUltimoControl}
                     onChange={handleChange}
                     className="border-b-2 border-slate-200 bg-slate-700 shadow-md p-2 w-full focus:outline-none focus:bg-slate-800 text-white mt-2"
                   />
