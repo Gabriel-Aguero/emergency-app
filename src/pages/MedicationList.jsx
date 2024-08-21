@@ -17,7 +17,7 @@ const MedicacionList = ({ medications }) => {
         <thead className="bg-gray-800 text-white">
           <tr>
             <th className="text-center py-3 px-4 uppercase font-semibold text-sm">
-              Medicación
+              Descripción
             </th>
             <th className="text-center py-3 px-4 uppercase font-semibold text-sm">
               Fecha de Vencimiento

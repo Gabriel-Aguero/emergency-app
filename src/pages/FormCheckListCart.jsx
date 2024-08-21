@@ -1,8 +1,13 @@
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import MedicacionList from "./MedicationList";
+import DescartableList from "./DescartableList";
 
 const BuscarCarroPorServicio = () => {
+
+  const [showMedicacionList, setShowMedicacionList] = useState(false);
+  const [showDescartableList, setShowDescartableList] = useState(false);
+
   const [servicioName, setServicioName] = useState("");
   const {
     getServicio,
@@ -11,6 +16,8 @@ const BuscarCarroPorServicio = () => {
     carros,
     getMedicationByCarro,
     medications,
+    getDescartableByCarro,
+    descartables,
   } = useContext(AuthContext);
 
   useEffect(() => {
@@ -25,7 +32,13 @@ const BuscarCarroPorServicio = () => {
   };
 
   const verMedication = async (idCarro) => {
-    await getMedicationByCarro(idCarro);
+    await getMedicationByCarro(idCarro);    
+    setShowMedicacionList(true)    
+  };
+
+  const verDescartable = async (idCarro) => {
+    await getDescartableByCarro(idCarro);
+    setShowDescartableList(true)    
   };
 
   return (
@@ -57,34 +70,78 @@ const BuscarCarroPorServicio = () => {
       </form>
 
       {carros && (
-        <div className="flex flex-col m-6">
-          <h3 className="text-lg font-bold uppercase">
+        <>
+          <div className="flex flex-col m-6">
+          <h3 className="text-lg font-bold capitalize">
             Servicio: {servicioName}
           </h3>
-          <span className="text-md mt-5 font-bold text-blue-700">
-            El servicio cuenta con {carros.length} Carros de paro
+          <span className="text-md mt-5 font-bold text-blue-700 mb-5">
+            El servicio cuenta con {carros.length ? carros.length : '...'} Carros de paro
           </span>
-          <ul className="list-disc pl-5">
+          <div className="flex flex-col md:flex-row gap-4 mx-auto">
             {carros.map((carro) => (
-              <li
-                key={carro.id}
-                className="flex gap-4 md:flex md:flex-col mt-5"
-              >
-                <div className="flex gap-8 items-center">
-                  Numero de Carro: {carro.numCarro}
+              <div key={carro.id}
+              className="w-80 bg-white p-4 rounded-lg shadow-lg shadow-slate-700 flex flex-col items-center justify-center gap-4"
+            >
+              <h3 className="w-full border-b-2 border-slate-600 text-center text-lg font-bold text-gray-700 p-2">
+                Información del Carro
+              </h3>
+
+              <div className="flex flex-col md:flex md:flex-col gap-4">                
+                
+                <div className="w-full grid grid-cols-2 gap-2 border-b-2 border-slate-200 p-2">
+                  <span className="font-bold">
+                    Carro número: 
+                  </span>
+                  <p>{carro.numCarro}</p>
                 </div>
+                
+                <div className="flex flex-nowrap gap-2 border-b-2 border-slate-200 p-2">
+                  <span className="font-bold">
+                    Fecha de inicio: 
+                  </span>
+                  <p>{carro.fechaInicio ? new Date(carro.fechaInicio.seconds * 1000).toLocaleDateString() : ''} </p>
+                </div>
+
+                <div className="flex flex-nowrap gap-2 border-b-2 border-slate-200 p-2">
+                  <span className="w-full font-bold">
+                    Fecha de último control: 
+                  </span>
+                  <p>{carro.fechaUltimoControl ? new Date(carro.fechaUltimoControl.seconds * 1000).toLocaleDateString() : ''}</p>
+                </div>
+                
+                <div className="flex flex-nowrap gap-4 border-b-2 border-slate-200 p-2">
+                  <span className="font-bold">
+                    Precinto registrado: 
+                  </span>
+                  <p>{carro.precinto}</p>
+                </div>
+
+              </div>
+              <div className="flex flex-col md:flex-row justify-center items-center gap-4 w-full">
                 <button
-                  className="text-green-500 text-md font-bold hover:text-green-700 transition duration-200"
+                  className="text-blue-500 hover:text-blue-700 transition duration-200"
                   onClick={() => verMedication(carro.id)}
-                >
-                  Ver Detalle
+                >                         
+                  Ver Medicación
                 </button>
-              </li>
+                <button
+                  className="text-green-500 hover:text-green-700 transition duration-200"
+                  onClick={() => verDescartable(carro.id)}
+                >
+                  Ver Descartables
+                </button>
+              </div>
+            </div>
             ))}
-          </ul>
-        </div>
+          </div>
+          </div>
+          { showMedicacionList && <MedicacionList medications={medications} /> }
+          {showDescartableList && <DescartableList descartables={descartables} />}           
+        </>
       )}
-      <MedicacionList medications={medications} />
+
+
     </div>
   );
 };

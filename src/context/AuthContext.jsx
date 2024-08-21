@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }) => {
   const [carros, setCarros] = useState([]);
   const [servicios, setServicios] = useState([]);
   const [medications, setMedications] = useState([]);
+  const [descartables, setDescartables] = useState([]);
 
   // Crear un usuario en Firebase
   const signup = async (email, password) => {
@@ -207,6 +208,25 @@ export const AuthProvider = ({ children }) => {
     setMedications(medicationsList);
   };
 
+  // Obtener los descartables por el carro
+  const getDescartableByCarro = async (idCarro) => {
+    const q = query(
+      collection(db, "descartable"),
+      where("idCarro", "==", idCarro)
+    );
+    const querySnapshot = await getDocs(q);
+    const descartablesList = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      material: doc.data().material,
+      lot: doc.data().lot,
+      matExpiration: doc.data().matExpiration,
+      matQuantity: doc.data().matQuantity,
+    }));
+    setDescartables(descartablesList);
+  };
+
+
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -234,6 +254,7 @@ export const AuthProvider = ({ children }) => {
         carros,
         servicios,
         medications,
+        descartables,
         addProfileUser,
         checkAndAddService,
         getUsuario,
@@ -243,6 +264,7 @@ export const AuthProvider = ({ children }) => {
         getCarrosByServicio,
         getServicio,
         getMedicationByCarro,
+        getDescartableByCarro
       }}
     >
       {children}
