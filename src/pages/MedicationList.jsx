@@ -12,8 +12,9 @@ const MedicacionList = ({ medications }) => {
   };
 
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full bg-white shadow-md rounded-lg">
+    <div className="mt-2 p-5">
+      <span className="text-lg font-bold bg-slate-400 p-2">Medicacion</span>
+      <table className="min-w-full shadow-xl rounded-lg mt-1">
         <thead className="bg-gray-800 text-white">
           <tr>
             <th className="text-center py-3 px-4 uppercase font-semibold text-sm">
@@ -34,7 +35,7 @@ const MedicacionList = ({ medications }) => {
           {medications.map((medicacion) => (
             <tr
               key={medicacion.id}
-              className="bg-gray-100 border-b border-gray-200 hover:bg-gray-200 text-center"
+              className="bg-gray-500 border-b border-gray-200 hover:bg-gray-600 text-center"
             >
               <td className="py-3 px-4 capitalize">{medicacion.medication}</td>
               <td className="py-3 px-4">
