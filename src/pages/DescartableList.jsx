@@ -1,4 +1,6 @@
 /* eslint-disable react/prop-types */
+import { IconDelete } from "../components/icons/Icons";
+import { IconEdit } from "../components/icons/Icons";
 
 const DescartableList = ({ descartables }) => {
   const handleEdit = (id) => {
@@ -9,6 +11,20 @@ const DescartableList = ({ descartables }) => {
   const handleDelete = (id) => {
     // Implementa la lógica de eliminación
     console.log(`Eliminando medicación con ID: ${id}`);
+  };
+
+  const getRowColor = (Fecha_de_Vencimiento) => {
+    const now = new Date();
+    const expirationDate = new Date(Fecha_de_Vencimiento.seconds * 1000);
+    const timeDiff = expirationDate - now;
+    const daysDiff = timeDiff / (1000 * 3600 * 24);
+
+    if (daysDiff <= 10) {
+      return "bg-red-600 hover:bg-red-500"; // Naranja si faltan 10 dias o menos para vencimiento
+    } else if (daysDiff <= 30) {
+      return "bg-yellow-600 hover:bg-yellow-500"; // Amarillo si fatlan 30 o menos para el vencimiento
+    }
+    return "bg-green-600 hover:bg-green-500"; // Verde si faltan mas de 30 dias para vencimiento
   };
 
   return (
@@ -35,7 +51,7 @@ const DescartableList = ({ descartables }) => {
           {descartables.map((descartable) => (
             <tr
               key={descartable.id}
-              className="bg-gray-500 border-b border-gray-200 hover:bg-gray-600 text-center"
+              className={`${getRowColor(descartable.matExpiration)}  border-b border-gray-200 hover:bg-gray-600 text-center `}
             >
               <td className="py-3 px-4 capitalize">{descartable.material}</td>
               <td className="py-3 px-4">
@@ -44,18 +60,18 @@ const DescartableList = ({ descartables }) => {
                 ).toLocaleDateString()}
               </td>
               <td className="py-3 px-4">{descartable.matQuantity}</td>
-              <td className="flex flex-col gap-2 py-3 px-4">
+              <td className="flex flex-col gap-2 py-3 px-4 justify-center items-center">
                 <button
                   onClick={() => handleEdit(descartable.id)}
-                  className="bg-blue-500 text-white rounded-md px-2 py-1 mr-2 hover:bg-blue-700 transition duration-200"
+                  className="bg-blue-500 text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
                 >
-                  Editar
+                  <IconEdit />
                 </button>
                 <button
                   onClick={() => handleDelete(descartable.id)}
-                  className="bg-red-500 text-white rounded-md px-2 py-1 hover:bg-red-700 transition duration-200"
+                  className="bg-red-500 text-white rounded-md p-1 hover:bg-red-700 transition duration-200"
                 >
-                  Eliminar
+                  <IconDelete />
                 </button>
               </td>
             </tr>

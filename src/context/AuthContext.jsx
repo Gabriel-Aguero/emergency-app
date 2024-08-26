@@ -14,6 +14,7 @@ import {
   where,
   getDoc,
   doc,
+  updateDoc,
 } from "firebase/firestore";
 
 export const AuthContext = createContext();
@@ -225,7 +226,14 @@ export const AuthProvider = ({ children }) => {
     setDescartables(descartablesList);
   };
 
-
+  // Actualizar la lista de medicaciones
+  // const updateMedication = async (medicationId) => {
+  //   const docRef = await updateDoc(collection(db, "medicacion"), {
+  //     medQuantity: medicationId.medQuantity,
+  //     medExpiration: medicationId.medExpiration,
+  //   });
+  //   return docRef;
+  // }
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -264,7 +272,7 @@ export const AuthProvider = ({ children }) => {
         getCarrosByServicio,
         getServicio,
         getMedicationByCarro,
-        getDescartableByCarro
+        getDescartableByCarro,
       }}
     >
       {children}
