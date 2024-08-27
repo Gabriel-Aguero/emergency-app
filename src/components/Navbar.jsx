@@ -9,8 +9,8 @@ const Navbar = () => {
   };
 
   return (
-   <nav className="bg-[#9333ea] p-10 mx-auto">
-      <div className="bg-[#9333ea] flex justify-around  items-center">
+   <nav className="bg-blue-500 w-full p-10 mx-auto">
+      <div className="flex justify-around items-center">
         <div className="text-xl text-black font-bold">
           <Link className='text-white bg-transparent' to="/">Emergency Card</Link>
         </div>

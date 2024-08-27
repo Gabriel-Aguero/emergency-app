@@ -47,7 +47,7 @@ const BuscarCarroPorServicio = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2 shadow-sm bg-[#000f1f] text-white min-h-screen p-2 md:p-10 ">
+    <div className="flex flex-col gap-2 shadow-sm bg-white/55 text-black min-h-screen p-2 md:p-10 ">
       <div className="flex flex-col border gap-4 p-10 md:p-6">
         <form
           // onSubmit={handleSearch}
@@ -60,7 +60,7 @@ const BuscarCarroPorServicio = () => {
             id="servicio"
             value={servicioName}
             onChange={(e) => setServicioName(e.target.value)}
-            className="border-b-2 border-blue-200 rounded-sm shadow-lg p-4 focus:outline-none text-black"
+            className="border-2 border-slate-600 rounded-sm shadow-lg p-4 focus:outline-none text-black"
           >
             <option value="">Seleccione un servicio</option>
             {servicios.map((servicio) => (
@@ -72,15 +72,13 @@ const BuscarCarroPorServicio = () => {
         </form>
       </div>
 
-      <div className="grid md:grid-cols-2 border">
+      <div className="grid md:grid-cols-2 gap-2 p-5">
         {carros && (
           <>
-            <div
-              className={`${servicioName ? "block" : "hidden"} flex flex-col gap-4 p-5 justify-center items-center`}
-            >
-              <div className="flex flex-col gap-4">
+            <div className={`${servicioName ? "block" : "hidden"} flex flex-col gap-4`}>
+              <div className="flex flex-col gap-4 justify-center items-center border p-5">
                 <div>
-                  <h3 className="text-lg text-white font-bold capitalize">
+                  <h3 className="text-lg text-black font-bold capitalize">
                     Servicio: {servicioName}
                   </h3>
                   <span className="text-md mt-5 font-bold text-blue-700 mb-5">
@@ -149,7 +147,7 @@ const BuscarCarroPorServicio = () => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col gap-2 shadow-sm bg-[#000f1f] text-whiten">
+            <div className="flex flex-col gap-2 shadow-sm bg-white text-black p-2 border">
               {showMedicacionList && (
                 <div>
                   <MedicacionList medications={medications} />
