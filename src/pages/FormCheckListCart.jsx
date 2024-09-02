@@ -72,13 +72,13 @@ const BuscarCarroPorServicio = () => {
         </form>
       </div>
 
-      <div className="grid md:grid-cols-2 p-2 gap-2 border">
+      <div className="grid md:grid-cols-2 gap-2 p-5">
         {carros && (
           <>
             <div
-              className={`${servicioName ? "block" : "hidden"} flex flex-col gap-2 p-2 border justify-center items-center`}
+              className={`${servicioName ? "block" : "hidden"} flex flex-col gap-4`}
             >
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-4 justify-center items-center border p-5">
                 <div>
                   <h3 className="text-lg text-black font-bold capitalize">
                     Servicio: {servicioName}

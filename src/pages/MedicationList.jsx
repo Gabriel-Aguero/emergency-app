@@ -22,26 +22,27 @@ const MedicacionList = ({ medications }) => {
     "solarized",
     {
       text: {
-        primary: "#268bd2",
-        secondary: "#2aa198",
+        primary: "#09f  ", // Azul claro pastel
+        secondary: "#000000", // Blanco
       },
+
       background: {
-        default: "#002b36",
+        default: "#09f", // Azul pastel de fondo
       },
       context: {
-        background: "#cb4b16",
-        text: "#FFFFFF",
+        background: "#87C4FF", // Azul claro pastel
+        text: "#333333", // Gris oscuro para el texto
       },
       divider: {
-        default: "#073642",
+        default: "#d7e9f7", // Azul claro para divisores
       },
       action: {
-        button: "rgba(0,0,0,.54)",
-        hover: "rgba(0,0,0,.08)",
-        disabled: "rgba(0,0,0,.12)",
+        button: "rgba(255,255,255,0.54)", // Blanco translúcido
+        hover: "rgba(215,233,247,0.08)", // Azul claro translúcido al pasar el mouse
+        disabled: "rgba(255,255,255,0.12)", // Blanco translúcido para elementos desactivados
       },
     },
-    "dark"
+    "light"
   );
 
   // Establecemos los estilos para las filas dependiendo del tiempo restante hasta la vencimiento
@@ -158,7 +159,7 @@ const MedicacionList = ({ medications }) => {
       />
       <DataTable
         title="Medicacion"
-        className="text-2xl text-center bg-black"
+        className="text-2xl text-center bg-slate-800"
         columns={columns}
         data={search ? medicacionFiltered : medications}
         fixedHeader={true}

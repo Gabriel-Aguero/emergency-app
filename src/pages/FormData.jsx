@@ -147,10 +147,10 @@ const FormData = () => {
           </div>
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col gap-6 p-2 rounded-lg shadow-2xl shadow-slate-700 w-full bg-slate-800/90"
+            className="flex flex-col gap-6 p-2 rounded-lg shadow-2xl shadow-slate-700 w-full bg-slate-300"
           >
             {/*------------ Formulario de registro de carro de paro ------------*/}
-            <div className="mb-2 p-6 bg-slate-800">
+            <div className="mb-2 p-6 bg-slate-300">
               <h3 className="text-xl font-semibold text-white mb-10">
                 Información del Carro de Paro
               </h3>
