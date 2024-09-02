@@ -150,11 +150,11 @@ const MedicacionList = ({ medications }) => {
   };
 
   return (
-    <div className="mt-2 p-5">
+    <div className="mt-2 p-2">
       <input
         type="text"
         onChange={handleSearch}
-        className="bg-slate-300 mb-2 p-2 text-black focus:outline-none focus:bg-slate-700 focus:text-white"
+        className="bg-slate-600 mb-2 p-2 text-black focus:outline-none focus:bg-slate-700 focus:text-white"
       />
       <DataTable
         title="Medicacion"
