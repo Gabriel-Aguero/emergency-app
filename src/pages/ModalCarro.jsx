@@ -8,7 +8,7 @@ const ModalCarro = ({ selectedCarros, setIsModalOpen }) => {
         <div className="col-span-6 sm:col-span-3">
           <label
             htmlFor="numCarro"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block text-sm font-medium text-gray-900 dark:text-white"
           >
             Numero de carro
           </label>
@@ -16,7 +16,7 @@ const ModalCarro = ({ selectedCarros, setIsModalOpen }) => {
             type="text"
             name="numCarro"
             className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-            placeholder={selectedCarros.numCarro}
+            value={selectedCarros.numCarro}
           />
         </div>
         <div className="col-span-6 sm:col-span-3">
@@ -31,7 +31,7 @@ const ModalCarro = ({ selectedCarros, setIsModalOpen }) => {
             type="number"
             name="precinto"
             className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-            placeholder={selectedCarros.precinto}
+            value={selectedCarros.precinto}
           />
         </div>
         <div className="col-span-6 sm:col-span-3">

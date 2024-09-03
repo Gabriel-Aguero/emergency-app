@@ -4,7 +4,7 @@ import MedicacionList from "./MedicationList";
 import DescartableList from "./DescartableList";
 import { Link } from "react-router-dom";
 import DataTable from "react-data-table-component";
-import { IconDelete, IconEdit } from "../components/icons/Icons";
+import { IconDelete, IconEdit, EyeIcon } from "../components/icons/Icons";
 import Modal from "./ModalCarro";
 
 const BuscarCarroPorServicio = () => {
@@ -12,29 +12,26 @@ const BuscarCarroPorServicio = () => {
   const [servicioName, setServicioName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCarros, setSelectedCarros] = useState();
+  const [viewCarros, setViewCarros] = useState(false);
   const {
     getServicio,
     servicios,
     getCarrosByServicio,
     carros,
     getMedicationByCarro,
-    medications,
     getDescartableByCarro,
+    medications,
     descartables,
   } = useContext(AuthContext);
 
   useEffect(() => {
     // Obtener la lista de servicios al cargar el componente
     getServicio();
-  }, [getServicio]);
+  }, []);
 
-  useEffect(() => {
-    setShowMedicacionList(false);
-    // Obtener la lista de servicios al cargar el componente
-    if (servicioName) {
-      getCarrosByServicio(servicioName);
-    }
-  }, [servicioName]);
+  useEffect(() => {    
+    setShowMedicacionList(false);            
+  }, []);
 
   const verDetalleCarro = async (idCarro) => {
     try {
@@ -50,6 +47,24 @@ const BuscarCarroPorServicio = () => {
     setIsModalOpen(true);
     setSelectedCarros(carro);
   };
+
+  const handleView = (carro) => {
+    setViewCarros(!viewCarros);
+    setSelectedCarros(carro);
+  };
+
+
+  const dataServicio = [
+    { id: 1, nombre: "SISTEMAS" },
+    { id: 2, nombre: "Servicio 2" },
+    { id: 3, nombre: "Servicio 3" },
+    { id: 4, nombre: "Servicio 4" },
+    { id: 5, nombre: "Servicio 5" },
+  ]
+
+  const handleViewCar = async () => {        
+    await getCarrosByServicio(servicioName);
+  }
 
   return (
     <section className="bg-white">
@@ -82,38 +97,130 @@ const BuscarCarroPorServicio = () => {
             </p>
 
             <form action="#" className="mt-8 grid grid-cols-6 gap-6">
-              <div className="col-span-6 sm:col-span-3">
-                <label
-                  htmlFor="servicio"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Busca el carro por Servicio
-                </label>
+              <div className="col-span-6 sm:col-span-3 flex">                                                             
                 <select
                   id="servicio"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  value={servicioName}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"                  
                   onChange={(e) => setServicioName(e.target.value)}
                 >
-                  <option value="">Seleccione un servicio</option>
-                  {servicios.map((servicio) => (
+                  <option value="">Seleccione un Servicio</option>
+                  {dataServicio.map((servicio) => (
                     <option key={servicio.id} value={servicio.nombre}>
                       {servicio.nombre.toUpperCase()}
                     </option>
                   ))}
-                </select>
+                </select>  
+                <button  
+                  className="bg-blue-700 text-white flex font-bold py-2 px-6 mx-2 rounded-lg shadow-md hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"                  
+                  onClick={() => handleViewCar()}
+                > Ir
+                </button>                   
               </div>
             </form>
           </div>
 
-          <div className="flex flex-col text-right gap-2 mt-5 shadow-sm bg-white text-whiten">
-            <span>
-              El servicio cuenta con {carros.length ? carros.length : "..."}{" "}
-              Carros de paro
-            </span>
-          </div>
-          {/* tabla para mostrar los datos del carro */}
-          <div className="shadow-md sm:rounded-lg mt-20 ">
+          {/* los carros de paro se muestran al ejecutar el boton ir  */}
+          {
+            viewCarros && (
+              <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 items-center mx-auto mt-5">
+                  <div className="flex flex-col text-right gap-2 mt-5 shadow-sm bg-white text-whiten">
+                    <span>
+                      El servicio cuenta con {carros.length ? carros.length : "..."}{" "}
+                      Carros de paro
+                    </span>
+                  </div>         
+                { carros.map((carro) => (
+                  <>                
+                    <div key={carro.id} className="min-w-xl p-6 mb-5 flex flex-col bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">                  
+                        
+                        <h5 className="mb-2 text-2xl font-bold border-b-2 border-slate-400 tracking-tight text-gray-900 dark:text-white">Información del Carro</h5>                  
+                        
+                        <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700 p-2">
+                          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                            Número de Carro:
+                          </p>
+                          <p>{carro.numCarro}</p>
+                        </div>
+
+                        <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
+                          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                            Número de Precinto:
+                          </p>
+                          <p>{carro.precinto}</p>
+                        </div>
+
+                        <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
+                          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                            Fecha Inicio:
+                          </p>
+                          <p>{carro.fechaInicio ? new Date(
+                              carro.fechaInicio.seconds * 1000
+                            ).toLocaleDateString()
+                            : ""}</p>
+                        </div>
+
+                        <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
+                          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                            Fecha Último Control:
+                          </p>
+                          <p>{carro.fechaUltimoControl ? new Date(
+                              carro.fechaUltimoControl.seconds * 1000
+                            ).toLocaleDateString()
+                            : ""}
+                          </p>                                      
+                        </div>
+
+                        <div className="flex items-center justify-between gap-4">                  
+                          <button className="inline-flex items-center px-3 m-2 py-2 gap-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                          onClick={() => handleView(carro)}>
+                              Ver Detalle
+                              <EyeIcon />
+                          </button>
+                          <button className="inline-flex items-center px-3 m-2 gap-2 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                          onClick={() => handleEdit(carro)}>
+                              Editar
+                              <IconEdit />
+                          </button>
+                        </div>                            
+                    </div>                    
+                  </>
+                ))
+                }
+              </div>          
+            )
+          }                           
+
+
+          {isModalOpen && (
+            <Modal
+              selectedCarros={selectedCarros}
+              setIsModalOpen={setIsModalOpen}
+            />
+          )}
+        </main>
+
+
+        {/* esta seccion seria para visualizar el detalle del carro, se muestra cuando el usuario ha seleccionado un carro  */}
+        { 
+          !viewCarros   && (
+            <aside className="relative block h-96 lg:col-span-5 lg:h-[80%] m-10 xl:col-span-6">
+              <img
+                alt=""
+                src="https://images.unsplash.com/photo-1605106702734-205df224ecce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            </aside>
+          )
+        }
+      </div>
+    </section>
+  );
+};
+
+export default BuscarCarroPorServicio;
+
+ {/* tabla para mostrar los datos del carro */}
+          {/* <div className="shadow-md sm:rounded-lg mt-20 ">
             <table className="max-w-xl text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 capitalize bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -169,7 +276,8 @@ const BuscarCarroPorServicio = () => {
                       >
                         Editar
                       </button>
-                      <button className="font-medium text-red-600 dark:text-red-500 hover:underline ms-3">
+                      <button className="font-medium text-red-600 dark:text-red-500 hover:underline ms-3"
+                      onClick={() => handleView(carro)}>
                         Ver
                       </button>
                     </td>
@@ -177,95 +285,4 @@ const BuscarCarroPorServicio = () => {
                 ))}
               </tbody>
             </table>
-          </div>
-
-          {isModalOpen && (
-            <Modal
-              selectedCarros={selectedCarros}
-              setIsModalOpen={setIsModalOpen}
-            />
-          )}
-        </main>
-
-        <aside className="relative block h-96 lg:col-span-5 lg:h-[80%] m-10 xl:col-span-6">
-          <img
-            alt=""
-            src="https://images.unsplash.com/photo-1605106702734-205df224ecce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-        </aside>
-      </div>
-    </section>
-  );
-};
-
-export default BuscarCarroPorServicio;
-
-// <div className="flex flex-col items-center justify-center gap-4 w-full mt-5 border p-4">
-//   <h4>Datos del Carro</h4>
-//   <form className="grid grid-cols-6 gap-6 border p-4">
-//     {updateListCart.map((carro) => (
-//       <>
-//         <div className="col-span-6 sm:col-span-3" key={carro.id}>
-//           <label
-//             htmlFor="numCarro"
-//             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-//           >
-//             {carro.numCarro}
-//           </label>
-//           <input
-//             type="text"
-//             name="numCarro"
-//             className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-//             value={carro.numCarro}
-//           />
-//         </div>
-
-//         <div className="col-span-6 sm:col-span-3">
-//           <label
-//             htmlFor="precinto"
-//             className="block text-sm font-medium text-gray-700"
-//           >
-//             Precinto Registrado
-//           </label>
-
-//           <input
-//             type="number"
-//             name="precinto"
-//             className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-//           />
-//         </div>
-
-//         <div className="col-span-6 sm:col-span-3">
-//           <label
-//             htmlFor="fechaInicio"
-//             className="block text-sm font-medium text-gray-700"
-//           >
-//             Fecha Inicio
-//           </label>
-
-//           <input
-//             type="date"
-//             name="fechaInicio"
-//             className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-//           />
-//         </div>
-
-//         <div className="col-span-6 sm:col-span-3">
-//           <label
-//             htmlFor="fechaUltimoControl"
-//             className="block text-sm font-medium text-gray-700"
-//           >
-//             Fecha Último Control
-//           </label>
-
-//           <input
-//             type="date"
-//             name="fechaUltimoControl"
-//             className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-//           />
-//         </div>
-//       </>
-//     ))}
-//   </form>
-// </div>
+          </div> */}
