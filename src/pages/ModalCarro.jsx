@@ -1,11 +1,41 @@
 /* eslint-disable react/prop-types */
+
+import { useEffect, useState } from "react";
+
 // eslint-disable-next-line react/prop-types
-const ModalCarro = ({ selectedCarros, setIsModalOpen }) => {
+const ModalCarro = ({ selectedCarros, isModalOpen, onClose, upDateCarro }) => {
+  
+  const [cartData, setCartData] = useState(selectedCarros);	
+  
+  useEffect(() => {
+    
+  }, []);
+
+  // if (!isModalOpen) return null; 
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    setCartData({
+      ...cartData,
+      [name]: value,
+    });
+  };
+
+  
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    upDateCarro(cartData.idCarro, cartData);
+    // enviar datos a la funcion que realiza el update a la base de datos 
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center gap-4 w-full mt-5 border p-4 border-slate-300 shadow-lg shadow-slate-700">
-      <h4>Datos del Carro</h4>
-      <form className="grid grid-cols-6 gap-6 border p-4">
-        <div className="col-span-6 sm:col-span-3">
+    <div className="flex flex-col fixed inset-0 z-50 items-center justify-center gap-4 w-full mt-5 border p-4 shadow-lg shadow-slate-700">
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 mx-auto gap-6 border p-4 bg-slate-50 border-violet-600 rounded-lg shadow-md">
+        <h4 className="col-span-6 sm:col-span-6 text-center text-blue-700 font-semibold">Datos del Carro</h4>
+        
+        <div key={cartData.idCarro} className="col-span-6 sm:col-span-3">
           <label
             htmlFor="numCarro"
             className="block text-sm font-medium text-gray-900 dark:text-white"
@@ -15,10 +45,12 @@ const ModalCarro = ({ selectedCarros, setIsModalOpen }) => {
           <input
             type="text"
             name="numCarro"
-            className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
             value={selectedCarros.numCarro}
+            onChange={handleChange}
+            className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
           />
         </div>
+
         <div className="col-span-6 sm:col-span-3">
           <label
             htmlFor="precinto"
@@ -30,10 +62,12 @@ const ModalCarro = ({ selectedCarros, setIsModalOpen }) => {
           <input
             type="number"
             name="precinto"
-            className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+            onChange={handleChange}
             value={selectedCarros.precinto}
+            className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"           
           />
         </div>
+
         <div className="col-span-6 sm:col-span-3">
           <label
             htmlFor="fechaInicio"
@@ -45,13 +79,15 @@ const ModalCarro = ({ selectedCarros, setIsModalOpen }) => {
           <input
             type="date"
             name="fechaInicio"
-            className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-            placeholder={selectedCarros.fechaInicio}
+            value={selectedCarros.fechaInicio}
+            onChange={handleChange}
+            className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"            
           />
         </div>
+
         <div className="col-span-6 sm:col-span-3">
           <label
-            htmlFor="fechaUltimoControl"
+            htmlFor="fecha_ultimo_control"
             className="block text-sm font-medium text-gray-700"
           >
             Fecha Último Control
@@ -60,17 +96,22 @@ const ModalCarro = ({ selectedCarros, setIsModalOpen }) => {
           <input
             type="date"
             name="fechaUltimoControl"
-            className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-            value={Date.now()}
-            placeholder={Date.now()}
+            onChange={handleChange}
+            value={selectedCarros.fechaUltimoControl}
+            className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"                        
           />
         </div>
 
-        <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-          <button className="w-full inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500">
-            Guardar Cambios
-          </button>
-        </div>
+
+        <button className="col-span-6 inline-block shrink-0 rounded-md border sm:col-span-3 border-blue-600 bg-blue-600 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
+        type="submit">
+          Guardar Cambios
+        </button>
+        <button className="col-span-6 inline-block shrink-0 rounded-md border sm:col-span-3 border-blue-600 bg-blue-600 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
+        type="button"
+        onClick={onClose}>
+          Cerrar
+        </button>        
       </form>
     </div>
   );

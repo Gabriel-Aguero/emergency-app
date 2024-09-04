@@ -6,7 +6,7 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
+import { collection, addDoc, getDocs, query, where, updateDoc, doc } from "firebase/firestore";
 
 export const AuthContext = createContext();
 
@@ -217,6 +217,19 @@ export const AuthProvider = ({ children }) => {
     setDescartables(descartablesList);
   };
 
+ // Actualiza los datos del carro
+ const updateCarro = async (idCarro, data) => {
+   const updateDocRef = doc(db, "carro", idCarro);
+   const dataUpdate = await updateDoc(updateDocRef, {
+     numCarro: data.numCarro,
+     precinto: data.precinto,
+     fechaInicio: data.fechaInicio,
+     fechaUltimoControl: data.fechaUltimoControl,
+   });
+   return dataUpdate;
+ }
+
+
   // Actualizar la lista de medicaciones
   // const updateMedication = async (medicationId) => {
   //   const docRef = await updateDoc(collection(db, "medicacion"), {
@@ -264,6 +277,7 @@ export const AuthProvider = ({ children }) => {
         getServicio,
         getMedicationByCarro,
         getDescartableByCarro,
+        updateCarro,
       }}
     >
       {children}
