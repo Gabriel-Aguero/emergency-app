@@ -14,21 +14,17 @@ const BuscarCarroPorServicio = () => {
   const [selectedCarros, setSelectedCarros] = useState();
   // const [viewCarros, setViewCarros] = useState(false);
   const [viewDetailsCarros, setViewDetailsCarros] = useState(false);
-  const {        
+  const {
     getCarrosByServicio,
     carros,
     getMedicationByCarro,
     getDescartableByCarro,
-    updateCarro,
   } = useContext(AuthContext);
 
-  useEffect(() => {
-    // Obtener la lista de servicios al cargar el componente
-    
-  }, []);
+  // const [listCarro, setListCarro] = useState(carros);
 
-  useEffect(() => {    
-    // setShowMedicacionList(false);            
+  useEffect(() => {
+    // setShowMedicacionList(false);
   }, []);
 
   const verDetalleCarro = async (idCarro) => {
@@ -41,10 +37,10 @@ const BuscarCarroPorServicio = () => {
     }
   };
 
-  // Muestra los carrros de paro por el servicio seleccionado 
-  const handleViewCar = async ( servicioName) => {    
-    await getCarrosByServicio(servicioName);    
-  }
+  // Muestra los carrros de paro por el servicio seleccionado
+  const handleViewCar = async (servicioName) => {
+    await getCarrosByServicio(servicioName);
+  };
 
   // Muestra el formulario para editar el carro seleccionado
   const handleEdit = (carro) => {
@@ -52,13 +48,19 @@ const BuscarCarroPorServicio = () => {
     setSelectedCarros(carro);
   };
 
-  // Muestra el detalle del carro seleccionado, elementos descartables y medicaciones 
+  // // Función para actualizar el carro en la lista de carros después de realizar cambios en el modal
+  // const handleUpdateCarro = (updatedCarro) => {
+  //   const updatedCarros = listCarro.map((carro) =>
+  //     carro.id === updatedCarro.id ? updatedCarro : carro
+  //   );
+  //   setListCarro(updatedCarros); // Actualiza la lista de carros con el carro editado
+  // };
+
+  // Muestra el detalle del carro seleccionado, elementos descartables y medicaciones
   const handleViewDetailsCar = (idCarro) => {
     setViewDetailsCarros(!viewDetailsCarros);
     setSelectedCarros(idCarro);
   };
-
-
 
   const dataServicio = [
     { id: 1, nombre: "sistemas" },
@@ -66,9 +68,7 @@ const BuscarCarroPorServicio = () => {
     { id: 3, nombre: "Servicio 3" },
     { id: 4, nombre: "Servicio 4" },
     { id: 5, nombre: "Servicio 5" },
-  ]
-
-  
+  ];
 
   return (
     <section className="bg-white">
@@ -101,10 +101,10 @@ const BuscarCarroPorServicio = () => {
             </p>
 
             <form action="#" className="mt-8 grid grid-cols-6 gap-6">
-              <div className="col-span-6 sm:col-span-3 flex">                                                             
+              <div className="col-span-6 sm:col-span-3 flex">
                 <select
                   id="servicio"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"                  
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   onChange={(e) => setServicioName(e.target.value)}
                 >
                   <option value="">Seleccione un Servicio</option>
@@ -113,113 +113,114 @@ const BuscarCarroPorServicio = () => {
                       {servicio.nombre.toUpperCase()}
                     </option>
                   ))}
-                </select>  
-                <button  
-                  className="bg-blue-700 text-white flex font-bold py-2 px-6 mx-2 rounded-lg shadow-md hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"                  
+                </select>
+                <button
+                  className="bg-blue-700 text-white flex font-bold py-2 px-6 mx-2 rounded-lg shadow-md hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
                   onClick={() => handleViewCar(servicioName)}
-                > Ir
-                </button>                   
+                >
+                  {" "}
+                  Ir
+                </button>
               </div>
             </form>
           </div>
 
-          
-         
-          {/* los carros de paro se muestran al ejecutar el boton ir  */}      
-          {
-            servicioName && (
-              <div className="flex flex-col justify-start items-start">
-                  <div className="flex flex-col text-right gap-2 mt-5 shadow-sm bg-white text-whiten">
-                    <span>
-                      El servicio cuenta con {carros.length ? carros.length : "..."}{" "}
-                      Carros de paro
-                    </span>
-                  </div>         
-                  <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 items-center mx-auto mt-5">
-                  { carros.map((carro) => (
-                    <>                
-                      <div key={carro.id} className="min-w-xl p-6 mb-5 flex flex-col bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">                  
-                          
-                          <h5 className="mb-2 text-2xl font-bold border-b-2 border-slate-400 tracking-tight text-gray-900 dark:text-white">Información del Carro</h5>                  
-                          
-                          <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700 p-2">
-                            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                              Número de Carro:
-                            </p>
-                            <p>{carro.numCarro}</p>
-                          </div>
+          {/* los carros de paro se muestran al ejecutar el boton ir  */}
+          {servicioName && (
+            <div className="flex flex-col justify-start items-start">
+              <div className="flex flex-col text-right gap-2 mt-5 shadow-sm bg-white text-whiten">
+                <span>
+                  El servicio cuenta con {carros.length ? carros.length : "..."}{" "}
+                  Carros de paro
+                </span>
+              </div>
+              <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 items-center mx-auto mt-5">
+                {carros.map((carro) => (
+                  <div
+                    key={carro.id}
+                    className="min-w-xl p-6 mb-5 flex flex-col bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+                  >
+                    <h5 className="mb-2 text-2xl font-bold border-b-2 border-slate-400 tracking-tight text-gray-900 dark:text-white">
+                      Información del Carro
+                    </h5>
 
-                          <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
-                            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                              Número de Precinto:
-                            </p>
-                            <p>{carro.precinto}</p>
-                          </div>
+                    <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700 p-2">
+                      <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                        Número de Carro:
+                      </p>
+                      <p>{carro.numCarro}</p>
+                    </div>
 
-                          <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
-                            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                              Fecha Inicio:
-                            </p>
-                            <p>{carro.fechaInicio ? new Date(
-                                carro.fechaInicio.seconds * 1000
-                              ).toLocaleDateString()
-                              : ""}</p>
-                          </div>
+                    <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
+                      <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                        Número de Precinto:
+                      </p>
+                      <p>{carro.precinto}</p>
+                    </div>
 
-                          <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
-                            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                              Fecha Último Control:
-                            </p>
-                            <p>{carro.fechaUltimoControl ? new Date(
-                                carro.fechaUltimoControl.seconds * 1000
-                              ).toLocaleDateString()
-                              : ""}
-                            </p>                                      
-                          </div>
+                    <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
+                      <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                        Fecha Inicio:
+                      </p>
+                      {carro.fechaInicio
+                        ? new Date(
+                            carro.fechaInicio.seconds * 1000
+                          ).toLocaleDateString()
+                        : ""}
+                    </div>
 
-                          <div className="flex items-center justify-between gap-4">                  
-                            <button className="inline-flex items-center px-3 m-2 py-2 gap-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                            onClick={() => handleViewDetailsCar(carro.id)}>
-                                Ver Detalle
-                                <EyeIcon />
-                            </button>
-                            <button className="inline-flex items-center px-3 m-2 gap-2 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                            onClick={() => handleEdit(carro)}>
-                                Editar
-                                <IconEdit />
-                            </button>
-                          </div>                            
-                      </div>                    
-                    </>
-                  ))
-                  }
+                    <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
+                      <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                        Fecha Último Control:
+                      </p>
+                      <p>
+                        {carro.fechaUltimoControl
+                          ? new Date(
+                              carro.fechaUltimoControl.seconds * 1000
+                            ).toLocaleDateString()
+                          : ""}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center justify-between gap-4">
+                      <button
+                        className="inline-flex items-center px-3 m-2 py-2 gap-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        onClick={() => handleViewDetailsCar(carro.id)}
+                      >
+                        Ver Detalle
+                        <EyeIcon />
+                      </button>
+                      <button
+                        className="inline-flex items-center px-3 m-2 gap-2 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        onClick={() => handleEdit(carro)}
+                      >
+                        Editar
+                        <IconEdit />
+                      </button>
+                    </div>
                   </div>
-              </div>          
-            )
-          }                           
-          
-            <Modal
-              selectedCarros={selectedCarros}    
-              isModalOpen={isModalOpen}
-              onClose={() => setIsModalOpen(false)}
-              upDateCarro = {updateCarro}
-            />
-          
+                ))}
+              </div>
+            </div>
+          )}
+
+          <Modal
+            selectedCarros={selectedCarros}
+            isModalOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+          />
         </main>
 
-
         {/* esta seccion seria para visualizar el detalle del carro, se muestra cuando el usuario ha seleccionado un carro  */}
-        { 
-          !viewDetailsCarros   && (
-            <aside className="relative block h-96 lg:col-span-5 lg:h-[80%] m-10 xl:col-span-6">
-              <img
-                alt=""
-                src="https://images.unsplash.com/photo-1605106702734-205df224ecce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-                className="absolute inset-0 h-full w-full object-cover"
-              />
-            </aside>
-          )
-        }
+        {!viewDetailsCarros && (
+          <aside className="relative block h-96 lg:col-span-5 lg:h-[80%] m-10 xl:col-span-6">
+            <img
+              alt=""
+              src="https://images.unsplash.com/photo-1605106702734-205df224ecce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          </aside>
+        )}
       </div>
     </section>
   );
@@ -227,8 +228,11 @@ const BuscarCarroPorServicio = () => {
 
 export default BuscarCarroPorServicio;
 
- {/* tabla para mostrar los datos del carro */}
-          {/* <div className="shadow-md sm:rounded-lg mt-20 ">
+{
+  /* tabla para mostrar los datos del carro */
+}
+{
+  /* <div className="shadow-md sm:rounded-lg mt-20 ">
             <table className="max-w-xl text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 capitalize bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -293,4 +297,5 @@ export default BuscarCarroPorServicio;
                 ))}
               </tbody>
             </table>
-          </div> */}
+          </div> */
+}
