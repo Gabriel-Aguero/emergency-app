@@ -8,7 +8,7 @@ import { IconDelete, IconEdit, EyeIcon } from "../components/icons/Icons";
 import Modal from "./ModalCarro";
 
 const BuscarCarroPorServicio = () => {
-  const [showMedicacionList, setShowMedicacionList] = useState(false);
+  // const [showMedicacionList, setShowMedicacionList] = useState(false);
   const [servicioName, setServicioName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCarros, setSelectedCarros] = useState();
@@ -19,6 +19,7 @@ const BuscarCarroPorServicio = () => {
     carros,
     getMedicationByCarro,
     getDescartableByCarro,
+    medications,
   } = useContext(AuthContext);
 
   // const [listCarro, setListCarro] = useState(carros);
@@ -29,9 +30,8 @@ const BuscarCarroPorServicio = () => {
 
   const verDetalleCarro = async (idCarro) => {
     try {
-      await getMedicationByCarro(idCarro);
-      await getDescartableByCarro(idCarro);
-      setShowMedicacionList(true);
+      
+      await getDescartableByCarro(idCarro);      
     } catch (error) {
       console.log(error.message);
     }
@@ -57,9 +57,10 @@ const BuscarCarroPorServicio = () => {
   // };
 
   // Muestra el detalle del carro seleccionado, elementos descartables y medicaciones
-  const handleViewDetailsCar = (idCarro) => {
-    setViewDetailsCarros(!viewDetailsCarros);
-    setSelectedCarros(idCarro);
+  const handleViewDetailsCar = async (idCarro) => {
+    setViewDetailsCarros(!viewDetailsCarros);        
+    await getMedicationByCarro(idCarro);
+    console.log(medications);
   };
 
   const dataServicio = [
@@ -212,7 +213,7 @@ const BuscarCarroPorServicio = () => {
         </main>
 
         {/* esta seccion seria para visualizar el detalle del carro, se muestra cuando el usuario ha seleccionado un carro  */}
-        {!viewDetailsCarros && (
+        {!viewDetailsCarros ? (
           <aside className="relative block h-96 lg:col-span-5 lg:h-[80%] m-10 xl:col-span-6">
             <img
               alt=""
@@ -220,6 +221,8 @@ const BuscarCarroPorServicio = () => {
               className="absolute inset-0 h-full w-full object-cover"
             />
           </aside>
+        ) : (
+          <MedicacionList medicacionList={medicacionList} />
         )}
       </div>
     </section>

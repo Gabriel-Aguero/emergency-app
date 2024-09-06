@@ -198,8 +198,7 @@ export const AuthProvider = ({ children }) => {
       where("idCarro", "==", idCarro)
     );
     const querySnapshot = await getDocs(q);
-    const medicationsList = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
+    const medicationsList = querySnapshot.docs.map((doc) => ({      
       medication: doc.data().medication,
       lot: doc.data().lot,
       medExpiration: doc.data().medExpiration,
