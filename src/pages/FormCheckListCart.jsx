@@ -60,7 +60,7 @@ const BuscarCarroPorServicio = () => {
   const handleViewDetailsCar = async (idCarro) => {
     setViewDetailsCarros(!viewDetailsCarros);        
     await getMedicationByCarro(idCarro);
-    console.log(medications);
+    console.log(idCarro);
   };
 
   const dataServicio = [
@@ -222,7 +222,9 @@ const BuscarCarroPorServicio = () => {
             />
           </aside>
         ) : (
-          <MedicacionList medicacionList={medicacionList} />
+          <aside className="relative block h-96 lg:col-span-5 lg:h-[80%] m-10 xl:col-span-6">
+            <MedicacionList medicacionList={medications} />            
+          </aside>
         )}
       </div>
     </section>

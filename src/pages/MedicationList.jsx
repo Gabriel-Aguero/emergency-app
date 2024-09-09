@@ -4,7 +4,7 @@ import { IconDelete } from "../components/icons/Icons";
 import { IconEdit } from "../components/icons/Icons";
 import DataTable, { createTheme } from "react-data-table-component";
 
-const MedicacionList = ({ medications }) => {
+const MedicacionList = ({ medicacionList }) => {
   const [medicacionFiltered, setMedicacionFiltered] = useState("");
   const [search, setSearch] = useState("");
 
@@ -22,12 +22,12 @@ const MedicacionList = ({ medications }) => {
     "solarized",
     {
       text: {
-        primary: "#09f  ", // Azul claro pastel
+        primary: "#000000", // Azul claro pastel
         secondary: "#000000", // Blanco
       },
 
       background: {
-        default: "#09f", // Azul pastel de fondo
+        default: "#ffffff", // Azul pastel de fondo
       },
       context: {
         background: "#87C4FF", // Azul claro pastel
@@ -56,10 +56,10 @@ const MedicacionList = ({ medications }) => {
         return daysDiff <= 10;
       },
       style: {
-        backgroundColor: "#dc2626", // Red Tailwind equivalent
+        backgroundColor: "#dc2626", 
         color: "white",
         "&:hover": {
-          backgroundColor: "#b91c1c", // Red Tailwind equivalent
+          backgroundColor: "#b91c1c", 
         },
       },
     },
@@ -118,33 +118,33 @@ const MedicacionList = ({ medications }) => {
       selector: (row) => row.medQuantity,
       sortable: true,
     },
-    {
-      name: "Acciones",
-      cell: (row) => (
-        <div className="flex gap-2 justify-center">
-          <button
-            onClick={() => handleEdit(row.id)}
-            className="bg-blue-500 text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
-          >
-            <IconEdit />
-          </button>
-          <button
-            onClick={() => handleDelete(row.id)}
-            className="bg-red-500 text-white rounded-md p-1 hover:bg-red-700 transition duration-200"
-          >
-            <IconDelete />
-          </button>
-        </div>
-      ),
-      ignoreRowClick: true,
-      allowOverflow: true,
-      button: true,
-    },
+    // {
+    //   name: "Acciones",
+    //   cell: (row) => (
+    //     <div className="flex gap-2 justify-center">
+    //       <button
+    //         onClick={() => handleEdit(row.id)}
+    //         className="bg-blue-500 text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
+    //       >
+    //         <IconEdit />
+    //       </button>
+    //       <button
+    //         onClick={() => handleDelete(row.id)}
+    //         className="bg-red-500 text-white rounded-md p-1 hover:bg-red-700 transition duration-200"
+    //       >
+    //         <IconDelete />
+    //       </button>
+    //     </div>
+    //   ),
+    //   ignoreRowClick: true,
+    //   allowOverflow: true,
+    //   button: true,
+    // },
   ];
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
-    const filteredData = medications.filter((medicacion) => {
+    const filteredData = medicacionList.filter((medicacion) => {
       return medicacion.medication.toLowerCase().includes(search.toLowerCase());
     });
     setMedicacionFiltered(filteredData);
@@ -155,20 +155,19 @@ const MedicacionList = ({ medications }) => {
       <input
         type="text"
         onChange={handleSearch}
-        className="bg-slate-600 mb-2 p-2 text-black focus:outline-none focus:bg-slate-700 focus:text-white"
+        className="bg-white border-b-2 border-gray-400 shadow-md shadow-slate-950 p-2 text-black focus:outline-none focus:bg-slate-100 focus:text-black"
       />
       <DataTable
-        title="Medicacion"
-        className="text-2xl text-center bg-slate-800"
+        title="Medicacion"        
         columns={columns}
-        data={search ? medicacionFiltered : medications}
+        data={search ? medicacionFiltered : medicacionList}
         fixedHeader={true}
         fixedFooter={true}
         pagination={true}
         paginationPerPage={5}
         paginationRowsPerPageOptions={[5, 10, 15]}
         conditionalRowStyles={conditionalRowStyles}
-        theme="solarized"
+        // theme="solarized"
       />
       {/* <table className="min-w-full shadow-xl rounded-lg mt-1">
         <thead className="bg-gray-800 text-white">
