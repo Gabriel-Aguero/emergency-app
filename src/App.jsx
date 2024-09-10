@@ -8,6 +8,7 @@ import FormData from "./pages/FormData.jsx";
 import Navbar from "./components/Navbar.jsx";
 import { ProtectedRoutes } from "./components/ProtectedRoutes.jsx";
 import Footer from "./components/Footer.jsx";
+import { Contacto } from "./pages/Contacto.jsx";
 function App() {
   return (
     <>
@@ -25,6 +26,7 @@ function App() {
             </ProtectedRoutes>
           }
         />
+        <Route path="/contacto" element={<Contacto />} />
       </Routes>
       <Footer />
     </>
