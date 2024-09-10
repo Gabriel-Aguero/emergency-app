@@ -1,12 +1,14 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
-import { IconDelete } from "../components/icons/Icons";
-import { IconEdit } from "../components/icons/Icons";
-import DataTable, { createTheme } from "react-data-table-component";
+import { useEffect } from "react";
+import { useReactTable, getCoreRowModel, flexRender } from "@tanstack/react-table";
 
 const MedicacionList = ({ medicacionList }) => {
-  const [medicacionFiltered, setMedicacionFiltered] = useState("");
-  const [search, setSearch] = useState("");
+  // const [medicacionFiltered, setMedicacionFiltered] = useState("");
+  // const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    console.log(medicacionList);
+  }, [medicacionList]);
 
   const handleEdit = (id) => {
     // Implementa la lógica de edición
@@ -18,106 +20,32 @@ const MedicacionList = ({ medicacionList }) => {
     console.log(`Eliminando medicación con ID: ${id}`);
   };
 
-  const solarizedTheme = createTheme(
-    "solarized",
-    {
-      text: {
-        primary: "#000000", // Azul claro pastel
-        secondary: "#000000", // Blanco
-      },
-
-      background: {
-        default: "#ffffff", // Azul pastel de fondo
-      },
-      context: {
-        background: "#87C4FF", // Azul claro pastel
-        text: "#333333", // Gris oscuro para el texto
-      },
-      divider: {
-        default: "#d7e9f7", // Azul claro para divisores
-      },
-      action: {
-        button: "rgba(255,255,255,0.54)", // Blanco translúcido
-        hover: "rgba(215,233,247,0.08)", // Azul claro translúcido al pasar el mouse
-        disabled: "rgba(255,255,255,0.12)", // Blanco translúcido para elementos desactivados
-      },
-    },
-    "light"
-  );
-
-  // Establecemos los estilos para las filas dependiendo del tiempo restante hasta la vencimiento
-  const conditionalRowStyles = [
-    {
-      when: (row) => {
-        const now = new Date();
-        const expirationDate = new Date(row.medExpiration.seconds * 1000);
-        const timeDiff = expirationDate - now;
-        const daysDiff = timeDiff / (1000 * 3600 * 24);
-        return daysDiff <= 10;
-      },
-      style: {
-        backgroundColor: "#dc2626", 
-        color: "white",
-        "&:hover": {
-          backgroundColor: "#b91c1c", 
-        },
-      },
-    },
-    {
-      when: (row) => {
-        const now = new Date();
-        const expirationDate = new Date(row.medExpiration.seconds * 1000);
-        const timeDiff = expirationDate - now;
-        const daysDiff = timeDiff / (1000 * 3600 * 24);
-        return daysDiff >= 10 && daysDiff <= 30;
-      },
-      style: {
-        background: "#ca8a04",
-        color: "white",
-        "&:hover": {
-          background: "#eab308",
-        },
-      },
-    },
-    {
-      when: (row) => {
-        const now = new Date();
-        const expirationDate = new Date(row.medExpiration.seconds * 1000);
-        const timeDiff = expirationDate - now;
-        const daysDiff = timeDiff / (1000 * 3600 * 24);
-        return daysDiff >= 30 && daysDiff <= 60;
-      },
-      style: {
-        background: "#16a34a",
-        color: "white",
-        "&:hover": {
-          background: "#22c55e",
-        },
-      },
-    },
-  ];
-
   const columns = [
     {
-      name: "Medicacion",
-      selector: (row) => row.medication,
-      sortable: true,
+      header: "ID",
+      accessorKey: "id",      
     },
     {
-      name: "Fecha de Vencimiento",
-      selector: (row) =>
-        row.medExpiration
-          ? new Date(row.medExpiration.seconds * 1000).toLocaleDateString()
-          : "",
-      format: (row) =>
-        new Date(row.medExpiration.seconds * 1000).toLocaleDateString(),
-      sortable: true,
+      header: "Medicacion",
+      accessorKey: "medication",      
     },
     {
-      name: "Cantidad",
-      selector: (row) => row.medQuantity,
-      sortable: true,
+      header: "Fecha de Vencimiento",
+      accessorKey: "medExpiration",  
+      cell: (info) => {
+        const timestamp = info.getValue(); // Obtiene el timestamp
+        if (timestamp && timestamp.seconds) {
+          const date = new Date(timestamp.seconds * 1000); // Convierte el timestamp a fecha
+          return date.toLocaleDateString("es-ES"); // Formatea la fecha (en formato es-ES)
+        }
+        return "Fecha Inválida"; // En caso de que no haya timestamp válido
+      }      
     },
+    {
+      header: "Cantidad",
+      accessorKey: "medQuantity",      
+    }
+  ]
     // {
     //   name: "Acciones",
     //   cell: (row) => (
@@ -140,83 +68,46 @@ const MedicacionList = ({ medicacionList }) => {
     //   allowOverflow: true,
     //   button: true,
     // },
-  ];
+  
 
-  const handleSearch = (e) => {
-    setSearch(e.target.value);
-    const filteredData = medicacionList.filter((medicacion) => {
-      return medicacion.medication.toLowerCase().includes(search.toLowerCase());
-    });
-    setMedicacionFiltered(filteredData);
-  };
+  const table = useReactTable({data: medicacionList, columns, getCoreRowModel: getCoreRowModel() }); 
+
+  // const handleSearch = (e) => {
+  //   setSearch(e.target.value);
+  //   const filteredData = medicacionList.filter((medicacion) => {
+  //     return medicacion.medication.toLowerCase().includes(search.toLowerCase());
+  //   });
+  //   setMedicacionFiltered(filteredData);
+  // };
 
   return (
     <div className="mt-2 p-2">
-      <input
-        type="text"
-        onChange={handleSearch}
-        className="bg-white border-b-2 border-gray-400 shadow-md shadow-slate-950 p-2 text-black focus:outline-none focus:bg-slate-100 focus:text-black"
-      />
-      <DataTable
-        title="Medicacion"        
-        columns={columns}
-        data={search ? medicacionFiltered : medicacionList}
-        fixedHeader={true}
-        fixedFooter={true}
-        pagination={true}
-        paginationPerPage={5}
-        paginationRowsPerPageOptions={[5, 10, 15]}
-        conditionalRowStyles={conditionalRowStyles}
-        // theme="solarized"
-      />
-      {/* <table className="min-w-full shadow-xl rounded-lg mt-1">
+          
+      <table className="min-w-full shadow-xl rounded-lg mt-1">
         <thead className="bg-gray-800 text-white">
-          <tr>
-            <th className="text-center py-3 px-4 uppercase font-semibold text-sm">
-              Descripción
-            </th>
-            <th className="text-center py-3 px-4 uppercase font-semibold text-sm">
-              Fecha de Vencimiento
-            </th>
-            <th className="text-center py-3 px-4 uppercase font-semibold text-sm">
-              Cantidad
-            </th>
-            <th className="text-center py-3 px-4 uppercase font-semibold text-sm">
-              Acciones
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {medications.map((medicacion) => (
-            <tr
-              key={medicacion.id}
-              className={`${getRowColor(medicacion.medExpiration)} border-b border-gray-200 hover:bg-gray-600 text-center`}
-            >
-              <td className="py-3 px-4 capitalize">{medicacion.medication}</td>
-              <td className="py-3 px-4">
-                {new Date(
-                  medicacion.medExpiration.seconds * 1000
-                ).toLocaleDateString()}
-              </td>
-              <td className="py-3 px-4">{medicacion.medQuantity}</td>
-              <td className="flex flex-col gap-2 py-3 px-4 justify-center items-center">
-                <button
-                  onClick={() => handleEdit(medicacion.id)}
-                  className="bg-blue-500 text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
-                >
-                  <IconEdit />
-                </button>
-                <button
-                  onClick={() => handleDelete(medicacion.id)}
-                  className="bg-red-500 text-white rounded-md p-1 hover:bg-red-700 transition duration-200"
-                >
-                  <IconDelete />
-                </button>
-              </td>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <th key={header.id} className="text-center py-3 px-4 uppercase font-semibold text-sm">
+                  { header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext()) }
+                </th>
+              ))}
             </tr>
           ))}
+        </thead>
+        <tbody>          
+          {
+            table.getRowModel().rows.map((row) => (
+              <tr key={row.id} className="border-b border-gray-200 hover:bg-gray-600 text-center">
+                {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id} className="py-3 text-black px-4 capitalize">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}                  
+              </tr>
+              ))}          
         </tbody>
-      </table> */}
+      </table>
     </div>
   );
 };

@@ -6,13 +6,14 @@ import { Link } from "react-router-dom";
 import DataTable from "react-data-table-component";
 import { IconDelete, IconEdit, EyeIcon } from "../components/icons/Icons";
 import Modal from "./ModalCarro";
+import { dataServicio } from "../context/sector";
 
 const BuscarCarroPorServicio = () => {
   // const [showMedicacionList, setShowMedicacionList] = useState(false);
   const [servicioName, setServicioName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCarros, setSelectedCarros] = useState();
-  // const [viewCarros, setViewCarros] = useState(false);
+  const [viewCarros, setViewCarros] = useState(false);
   const [viewDetailsCarros, setViewDetailsCarros] = useState(false);
   const {
     getCarrosByServicio,
@@ -22,11 +23,11 @@ const BuscarCarroPorServicio = () => {
     medications,
   } = useContext(AuthContext);
 
-  // const [listCarro, setListCarro] = useState(carros);
-
   useEffect(() => {
-    // setShowMedicacionList(false);
-  }, []);
+    if(carros.length > 0) {
+      setViewCarros(true);     
+    }
+  }, [carros]);
 
   const verDetalleCarro = async (idCarro) => {
     try {
@@ -38,7 +39,10 @@ const BuscarCarroPorServicio = () => {
 
   // Muestra los carrros de paro por el servicio seleccionado
   const handleViewCar = async (servicioName) => {
-    await getCarrosByServicio(servicioName);
+    if (servicioName) {
+    setViewCarros(false);
+    await getCarrosByServicio(servicioName);      
+    }
   };
 
   // Muestra el formulario para editar el carro seleccionado
@@ -47,28 +51,12 @@ const BuscarCarroPorServicio = () => {
     setSelectedCarros(carro);
   };
 
-  // // Función para actualizar el carro en la lista de carros después de realizar cambios en el modal
-  // const handleUpdateCarro = (updatedCarro) => {
-  //   const updatedCarros = listCarro.map((carro) =>
-  //     carro.id === updatedCarro.id ? updatedCarro : carro
-  //   );
-  //   setListCarro(updatedCarros); // Actualiza la lista de carros con el carro editado
-  // };
-
   // Muestra el detalle del carro seleccionado, elementos descartables y medicaciones
   const handleViewDetailsCar = async (idCarro) => {
     setViewDetailsCarros(!viewDetailsCarros);
     await getMedicationByCarro(idCarro);
     console.log(idCarro);
   };
-
-  const dataServicio = [
-    { id: 1, nombre: "sistemas" },
-    { id: 2, nombre: "Servicio 2" },
-    { id: 3, nombre: "Servicio 3" },
-    { id: 4, nombre: "Servicio 4" },
-    { id: 5, nombre: "Servicio 5" },
-  ];
 
   return (
     <section className="bg-white">
@@ -89,9 +77,8 @@ const BuscarCarroPorServicio = () => {
             </h1>
 
             <p className="mt-4 leading-relaxed text-gray-500">
-              En esta sección podrás buscar los carros según el servicio que
-              quieras. Podrá visualizar la información general de los carros, y
-              detalles del mismo.
+              En esta sección podrás buscar los carros de paro según el servicio que seleccione.
+              Podrá visualizar la información general y el detalle de los mismos.
             </p>
 
             <form action="#" className="mt-8 grid grid-cols-6 gap-6">
@@ -109,6 +96,7 @@ const BuscarCarroPorServicio = () => {
                   ))}
                 </select>
                 <button
+                  type="button"
                   className="bg-blue-700 text-white flex font-bold py-2 px-6 mx-2 rounded-lg shadow-md hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
                   onClick={() => handleViewCar(servicioName)}
                 >
@@ -120,7 +108,7 @@ const BuscarCarroPorServicio = () => {
           </div>
 
           {/* los carros de paro se muestran al ejecutar el boton ir  */}
-          {servicioName && (
+          {viewCarros ? (
             <div className="flex flex-col justify-start items-start">
               <div className="flex flex-col text-right gap-2 mt-5 shadow-sm bg-white text-whiten">
                 <span>
@@ -196,7 +184,12 @@ const BuscarCarroPorServicio = () => {
                 ))}
               </div>
             </div>
-          )}
+          ) : (
+            <div className="flex justify-center items-center gap-4 mt-10">
+              <h3 className="text-xl font-bold text-gray-900 sm:text-3xl md:text-4xl">El servicio seleccionado no tiene carros de paro registrados</h3>
+            </div> 
+            )
+        }
 
           <Modal
             selectedCarros={selectedCarros}
@@ -226,9 +219,6 @@ const BuscarCarroPorServicio = () => {
 
 export default BuscarCarroPorServicio;
 
-{
-  /* tabla para mostrar los datos del carro */
-}
 {
   /* <div className="shadow-md sm:rounded-lg mt-20 ">
             <table className="max-w-xl text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
