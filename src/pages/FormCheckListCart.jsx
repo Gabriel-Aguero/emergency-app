@@ -7,6 +7,7 @@ import DataTable from "react-data-table-component";
 import { IconDelete, IconEdit, EyeIcon } from "../components/icons/Icons";
 import Modal from "./ModalCarro";
 import { dataServicio } from "../context/sector";
+import { SpinnerDiamond } from "spinners-react";
 
 const BuscarCarroPorServicio = () => {
   // const [showMedicacionList, setShowMedicacionList] = useState(false);
@@ -15,6 +16,7 @@ const BuscarCarroPorServicio = () => {
   const [selectedCarros, setSelectedCarros] = useState();
   const [viewCarros, setViewCarros] = useState(false);
   const [viewDetailsCarros, setViewDetailsCarros] = useState(false);
+  const [loading, setLoading] = useState(false);
   const {
     getCarrosByServicio,
     carros,
@@ -24,8 +26,8 @@ const BuscarCarroPorServicio = () => {
   } = useContext(AuthContext);
 
   useEffect(() => {
-    if(carros.length > 0) {
-      setViewCarros(true);     
+    if (carros.length > 0) {
+      setViewCarros(true);
     }
   }, [carros]);
 
@@ -39,9 +41,12 @@ const BuscarCarroPorServicio = () => {
 
   // Muestra los carrros de paro por el servicio seleccionado
   const handleViewCar = async (servicioName) => {
+    // aqui poner el spinner
     if (servicioName) {
-    setViewCarros(false);
-    await getCarrosByServicio(servicioName);      
+      setLoading(true);
+      setViewCarros(false);
+      await getCarrosByServicio(servicioName);
+      setLoading(false);
     }
   };
 
@@ -77,8 +82,9 @@ const BuscarCarroPorServicio = () => {
             </h1>
 
             <p className="mt-4 leading-relaxed text-gray-500">
-              En esta sección podrás buscar los carros de paro según el servicio que seleccione.
-              Podrá visualizar la información general y el detalle de los mismos.
+              En esta sección podrás buscar los carros de paro según el servicio
+              que seleccione. Podrá visualizar la información general y el
+              detalle de los mismos.
             </p>
 
             <form action="#" className="mt-8 grid grid-cols-6 gap-6">
@@ -108,88 +114,103 @@ const BuscarCarroPorServicio = () => {
           </div>
 
           {/* los carros de paro se muestran al ejecutar el boton ir  */}
-          {viewCarros ? (
-            <div className="flex flex-col justify-start items-start">
-              <div className="flex flex-col text-right gap-2 mt-5 shadow-sm bg-white text-whiten">
-                <span>
-                  El servicio cuenta con {carros.length ? carros.length : "..."}{" "}
-                  Carros de paro
-                </span>
-              </div>
-              <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 items-center mx-auto mt-5">
-                {carros.map((carro) => (
-                  <div
-                    key={carro.id}
-                    className="min-w-xl p-6 mb-5 flex flex-col bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-                  >
-                    <h5 className="mb-2 text-2xl font-bold border-b-2 border-slate-400 tracking-tight text-gray-900 dark:text-white">
-                      Información del Carro
-                    </h5>
-
-                    <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700 p-2">
-                      <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                        Número de Carro:
-                      </p>
-                      <p>{carro.numCarro}</p>
-                    </div>
-
-                    <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
-                      <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                        Número de Precinto:
-                      </p>
-                      <p>{carro.precinto}</p>
-                    </div>
-
-                    <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
-                      <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                        Fecha Inicio:
-                      </p>
-                      {carro.fechaInicio
-                        ? new Date(
-                            carro.fechaInicio.seconds * 1000
-                          ).toLocaleDateString()
-                        : ""}
-                    </div>
-
-                    <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
-                      <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                        Fecha Último Control:
-                      </p>
-                      <p>
-                        {carro.fechaUltimoControl
-                          ? new Date(
-                              carro.fechaUltimoControl.seconds * 1000
-                            ).toLocaleDateString()
-                          : ""}
-                      </p>
-                    </div>
-
-                    <div className="flex items-center justify-between gap-4">
-                      <button
-                        className="inline-flex items-center px-3 m-2 py-2 gap-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        onClick={() => handleViewDetailsCar(carro.id)}
-                      >
-                        Ver Detalle
-                        <EyeIcon />
-                      </button>
-                      <button
-                        className="inline-flex items-center px-3 m-2 gap-2 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        onClick={() => handleEdit(carro)}
-                      >
-                        Editar
-                        <IconEdit />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
+          {loading ? (
+            <div className="flex justify-center items-center mt-20 m-20">
+              <SpinnerDiamond
+                size={150}
+                thickness={100}
+                speed={200}
+                color="#09f"
+                secondaryColor="rgba(0, 0, 0, 0.44)"
+              />
             </div>
           ) : (
-            <div className="flex justify-center items-center gap-4 mt-10">
-              <h3 className="text-xl font-bold text-gray-900 sm:text-3xl md:text-4xl">El servicio seleccionado no tiene carros de paro registrados</h3>
-            </div> 
-            )
-        }
+            <>
+              {viewCarros ? (
+                <div className="flex flex-col justify-start items-start">
+                  <div className="flex flex-col text-right gap-2 mt-5 shadow-sm bg-white text-whiten">
+                    <span>
+                      El servicio cuenta con{" "}
+                      {carros.length ? carros.length : "..."} Carros de paro
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 items-center mx-auto mt-5">
+                    {carros.map((carro) => (
+                      <div
+                        key={carro.id}
+                        className="min-w-xl p-6 mb-5 flex flex-col bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+                      >
+                        <h5 className="mb-2 text-2xl font-bold border-b-2 border-slate-400 tracking-tight text-gray-900 dark:text-white">
+                          Información del Carro
+                        </h5>
+
+                        <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700 p-2">
+                          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                            Número de Carro:
+                          </p>
+                          <p>{carro.numCarro}</p>
+                        </div>
+
+                        <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
+                          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                            Número de Precinto:
+                          </p>
+                          <p>{carro.precinto}</p>
+                        </div>
+
+                        <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
+                          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                            Fecha Inicio:
+                          </p>
+                          {carro.fechaInicio
+                            ? new Date(
+                                carro.fechaInicio.seconds * 1000
+                              ).toLocaleDateString()
+                            : ""}
+                        </div>
+
+                        <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
+                          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                            Fecha Último Control:
+                          </p>
+                          <p>
+                            {carro.fechaUltimoControl
+                              ? new Date(
+                                  carro.fechaUltimoControl.seconds * 1000
+                                ).toLocaleDateString()
+                              : ""}
+                          </p>
+                        </div>
+
+                        <div className="flex items-center justify-between gap-4">
+                          <button
+                            className="inline-flex items-center px-3 m-2 py-2 gap-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            onClick={() => handleViewDetailsCar(carro.id)}
+                          >
+                            Ver Detalle
+                            <EyeIcon />
+                          </button>
+                          <button
+                            className="inline-flex items-center px-3 m-2 gap-2 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            onClick={() => handleEdit(carro)}
+                          >
+                            Editar
+                            <IconEdit />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="flex justify-center items-center gap-4 mt-10">
+                  <h3 className="text-xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
+                    El servicio seleccionado no tiene carros de paro registrados
+                  </h3>
+                </div>
+              )}
+            </>
+          )}
 
           <Modal
             selectedCarros={selectedCarros}
