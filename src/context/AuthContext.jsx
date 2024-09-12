@@ -100,7 +100,8 @@ export const AuthProvider = ({ children }) => {
   // Agrego datos a la tabla carro
   const addCarro = async ({
     numCarro,
-    precinto,
+    precintoMedicacion,
+    precintoDescartable,
     fechaInicio,
     fechaUltimoControl,
     servicioName,
@@ -108,7 +109,8 @@ export const AuthProvider = ({ children }) => {
     try {
       const docRef = await addDoc(collection(db, "carro"), {
         numCarro,
-        precinto,
+        precintoMedicacion,
+        precintoDescartable,
         fechaInicio,
         fechaUltimoControl,
         servicioName,
@@ -198,7 +200,7 @@ export const AuthProvider = ({ children }) => {
       where("idCarro", "==", idCarro)
     );
     const querySnapshot = await getDocs(q);
-    const medicationsList = querySnapshot.docs.map((doc) => ({      
+    const medicationsList = querySnapshot.docs.map((doc) => ({
       medication: doc.data().medication,
       lot: doc.data().lot,
       medExpiration: doc.data().medExpiration,
