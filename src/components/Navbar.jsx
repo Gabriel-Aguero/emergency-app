@@ -4,10 +4,12 @@ import { IconMenu } from "./icons/Icons";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-
+    
   // const toggleMenu = () => {
   //   setIsOpen(!isOpen);
   // };
+
+
 
   return (
     <nav className="bg-gray-900 text-white border-gray-200 dark:bg-gray-900 p-10">
@@ -28,19 +30,22 @@ const Navbar = () => {
         <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
           <button
             type="button"
-            className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+            className="flex items-center justify-center gap-2 capitalize text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
             id="user-menu-button"
             aria-expanded="false"
             data-dropdown-toggle="user-dropdown"
             data-dropdown-placement="bottom"
           >
-            <span className="sr-only">Open user menu</span>
+            
+            <span className="sr-only">open user menu</span>
             <img
               className="w-8 h-8 rounded-full"
               src="/src/assets/avatarUser.png"
               alt="user photo"
             />
-          </button>
+            
+          </button>          
+            
 
           <div
             className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-800 dark:divide-gray-600"

@@ -185,7 +185,8 @@ export const AuthProvider = ({ children }) => {
     const carrosList = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       numCarro: doc.data().numCarro,
-      precinto: doc.data().precinto,
+      precintoMedicacion: doc.data().precintoMedicacion,
+      precintoDescartable: doc.data().precintoDescartable,      
       fechaInicio: doc.data().fechaInicio,
       fechaUltimoControl: doc.data().fechaUltimoControl,
       servicioName: doc.data().servicioName,
