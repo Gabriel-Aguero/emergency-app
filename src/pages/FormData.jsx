@@ -1,9 +1,11 @@
+
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { IconAlertWarning } from "../components/icons/Icons";
 import { dataServicio } from "../context/sector";
 import Modal from "./ModalCarro";
+import MedicacionList from "./MedicationList";
 
 const FormData = () => {
   const {
@@ -16,6 +18,8 @@ const FormData = () => {
     addDescartable,
     carros,
     getCarrosByServicio,
+    getMedicationByCarro,
+    medications,
   } = useContext(AuthContext);
 
   const [idCarro, setIdCarro] = useState(null);
@@ -35,6 +39,7 @@ const FormData = () => {
 
   const [showFormCartDetails, setShowFormCartDetails] = useState(false);
   const [showListCart, setShowListCart] = useState(false);
+  const [showTable, setShowTable] = useState(false);
 
   // variables para el formulario de medicación
   const [medicationData, setMedicationData] = useState({
@@ -149,6 +154,11 @@ const FormData = () => {
   const handleEdit = (carro) => {
     setIsModalOpen(true);
     setSelectedCarros(carro);
+  };
+
+  const handleViewDetailsCar = async (idCarro) => {
+    setShowTable(true);
+    await getMedicationByCarro(idCarro);
   };
 
   useEffect(() => {
@@ -417,7 +427,7 @@ const FormData = () => {
                           <div className="flex items-center justify-between gap-4">
                             <button
                               className="inline-flex items-center px-3 m-2 py-2 gap-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                              // onClick={() => handleViewDetailsCar(carro.id)}
+                              onClick={() => handleViewDetailsCar(carro.id)}
                             >
                               Ver Detalle
                               {/* <EyeIcon /> */}
@@ -430,6 +440,7 @@ const FormData = () => {
                               {/* <IconEdit /> */}
                             </button>
                           </div>
+
                           <Modal
                             selectedCarros={selectedCarros}
                             isModalOpen={isModalOpen}
@@ -438,7 +449,16 @@ const FormData = () => {
                         </div>
                       ))}
                     </div>
+
+                    {/* aqui tiene que ir la tabla de medicacion y material descartable   */}
+                    { showTable ? (
+                      <MedicacionList medicacionList={medications} />
+                    ) : (
+                      ""
+                    )}
                   </main>
+
+                  
                 ) : (
                   <section className="relative flex h-96 items-end lg:col-span-5 lg:h-full xl:col-span-6">
                     <img

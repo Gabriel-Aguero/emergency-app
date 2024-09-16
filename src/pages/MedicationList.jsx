@@ -1,10 +1,12 @@
 /* eslint-disable react/prop-types */
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useReactTable, getCoreRowModel, flexRender } from "@tanstack/react-table";
+import { IconDelete, IconEdit } from "../components/icons/Icons";
 
 const MedicacionList = ({ medicacionList }) => {
   // const [medicacionFiltered, setMedicacionFiltered] = useState("");
   // const [search, setSearch] = useState("");
+  const [alert, setAlert] = useState("");
 
   useEffect(() => {
     console.log(medicacionList);
@@ -31,54 +33,78 @@ const MedicacionList = ({ medicacionList }) => {
     },
     {
       header: "Fecha de Vencimiento",
-      accessorKey: "medExpiration",  
+      accessorKey: "medExpiration",
       cell: (info) => {
-        const timestamp = info.getValue(); // Obtiene el timestamp
-        if (timestamp && timestamp.seconds) {
-          const date = new Date(timestamp.seconds * 1000); // Convierte el timestamp a fecha
-          return date.toLocaleDateString("es-ES"); // Formatea la fecha (en formato es-ES)
+        const timestamp = info.getValue(); // Obtiene el valor del campo medExpiration
+    
+        if (timestamp && timestamp.seconds && timestamp.nanoseconds) {
+          const expirationDate = new Date(timestamp.seconds * 1000); // Convierte a formato de fecha
+          const today = new Date(); // Fecha actual
+    
+          // Calcula la diferencia en días entre la fecha actual y la fecha de vencimiento
+          const differenceInTime = expirationDate.getTime() - today.getTime();
+          const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24)); // Diferencia en días
+    
+          // Determina el color en función de los días que faltan para el vencimiento
+          let color = "black"; // Por defecto, gris
+          if (differenceInDays > 30) {            
+            setAlert("green");
+          } else if (differenceInDays > 20 && differenceInDays <= 30) {            
+            setAlert("yellow");
+          } else if (differenceInDays <= 20 && differenceInDays > 0) {          
+            setAlert("red");
+          } else if (differenceInDays <= 0) {
+            setAlert("red");
+          }
+    
+          return (
+            <span
+              style={{
+                color: color, // Aplica el color según los días restantes
+                fontWeight: "bold",
+              }}
+            >
+              {expirationDate.toLocaleDateString("es-ES")} {/* Formatea la fecha */}
+            </span>
+          );
         }
-        return "Fecha Inválida"; // En caso de que no haya timestamp válido
-      }      
+    
+        return (
+          <span style={{ color: "gray" }}>Fecha Inválida</span>
+        ); // Si el valor no es un timestamp válido
+      }
     },
     {
       header: "Cantidad",
             accessorKey: "medQuantity",      
-    }
+    },
+    {
+    header: "Acciones",
+    cell: (row) => (
+      <div className="flex gap-2 justify-center">
+        <button
+          onClick={() => handleEdit(row.id)}
+          className="bg-blue-500 text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
+        >
+          <IconEdit />
+        </button>
+        <button
+          onClick={() => handleDelete(row.id)}
+          className="bg-red-500 text-white rounded-md p-1 hover:bg-red-700 transition duration-200"
+        >
+          <IconDelete />
+        </button>
+      </div>
+    ),
+    ignoreRowClick: true,
+    allowOverflow: true,
+    button: true,
+  },  
   ]
-    // {
-    //   name: "Acciones",
-    //   cell: (row) => (
-    //     <div className="flex gap-2 justify-center">
-    //       <button
-    //         onClick={() => handleEdit(row.id)}
-    //         className="bg-blue-500 text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
-    //       >
-    //         <IconEdit />
-    //       </button>
-    //       <button
-    //         onClick={() => handleDelete(row.id)}
-    //         className="bg-red-500 text-white rounded-md p-1 hover:bg-red-700 transition duration-200"
-    //       >
-    //         <IconDelete />
-    //       </button>
-    //     </div>
-    //   ),
-    //   ignoreRowClick: true,
-    //   allowOverflow: true,
-    //   button: true,
-    // },
+    
   
 
-  const table = useReactTable({data: medicacionList, columns, getCoreRowModel: getCoreRowModel() }); 
-
-  // const handleSearch = (e) => {
-  //   setSearch(e.target.value);
-  //   const filteredData = medicacionList.filter((medicacion) => {
-  //     return medicacion.medication.toLowerCase().includes(search.toLowerCase());
-  //   });
-  //   setMedicacionFiltered(filteredData);
-  // };
+  const table = useReactTable({data: medicacionList, columns, getCoreRowModel: getCoreRowModel() });   
 
   return (
     <div className="mt-2 p-2">
@@ -98,7 +124,7 @@ const MedicacionList = ({ medicacionList }) => {
         <tbody>          
           {
             table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="border-b border-gray-200 hover:bg-gray-600 text-center">
+              <tr key={row.id} className={`border-b border-gray-500 hover:bg-blue-300 text-center ${alert === "red" ? "bg-red-500 hover:bg-red-800" : ""} ${alert === "yellow" ? "bg-yellow-500" : ""} ${alert === "green" ? "bg-green-500" : ""}`}>
                 {row.getVisibleCells().map((cell) => (
                     <td key={cell.id} className="py-3 text-black px-4 capitalize">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}

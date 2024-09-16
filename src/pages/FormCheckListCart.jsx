@@ -59,8 +59,7 @@ const BuscarCarroPorServicio = () => {
   // Muestra el detalle del carro seleccionado, elementos descartables y medicaciones
   const handleViewDetailsCar = async (idCarro) => {
     setViewDetailsCarros(!viewDetailsCarros);
-    await getMedicationByCarro(idCarro);
-    console.log(idCarro);
+    await getMedicationByCarro(idCarro);    
   };
 
   return (
