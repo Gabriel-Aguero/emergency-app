@@ -186,7 +186,7 @@ export const AuthProvider = ({ children }) => {
       id: doc.id,
       numCarro: doc.data().numCarro,
       precintoMedicacion: doc.data().precintoMedicacion,
-      precintoDescartable: doc.data().precintoDescartable,      
+      precintoDescartable: doc.data().precintoDescartable,
       fechaInicio: doc.data().fechaInicio,
       fechaUltimoControl: doc.data().fechaUltimoControl,
       servicioName: doc.data().servicioName,
@@ -232,7 +232,8 @@ export const AuthProvider = ({ children }) => {
     const docRef = doc(db, "carro", idCarro);
     await updateDoc(docRef, {
       numCarro: data.numCarro,
-      precinto: data.precinto,
+      precintoMedicacion: data.precintoMedicacion,
+      precintoDescartable: data.precintoDescartable,
       fechaInicio: data.fechaInicio,
       fechaUltimoControl: data.fechaUltimoControl,
     });

@@ -13,7 +13,8 @@ const ModalCarro = ({ selectedCarros, isModalOpen, onClose }) => {
     if (isModalOpen && selectedCarros) {
       setCartData({
         numCarro: selectedCarros.numCarro || "",
-        precinto: selectedCarros.precinto || "",
+        precintoMedicacion: selectedCarros.precintoMedicacion || "",
+        precintoDescartable: selectedCarros.precintoDescartable || "",
         fechaInicio: selectedCarros.fechaInicio || "",
         fechaUltimoControl: selectedCarros.fechaUltimoControl || "",
       });
@@ -41,11 +42,19 @@ const ModalCarro = ({ selectedCarros, isModalOpen, onClose }) => {
   return (
     <div className="flex flex-col fixed inset-0 z-50 items-center justify-center gap-4 w-full mt-5 border p-4 shadow-lg shadow-slate-700">
       <form className="grid grid-cols-1 mx-auto gap-6 border p-4 bg-slate-50 border-violet-600 rounded-lg shadow-md">
-        <h4 className="col-span-6 sm:col-span-6 text-center text-blue-700 font-semibold">
-          Datos del Carro
-        </h4>
+        <div className="col-span-6 sm:col-span-6 text-center text-blue-700 font-semibold">
+          <h4 className="col-span-6 sm:col-span-6 text-center text-blue-700 font-semibold">
+            Datos del Carro
+          </h4>
+          <p className="col-span-6 sm:col-span-6 text-center text-blue-700 font-semibold underline mt-2">
+            {selectedCarros.numCarro}
+          </p>
+        </div>
 
-        <div key={selectedCarros.idCarro} className="col-span-6 sm:col-span-3">
+        <div
+          key={selectedCarros.idCarro}
+          className="col-span-6 sm:col-span-3 hidden"
+        >
           <label
             htmlFor="numCarro"
             className="block text-sm font-medium text-gray-900 dark:text-white"
@@ -56,24 +65,8 @@ const ModalCarro = ({ selectedCarros, isModalOpen, onClose }) => {
             type="text"
             name="numCarro"
             placeholder={selectedCarros.numCarro}
+            value={selectedCarros.numCarro}
             onChange={handleChange}
-            className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-          />
-        </div>
-
-        <div className="col-span-6 sm:col-span-3">
-          <label
-            htmlFor="precinto"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Precinto Registrado
-          </label>
-
-          <input
-            type="text"
-            name="precinto"
-            onChange={handleChange}
-            placeholder={selectedCarros.precinto}
             className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
           />
         </div>
@@ -91,6 +84,40 @@ const ModalCarro = ({ selectedCarros, isModalOpen, onClose }) => {
             name="fechaInicio"
             placeholder={selectedCarros.fechaInicio}
             onChange={handleChange}
+            className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+          />
+        </div>
+
+        <div className="col-span-6 sm:col-span-3">
+          <label
+            htmlFor="precintoMedicacion"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Precinto Medicación
+          </label>
+
+          <input
+            type="text"
+            name="precintoMedicacion"
+            onChange={handleChange}
+            placeholder={selectedCarros.precintoMedicacion}
+            className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+          />
+        </div>
+
+        <div className="col-span-6 sm:col-span-3">
+          <label
+            htmlFor="precintoDescartable"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Precinto Descartable
+          </label>
+
+          <input
+            type="text"
+            name="precintoDescartable"
+            onChange={handleChange}
+            placeholder={selectedCarros.precintoDescartable}
             className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
           />
         </div>
