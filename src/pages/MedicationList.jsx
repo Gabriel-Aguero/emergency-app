@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
-import { useReactTable, getCoreRowModel, flexRender } from "@tanstack/react-table";
-import { IconDelete, IconEdit } from "../components/icons/Icons";
+import { useReactTable, getCoreRowModel, flexRender, getPaginationRowModel, getSortedRowModel, getFilteredRowModel } from "@tanstack/react-table";
+import { IconAdd, IconDelete, IconEdit } from "../components/icons/Icons";
 
-const MedicacionList = ({ medicacionList }) => {
-  // const [medicacionFiltered, setMedicacionFiltered] = useState("");
+const MedicacionList = ({ medicacionList }) => {  
   // const [search, setSearch] = useState("");
   const [alert, setAlert] = useState("");
+  const [sorting, setSorting] = useState([]);
+  const [medicacionFiltered, setMedicacionFiltered] = useState("");
 
   useEffect(() => {
     console.log(medicacionList);
@@ -22,6 +23,11 @@ const MedicacionList = ({ medicacionList }) => {
     console.log(`Eliminando medicación con ID: ${id}`);
   };
 
+  const handleAdd = () => {
+    // Implementa la lógica de agregar elementos a la tabla
+    console.log("Agregando elemento a la tabla con este ID: {}");
+
+  };
   const columns = [
     {
       header: "ID",
@@ -35,10 +41,10 @@ const MedicacionList = ({ medicacionList }) => {
       header: "Fecha de Vencimiento",
       accessorKey: "medExpiration",
       cell: (info) => {
-        const timestamp = info.getValue(); // Obtiene el valor del campo medExpiration
+        const expirationString = info.getValue(); // Obtiene el valor del campo medExpiration como texto
     
-        if (timestamp && timestamp.seconds && timestamp.nanoseconds) {
-          const expirationDate = new Date(timestamp.seconds * 1000); // Convierte a formato de fecha
+        if (expirationString) {
+          const expirationDate = new Date(expirationString); // Convierte la cadena de texto a una fecha
           const today = new Date(); // Fecha actual
     
           // Calcula la diferencia en días entre la fecha actual y la fecha de vencimiento
@@ -46,16 +52,14 @@ const MedicacionList = ({ medicacionList }) => {
           const differenceInDays = Math.ceil(differenceInTime / (1000 * 3600 * 24)); // Diferencia en días
     
           // Determina el color en función de los días que faltan para el vencimiento
-          let color = "black"; // Por defecto, gris
-          if (differenceInDays > 30) {            
-            setAlert("green");
-          } else if (differenceInDays > 20 && differenceInDays <= 30) {            
-            setAlert("yellow");
-          } else if (differenceInDays <= 20 && differenceInDays > 0) {          
-            setAlert("red");
-          } else if (differenceInDays <= 0) {
-            setAlert("red");
-          }
+          let color = "black"; // Por defecto, negro
+          if (differenceInDays > 30) {
+            setAlert("green"); // Si faltan más de 30 días, se muestra el color verde            
+          } else if (differenceInDays > 20 && differenceInDays <= 30) {
+            setAlert("yellow"); // Si faltan entre 20 y 30 días, se muestra el color amarillo            
+          } else if (differenceInDays <= 20) {
+            setAlert("red"); // Si faltan menos de 20 días, se muestra el color rojo            
+          } 
     
           return (
             <span
@@ -71,7 +75,7 @@ const MedicacionList = ({ medicacionList }) => {
     
         return (
           <span style={{ color: "gray" }}>Fecha Inválida</span>
-        ); // Si el valor no es un timestamp válido
+        ); // Si el valor no es un texto válido
       }
     },
     {
@@ -93,7 +97,7 @@ const MedicacionList = ({ medicacionList }) => {
           className="bg-red-500 text-white rounded-md p-1 hover:bg-red-700 transition duration-200"
         >
           <IconDelete />
-        </button>
+        </button>        
       </div>
     ),
     ignoreRowClick: true,
@@ -104,18 +108,63 @@ const MedicacionList = ({ medicacionList }) => {
     
   
 
-  const table = useReactTable({data: medicacionList, columns, getCoreRowModel: getCoreRowModel() });   
+  const table = useReactTable({ 
+    data: medicacionList, 
+    columns, 
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    state: {
+      sorting,
+      globalFilter: medicacionFiltered,
+    },
+    onSortingChange: setSorting,
+    onGlobalFilterChange: setMedicacionFiltered,
+  });   
 
   return (
     <div className="mt-2 p-2">
-          
+
+      {/* añadir boton para agregar elementos a la tabla medicacion     */}
+      
+      
+      <div className="flex justify-start gap-2 items-center">
+        <button
+          onClick={() => handleAdd()}
+          className="bg-black text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
+        >
+          <IconAdd />
+        </button>
+        {/* creamos el input para buscar por medicacion */}
+        <input
+          type="text"
+          placeholder="Buscar por medicación"          
+          className="bg-black text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
+          onChange={(e) => setMedicacionFiltered(e.target.value)}
+        />
+
+      </div>
       <table className="min-w-full shadow-xl rounded-lg mt-1">
-        <thead className="bg-gray-800 text-white">
+        <thead className="bg-black/80 text-white">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <th key={header.id} className="text-center py-3 px-4 uppercase font-semibold text-sm">
-                  { header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext()) }
+                <th key={header.id} 
+                  onClick={header.column.getToggleSortingHandler()}
+                  className="text-center py-3 px-4 uppercase font-semibold text-sm">
+                  { header.isPlaceholder ? null : (
+                    <div>
+                      { flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()) 
+                      }
+
+                      {
+                        { 'asc': "⬆️", 'desc': "⬇️" }[header.column.getIsSorted() ?? null ]   
+                      }
+                    </div>  
+                  )}
                 </th>
               ))}
             </tr>
@@ -134,6 +183,28 @@ const MedicacionList = ({ medicacionList }) => {
               ))}          
         </tbody>
       </table>
+      
+      {/* paginación de la tabla medicacion  */}
+      <div className="flex mt-2 gap-2 items-center">
+      <button className="bg-black text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
+      onClick={()=> table.setPageIndex(0)}
+      >
+        Primer Pagina
+      </button>
+      <button className="bg-black text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
+      onClick={()=> table.previousPage()}      
+      >
+        Pagina Anterior
+      </button>
+      <button className="bg-black text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
+      onClick={()=> table.setPageIndex(table.getPageIndex() + 1)}>      
+        Siguiente Pagina
+      </button>
+      <button className="bg-black text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
+      onClick={()=> table.setPageIndex(table.getPageCount() - 1)}>
+        Última Pagina
+      </button>
+      </div>
     </div>
   );
 };
