@@ -2,15 +2,17 @@
 import { useEffect, useState } from "react";
 import { useReactTable, getCoreRowModel, flexRender, getPaginationRowModel, getSortedRowModel, getFilteredRowModel } from "@tanstack/react-table";
 import { IconAdd, IconDelete, IconEdit } from "../components/icons/Icons";
+import FormRegisterCart from "./FormRegisterCart";
 
-const MedicacionList = ({ medicacionList }) => {  
+const MedicacionList = ({ medicacionList, idCarro }) => {
   // const [search, setSearch] = useState("");
   const [alert, setAlert] = useState("");
   const [sorting, setSorting] = useState([]);
   const [medicacionFiltered, setMedicacionFiltered] = useState("");
+  const [showFormRegisterInfo, setShowFormRegisterInfo] = useState(false);
 
   useEffect(() => {
-    console.log(medicacionList);
+    setShowFormRegisterInfo(false);
   }, [medicacionList]);
 
   const handleEdit = (id) => {
@@ -25,9 +27,10 @@ const MedicacionList = ({ medicacionList }) => {
 
   const handleAdd = () => {
     // Implementa la lógica de agregar elementos a la tabla
-    console.log("Agregando elemento a la tabla con este ID: {}");
-
+    setShowFormRegisterInfo(!showFormRegisterInfo);
+    console.log("Agregando elemento a la tabla con este ID: ");
   };
+
   const columns = [
     {
       header: "ID",
@@ -68,7 +71,7 @@ const MedicacionList = ({ medicacionList }) => {
                 fontWeight: "bold",
               }}
             >
-              {expirationDate.toLocaleDateString("es-ES")} {/* Formatea la fecha */}
+              { expirationString } {/* Formatea la fecha */}
             </span>
           );
         }
@@ -105,9 +108,7 @@ const MedicacionList = ({ medicacionList }) => {
     button: true,
   },  
   ]
-    
-  
-
+      
   const table = useReactTable({ 
     data: medicacionList, 
     columns, 
@@ -124,88 +125,97 @@ const MedicacionList = ({ medicacionList }) => {
   });   
 
   return (
-    <div className="mt-2 p-2">
+    <>
+    {showFormRegisterInfo ? (
+        <FormRegisterCart idCarro={idCarro} />
+        ) : (
+        <div className="mt-2 p-2">      
+                
+          <div className="flex justify-start gap-2 items-center">
+            <button
+              onClick={() => handleAdd()}
+              className="bg-black text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
+            >
+              <IconAdd />
+            </button>
+            <p className="text-sm text-gray-700 dark:text-gray-400">
+              {idCarro}
+            </p>
+            {/* creamos el input para buscar por medicacion */}
+            <input
+              type="text"
+              placeholder="Buscar por medicación"          
+              className="bg-slate-50 text-white p-1 hover:bg-slate-300 transition duration-200 focus:bg-slate-600 focus:border-slate-800 focus:border-none"
+              onChange={(e) => setMedicacionFiltered(e.target.value)}
+            />
 
-      {/* añadir boton para agregar elementos a la tabla medicacion     */}
-      
-      
-      <div className="flex justify-start gap-2 items-center">
-        <button
-          onClick={() => handleAdd()}
-          className="bg-black text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
-        >
-          <IconAdd />
-        </button>
-        {/* creamos el input para buscar por medicacion */}
-        <input
-          type="text"
-          placeholder="Buscar por medicación"          
-          className="bg-black text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
-          onChange={(e) => setMedicacionFiltered(e.target.value)}
-        />
+          </div>
 
-      </div>
-      <table className="min-w-full shadow-xl rounded-lg mt-1">
-        <thead className="bg-black/80 text-white">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th key={header.id} 
-                  onClick={header.column.getToggleSortingHandler()}
-                  className="text-center py-3 px-4 uppercase font-semibold text-sm">
-                  { header.isPlaceholder ? null : (
-                    <div>
-                      { flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()) 
-                      }
+          <table className="min-w-full shadow-xl rounded-lg mt-1">
+            <thead className="bg-black/80 text-white">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th key={header.id} 
+                      onClick={header.column.getToggleSortingHandler()}
+                      className="text-center py-3 px-4 uppercase font-semibold text-sm">
+                      { header.isPlaceholder ? null : (
+                        <div>
+                          { flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()) 
+                          }
 
-                      {
-                        { 'asc': "⬆️", 'desc': "⬇️" }[header.column.getIsSorted() ?? null ]   
-                      }
-                    </div>  
-                  )}
-                </th>
+                          {
+                            { 'asc': "⬆️", 'desc': "⬇️" }[header.column.getIsSorted() ?? null ]   
+                          }
+                        </div>  
+                      )}
+                    </th>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>          
-          {
-            table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className={`border-b border-gray-500 hover:bg-blue-300 text-center ${alert === "red" ? "bg-red-500 hover:bg-red-800" : ""} ${alert === "yellow" ? "bg-yellow-500" : ""} ${alert === "green" ? "bg-green-500" : ""}`}>
-                {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className="py-3 text-black px-4 capitalize">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </td>
-                  ))}                  
-              </tr>
-              ))}          
-        </tbody>
-      </table>
-      
-      {/* paginación de la tabla medicacion  */}
-      <div className="flex mt-2 gap-2 items-center">
-      <button className="bg-black text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
-      onClick={()=> table.setPageIndex(0)}
-      >
-        Primer Pagina
-      </button>
-      <button className="bg-black text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
-      onClick={()=> table.previousPage()}      
-      >
-        Pagina Anterior
-      </button>
-      <button className="bg-black text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
-      onClick={()=> table.setPageIndex(table.getPageIndex() + 1)}>      
-        Siguiente Pagina
-      </button>
-      <button className="bg-black text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
-      onClick={()=> table.setPageIndex(table.getPageCount() - 1)}>
-        Última Pagina
-      </button>
-      </div>
-    </div>
+            </thead>
+            <tbody>          
+              {
+                table.getRowModel().rows.map((row) => (
+                  <tr key={row.id} className={`border-b border-gray-500 hover:bg-blue-300 text-center ${alert === "red" ? "bg-red-400 hover:bg-red-500" : ""} ${alert === "yellow" ? "bg-yellow-200 hover:bg-yellow-300" : ""} ${alert === "green" ? "bg-green-400 hover:bg-green-500" : ""}`}>
+                    {row.getVisibleCells().map((cell) => (
+                        <td key={cell.id} className="py-3 text-black px-4 capitalize">
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </td>
+                      ))}                  
+                  </tr>
+                  ))}          
+            </tbody>
+          </table>
+          
+          {/* paginación de la tabla medicacion  */}
+          <div className="flex mt-2 gap-2 items-center">
+            <button className="bg-black text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
+            onClick={()=> table.setPageIndex(0)}
+            >
+              Primer Pagina
+            </button>
+            <button className="bg-black text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
+            onClick={()=> table.previousPage()}      
+            >
+              Pagina Anterior
+            </button>
+            <button className="bg-black text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
+            onClick={()=> table.setPageIndex(table.getPageIndex() + 1)}>      
+              Siguiente Pagina
+            </button>
+            <button className="bg-black text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
+            onClick={()=> table.setPageIndex(table.getPageCount() - 1)}>
+              Última Pagina
+            </button>
+          </div>      
+          
+        </div>          
+        )
+    }
+    </>    
   );
 };
 

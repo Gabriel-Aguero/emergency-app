@@ -6,7 +6,7 @@ import { AuthContext } from "../context/AuthContext";
 import MedicacionList from "./MedicationList";
 import { EyeIcon, IconEdit } from "../components/icons/Icons";
 import ModalCarro from "./ModalCarro";
-import { IconArrowUp, IconArrowDown } from "../components/icons/Icons";
+import { IconArrowUp } from "../components/icons/Icons";
 
 const FormInfoCart = ({ carros }) => {
   const { medications, getMedicationByCarro } = useContext(AuthContext);
@@ -14,6 +14,7 @@ const FormInfoCart = ({ carros }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCarros, setSelectedCarros] = useState();
   const [showTable, setShowTable] = useState(false);
+  const [idCarro, setIdCarro] = useState(null);
 
   // Muestra el formulario para editar el carro seleccionado
   const handleEdit = (carro) => {
@@ -23,6 +24,7 @@ const FormInfoCart = ({ carros }) => {
 
   const handleViewDetailsCar = async (idCarro) => {
     setShowTable(true);
+    setIdCarro(idCarro);
     await getMedicationByCarro(idCarro);
   };
 
@@ -36,7 +38,7 @@ const FormInfoCart = ({ carros }) => {
         {carros.map((carro) => (
           <details
             className="group [&_summary::-webkit-details-marker]:hidden"
-            open
+
           >
             <summary className="flex cursor-pointer items-center justify-between gap-1.5 rounded-lg bg-gray-50 p-4 text-gray-900">
               <h2 className="font-semibold text-blue-800">
@@ -51,11 +53,7 @@ const FormInfoCart = ({ carros }) => {
                 Fecha de Inicio:
               </p>
               <span>
-                {carro.fechaInicio
-                  ? new Date(
-                      carro.fechaInicio.seconds * 1000
-                    ).toLocaleDateString()
-                  : ""}
+                {carro.fechaInicio}
               </span>
             </div>
 
@@ -78,11 +76,7 @@ const FormInfoCart = ({ carros }) => {
                 Fecha Último Control:
               </p>
               <span>
-                {carro.fechaUltimoControl
-                  ? new Date(
-                      carro.fechaUltimoControl.seconds * 1000
-                    ).toLocaleDateString()
-                  : ""}
+                {carro.fechaUltimoControl}
               </span>
             </div>
 
@@ -111,7 +105,11 @@ const FormInfoCart = ({ carros }) => {
         ))}
       </div>
       {/* aqui tiene que ir la tabla de medicacion y material descartable   */}
-      {showTable ? <MedicacionList medicacionList={medications} /> : ""}
+      {showTable ? 
+        <MedicacionList medicacionList={medications} 
+        idCarro={idCarro}
+        /> : ""
+        }
     </main>
   );
 };

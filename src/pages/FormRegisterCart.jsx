@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { AuthContext } from "../context/AuthContext";
 
 const FormRegisterCart = ( { idCarro } ) => {
