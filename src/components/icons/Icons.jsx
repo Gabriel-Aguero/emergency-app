@@ -133,16 +133,48 @@ export const IconAlertWarning = () => (
 );
 
 export const IconAdd = () => (
-  <svg  
-    xmlns="http://www.w3.org/2000/svg"  
-    width="24"  
-    height="24"  
-    viewBox="0 0 24 24"  
-    fill="none"  
-    stroke="currentColor"  
-    strokeWidth="2"  
-    strokeLinecap="round"  
-    strokeLinejoin="round"  
-    >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-)
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+    <path d="M12 5l0 14" />
+    <path d="M5 12l14 0" />
+  </svg>
+);
+
+export const IconArrowUp = () => (
+  <svg
+    className="size-5 shrink-0 transition duration-300 group-open:-rotate-180"
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+    <path d="M6 15l6 -6l6 6" />
+  </svg>
+);
+
+export const IconArrowDown = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+    <path d="M6 9l6 6l6 -6" />
+  </svg>
+);

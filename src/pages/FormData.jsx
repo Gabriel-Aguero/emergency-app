@@ -1,12 +1,10 @@
-
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { EyeIcon, IconAlertWarning, IconEdit } from "../components/icons/Icons";
+import { IconAlertWarning } from "../components/icons/Icons";
 import { dataServicio } from "../context/sector";
-import Modal from "./ModalCarro";
-import MedicacionList from "./MedicationList";
 import FormRegisterCart from "./FormRegisterCart";
+import FormInfoCart from "./FormInfoCart";
 
 const FormData = () => {
   const {
@@ -14,17 +12,13 @@ const FormData = () => {
     logout,
     getUsuario,
     addCarro,
-    usuario,   
+    usuario,
     carros,
     getCarrosByServicio,
-    getMedicationByCarro,
-    medications,
   } = useContext(AuthContext);
 
   const [idCarro, setIdCarro] = useState(null);
   const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCarros, setSelectedCarros] = useState();
 
   // variables para el formulario de registro de carro de paro
   const [cartData, setCartData] = useState({
@@ -38,7 +32,6 @@ const FormData = () => {
 
   const [showFormCartDetails, setShowFormCartDetails] = useState(false);
   const [showListCart, setShowListCart] = useState(false);
-  const [showTable, setShowTable] = useState(false);
 
   // Función para cerrar sesión
   const handleLogout = async () => {
@@ -72,9 +65,9 @@ const FormData = () => {
 
   // Capturo los datos del formulario de registro de carro de paro
   const handleChange = (e) => {
-    e.preventDefault();   
-    const { name, value } = e.target;   
-    
+    e.preventDefault();
+    const { name, value } = e.target;
+
     setCartData({
       ...cartData,
       [name]: value,
@@ -85,17 +78,6 @@ const FormData = () => {
     await getCarrosByServicio(usuario.servicioName);
     setShowFormCartDetails(false);
     setShowListCart(true);
-  };
-
-  // Muestra el formulario para editar el carro seleccionado
-  const handleEdit = (carro) => {
-    setIsModalOpen(true);
-    setSelectedCarros(carro);
-  };
-
-  const handleViewDetailsCar = async (idCarro) => {
-    setShowTable(true);
-    await getMedicationByCarro(idCarro);
   };
 
   useEffect(() => {
@@ -142,7 +124,6 @@ const FormData = () => {
                 </div>
 
                 <form action="#" className="mt-8 grid grid-cols-6 gap-6">
-         
                   {/* fecha de inicio  */}
                   <div className="col-span-6 sm:col-span-3">
                     <label
@@ -246,7 +227,7 @@ const FormData = () => {
                   <div className="col-span-6 sm:col-span-3">
                     <label
                       htmlFor="fecha_ultimo_control"
-                      className="block text-sm font-medium text-gray-700"                      
+                      className="block text-sm font-medium text-gray-700"
                     >
                       Fecha de último control
                     </label>
@@ -254,7 +235,7 @@ const FormData = () => {
                     <input
                       type="date"
                       name="fechaUltimoControl"
-                      value={cartData.fechaUltimoControl || ''}
+                      value={cartData.fechaUltimoControl || ""}
                       onChange={handleChange}
                       className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
                     />
@@ -301,102 +282,7 @@ const FormData = () => {
             {!showFormCartDetails ? (
               <>
                 {showListCart ? (
-                  <main className="flex flex-col items-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6 bg-blue-300/30">
-                    <span className="text-xl font-semibold">
-                      El servicio cuenta con{" "}
-                      {carros.length ? carros.length : "..."} Carros de paro
-                    </span>
-
-                    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 items-center mx-auto mt-5">
-                      {carros.map((carro) => (
-                        <div
-                          key={carro.id}
-                          className="min-w-xl p-6 mb-5 flex flex-col bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-                        >
-                          <h5 className="mb-2 text-2xl font-bold border-b-2 border-slate-400 tracking-tight text-gray-900 dark:text-white">
-                            Información del Carro
-                          </h5>
-
-                          <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
-                            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                              Número de Carro:
-                            </p>
-                            <p>{carro.numCarro}</p>
-                          </div>
-
-                          <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
-                            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                              Fecha Inicio:
-                            </p>
-                            {carro.fechaInicio
-                              ? new Date(
-                                  carro.fechaInicio.seconds * 1000
-                                ).toLocaleDateString()
-                              : ""}
-                          </div>
-
-                          <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
-                            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                              Precinto Medicación:
-                            </p>
-                            <p>{carro.precintoMedicacion}</p>
-                          </div>
-
-                          <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
-                            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                              Precinto Descartable:
-                            </p>
-                            <p>{carro.precintoDescartable}</p>
-                          </div>
-
-                          <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
-                            <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                              Fecha Último Control:
-                            </p>
-                            <p>
-                              {carro.fechaUltimoControl
-                                ? new Date(
-                                    carro.fechaUltimoControl.seconds * 1000
-                                  ).toLocaleDateString()
-                                : ""}
-                            </p>
-                          </div>
-
-                          <div className="flex items-center justify-between gap-4">
-                            <button
-                              className="inline-flex items-center px-3 m-2 py-2 gap-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                              onClick={() => handleViewDetailsCar(carro.id)}
-                            >
-                              Ver Detalle
-                              <EyeIcon />
-                            </button>
-                            <button
-                              className="inline-flex items-center px-3 m-2 gap-2 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                              onClick={() => handleEdit(carro)}
-                            >
-                              Editar
-                              <IconEdit />
-                            </button>
-                          </div>
-
-                          <Modal
-                            selectedCarros={selectedCarros}
-                            isModalOpen={isModalOpen}
-                            onClose={() => setIsModalOpen(false)}
-                          />
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* aqui tiene que ir la tabla de medicacion y material descartable   */}
-                    { showTable ? (
-                      <MedicacionList medicacionList={medications} />
-                    ) : (
-                      ""
-                    )}
-                  </main>
-
-                  
+                  <FormInfoCart carros={carros} />
                 ) : (
                   <section className="relative flex h-96 items-end lg:col-span-5 lg:h-full xl:col-span-6">
                     <img
@@ -408,11 +294,7 @@ const FormData = () => {
                 )}
               </>
             ) : (
-              
-              <FormRegisterCart 
-                idCarro={idCarro}               
-              />
-                            
+              <FormRegisterCart idCarro={idCarro} />
             )}
           </div>
         </section>
