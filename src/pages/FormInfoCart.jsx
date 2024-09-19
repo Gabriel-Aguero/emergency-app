@@ -42,7 +42,7 @@ const FormInfoCart = ({ carros }) => {
           >
             <summary className="flex cursor-pointer items-center justify-between gap-1.5 rounded-lg bg-gray-50 p-4 text-gray-900">
               <h2 className="font-semibold text-blue-800">
-                Carro Numero {carro.numCarro}
+                Número de Identificación del carro: {carro.numCarro}
               </h2>
 
               <IconArrowUp />

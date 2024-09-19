@@ -36,7 +36,7 @@ const Home = () => {
   };
 
   return (
-    <section className="relative flex flex-wrap lg:h-screen lg:items-center">
+    <section className="flex flex-wrap lg:h-screen lg:items-center">
       <div className="w-full px-4 py-12 sm:px-6 sm:py-16 lg:w-1/2 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-lg text-center">
           <h1 className="text-2xl font-bold sm:text-3xl">Emergency Card</h1>
@@ -117,51 +117,13 @@ const Home = () => {
 
       <div className="relative h-64 w-full sm:h-96 lg:h-full lg:w-1/2">
         <img
-          alt=""
+          alt="imagen de autenticación"
           src="/public/authentication.svg"
           className="absolute inset-0 h-full w-full object-cover"
         />
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Home;
-
-/* <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-      <div className="flex flex-col gap-6 items-center justify-center w-full max-w-md p-20 bg-white border border-purple-700 rounded-lg shadow-xl">
-        <h1 className="text-3xl font-bold text-slate-800">Emergency Card</h1>
-        <h2 className="text-xl font-semibold text-purple-800 mb-4">Login</h2>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full">
-          <input
-            className="border-b-2 border-blue-500 bg-white p-2 w-full focus:outline-none focus:border-violet-300 placeholder-gray-500"
-            type="email"
-            name="email"
-            placeholder="correo@site.com"
-            onChange={handleChange}
-          />
-          <input
-            className="border-b-2 border-blue-500 bg-white p-2 w-full focus:outline-none focus:border-violet-300 placeholder-gray-500"
-            type="password"
-            name="password"
-            placeholder="Ingresa tu contraseña"
-            onChange={handleChange}
-          />
-          <button className="bg-blue-500 text-white rounded-lg py-2 hover:bg-blue-700 transition duration-200 focus:outline-none focus:shadow-outline">
-            Login
-          </button>
-        </form>
-        <button
-          className="w-full bg-violet-500 text-white rounded-lg py-2 hover:bg-violet-700 transition duration-200"
-          onClick={register}
-        >
-          Registrarme
-        </button>
-        <button
-          className="w-full bg-gray-300 text-black rounded-lg py-2 hover:bg-gray-500 transition duration-200"
-          onClick={checkCarros}
-        >
-          Chequear carros
-        </button>
-      </div>
-    </div> */
+export default Home

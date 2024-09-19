@@ -14,7 +14,9 @@ import {
   where,
   updateDoc,
   doc,
+  deleteDoc,
 } from "firebase/firestore";
+import Swal from 'sweetalert2'
 
 export const AuthContext = createContext();
 
@@ -243,13 +245,29 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Actualizar la lista de medicaciones
-  // const updateMedication = async (medicationId) => {
-  //   const docRef = await updateDoc(collection(db, "medicacion"), {
-  //     medQuantity: medicationId.medQuantity,
-  //     medExpiration: medicationId.medExpiration,
-  //   });
-  //   return docRef;
-  // }
+  const updateMedication = async (data, medicationId) => {
+    try {
+      const docRef = doc(db, "medicacion", medicationId);    
+      await updateDoc(docRef, {
+        idCarro: data.idCarro,      
+        medication: data.medication,
+        lot: data.lot,
+        medQuantity: data.medQuantity,
+        medExpiration: data.medExpiration,      
+      });               
+      return docRef; 
+      
+    } catch (error) {
+      console.log(error); 
+    }
+    
+  };
+
+  // Eliminar un elemento de lista de medicaciones
+  const deleteMedication = async (medicationId) => {
+    const docRef = doc(db, "medicacion", medicationId);
+    await deleteDoc(docRef);
+  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -290,6 +308,8 @@ export const AuthProvider = ({ children }) => {
         getMedicationByCarro,
         getDescartableByCarro,
         updateCarro,
+        updateMedication,
+        deleteMedication,
       }}
     >
       {children}
