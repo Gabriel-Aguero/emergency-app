@@ -11,7 +11,7 @@ export const Contacto = () => {
               Estoy comprometido en ofrecerte la mejor experiencia posible.
               <span className="underline decoration-orange-500 decoration-2">
                 Tus ideas, sugerencias y comentarios son fundamentales para el
-                crecimiento y la mejora contínua de nuestra herramienta.
+                crecimiento y la mejora contínua de esta herramienta.
               </span>{" "}
               Si tienes alguna recomendación o has encontrado alguna oportunidad
               para mejorar, no dudes en ponerte en contacto conmigo. Juntos,
@@ -84,12 +84,12 @@ export const Contacto = () => {
 
               <div>
                 <label className="sr-only" htmlFor="message">
-                  Message
+                  Mensaje
                 </label>
 
                 <textarea
                   className="w-full rounded-lg border-gray-200 p-3 text-sm"
-                  placeholder="Message"
+                  placeholder="Mensaje"
                   rows="8"
                   id="message"
                 ></textarea>

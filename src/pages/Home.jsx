@@ -36,7 +36,7 @@ const Home = () => {
   };
 
   return (
-    <section className="flex flex-wrap lg:h-screen lg:items-center">
+    <section className="flex flex-wrap h-full lg:items-center">
       <div className="w-full px-4 py-12 sm:px-6 sm:py-16 lg:w-1/2 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-lg text-center">
           <h1 className="text-2xl font-bold sm:text-3xl">Emergency Card</h1>
@@ -101,25 +101,34 @@ const Home = () => {
               </Link>
             </p>
 
+            <p className="text-sm text-gray-500 flex items-center gap-2">
+              <Link to="/reset_password" className="underline text-blue-500">
+                 Olvidé mi contraseña                 
+              </Link>
+            </p>
+
+          </div>
+
+          <div className="flex items-center justify-between">
             <button className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white">
               Ingresar
             </button>
+            <button
+              type="button"
+              onClick={checkCarros}
+              className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white"
+            >
+              Chequear carros
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={checkCarros}
-            className="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white"
-          >
-            Chequear carros
-          </button>
         </form>
       </div>
 
-      <div className="relative h-64 w-full sm:h-96 lg:h-full lg:w-1/2">
+      <div className="relative w-full lg:h-full lg:w-1/2 ">
         <img
           alt="imagen de autenticación"
           src="/public/authentication.svg"
-          className="absolute inset-0 h-full w-full object-cover"
+          className="inset-0 h-96 w-96 object-cover mx-auto"
         />
       </div>
     </section>

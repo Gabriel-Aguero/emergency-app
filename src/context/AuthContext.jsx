@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState, createContext, useEffect } from "react";
 import { auth, db } from "../firebase/config";
 import {
@@ -5,7 +6,9 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  sendPasswordResetEmail,
 } from "firebase/auth";
+
 import {
   collection,
   addDoc,
@@ -16,7 +19,6 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
-import Swal from 'sweetalert2'
 
 export const AuthContext = createContext();
 
@@ -42,6 +44,11 @@ export const AuthProvider = ({ children }) => {
   // Iniciar sesión en Firebase
   const login = (email, password) => {
     signInWithEmailAndPassword(auth, email, password);
+  };
+
+  // Restablecer la contraseña
+  const resetPassword = async (email) => {
+    await sendPasswordResetEmail(auth, email);    
   };
 
   // Cerrar sesión en Firebase
@@ -299,6 +306,7 @@ export const AuthProvider = ({ children }) => {
         descartables,
         addProfileUser,
         checkAndAddService,
+        resetPassword,
         getUsuario,
         addCarro,
         addMedication,

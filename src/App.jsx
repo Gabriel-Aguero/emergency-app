@@ -9,6 +9,7 @@ import Navbar from "./components/Navbar.jsx";
 import { ProtectedRoutes } from "./components/ProtectedRoutes.jsx";
 import Footer from "./components/Footer.jsx";
 import { Contacto } from "./pages/Contacto.jsx";
+import FormResetPassword from "./pages/FormResetPassword.jsx";
 function App() {
   return (
     <>
@@ -26,6 +27,7 @@ function App() {
             </ProtectedRoutes>
           }
         />
+        <Route path="/reset_password" element={<FormResetPassword />} />
         <Route path="/contacto" element={<Contacto />} />
       </Routes>
       <Footer />
