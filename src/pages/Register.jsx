@@ -94,6 +94,7 @@ const Register = () => {
                   placeholder="Nombre"
                   onChange={handleChangeUsers}
                   className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                  required
                 />
               </div>
 
@@ -108,6 +109,7 @@ const Register = () => {
                   placeholder="Apellido"
                   onChange={handleChangeUsers}
                   className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                  required
                 />
               </div>
 
@@ -122,6 +124,7 @@ const Register = () => {
                   placeholder="Legajo"
                   onChange={handleChangeUsers}
                   className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                  required
                 />
               </div>
 
@@ -136,10 +139,11 @@ const Register = () => {
                   placeholder="Servicio"
                   onChange={handleChangeUsers}
                   className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                  required
                 />
               </div>
 
-              <div className="col-span-6">
+              <div className="col-span-6 sm:col-span-3">
                 <label className="block text-sm font-medium text-gray-700">
                   {" "}
                   Email{" "}
@@ -151,6 +155,7 @@ const Register = () => {
                   placeholder="correo@site.com"
                   onChange={handleChangeUsers}
                   className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                  required
                 />
               </div>
 
@@ -165,6 +170,7 @@ const Register = () => {
                   name="password"
                   onChange={handleChangeUsers}
                   className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                  required
                 />
               </div>
 

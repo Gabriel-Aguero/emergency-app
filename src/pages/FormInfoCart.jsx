@@ -8,6 +8,7 @@ import DescartableList from "./DescartableList";
 import { EyeIcon, IconEdit } from "../components/icons/Icons";
 import ModalCarro from "./ModalCarro";
 import { IconArrowUp } from "../components/icons/Icons";
+import { SpinnerDiamond } from "spinners-react";
 
 const FormInfoCart = ({ carros, serviceName }) => {
   const {
@@ -21,6 +22,7 @@ const FormInfoCart = ({ carros, serviceName }) => {
   const [selectedCarros, setSelectedCarros] = useState();
   const [showTable, setShowTable] = useState(false);
   const [idCarro, setIdCarro] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   // Muestra el formulario para editar el carro seleccionado
   const handleEdit = (carro) => {
@@ -29,10 +31,12 @@ const FormInfoCart = ({ carros, serviceName }) => {
   };
 
   const handleViewDetailsCar = async (idCarro) => {
-    setShowTable(true);
+    setLoading(true);
     setIdCarro(idCarro);
+    setShowTable(true);
     await getMedicationByCarro(idCarro);
     await getDescartableByCarro(idCarro);
+    setLoading(false);
   };
 
   return (
@@ -110,14 +114,35 @@ const FormInfoCart = ({ carros, serviceName }) => {
         ))}
       </div>
       {/* aqui tiene que ir la tabla de medicacion y material descartable   */}
-      {showTable ? (
+      { loading ? (
+        <div className="flex justify-center items-center mt-20 m-20">
+          <SpinnerDiamond
+            size={150}
+            thickness={100}
+            speed={200}
+            color="#09f"
+            secondaryColor="rgba(0, 0, 0, 0.44)"
+          />
+        </div>
+      ) : showTable ? (
         <>
           <MedicacionList medicacionList={medications} idCarro={idCarro} />
           <DescartableList descartablesList={descartables} idCarro={idCarro} />
         </>
       ) : (
         ""
-      )}
+      )
+          
+      }
+      
+      {/* {showTable ? (
+        <>
+          <MedicacionList medicacionList={medications} idCarro={idCarro} />
+          <DescartableList descartablesList={descartables} idCarro={idCarro} />
+        </>
+      ) : (
+        ""
+      )} */}
     </main>
   );
 };

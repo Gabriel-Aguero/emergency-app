@@ -3,7 +3,6 @@ import { AuthContext } from "../context/AuthContext";
 import MedicacionList from "./MedicationList";
 import { Link } from "react-router-dom";
 import { EyeIcon } from "../components/icons/Icons";
-import Modal from "./ModalCarro";
 import { dataServicio } from "../context/sector";
 import { SpinnerDiamond } from "spinners-react";
 import DescartableList from "./DescartableList";
@@ -11,8 +10,6 @@ import DescartableList from "./DescartableList";
 const BuscarCarroPorServicio = () => {
   // const [showMedicacionList, setShowMedicacionList] = useState(false);
   const [servicioName, setServicioName] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCarros, setSelectedCarros] = useState();
   const [viewCarros, setViewCarros] = useState(false);
   const [viewDetailsCarros, setViewDetailsCarros] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -26,18 +23,18 @@ const BuscarCarroPorServicio = () => {
   } = useContext(AuthContext);
 
   useEffect(() => {
-    if (carros.length > 0) {
+    if (carros.length > 0) {      
       setViewCarros(true);
     }
   }, [carros]);
 
-  const verDetalleCarro = async (idCarro) => {
-    try {
-      await getDescartableByCarro(idCarro);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+  // const verDetalleCarro = async (idCarro) => {
+  //   try {
+  //     await getDescartableByCarro(idCarro);
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // };
 
   // Muestra los carrros de paro por el servicio seleccionado
   const handleViewCar = async (servicioName) => {
@@ -195,12 +192,7 @@ const BuscarCarroPorServicio = () => {
               )}
             </>
           )}
-
-          <Modal
-            selectedCarros={selectedCarros}
-            isModalOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-          />
+        
         </main>
 
         {/* esta seccion seria para visualizar el detalle del carro, se muestra cuando el usuario ha seleccionado un carro  */}

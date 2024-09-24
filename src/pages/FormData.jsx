@@ -5,6 +5,7 @@ import { IconAlertWarning } from "../components/icons/Icons";
 import { dataServicio } from "../context/sector";
 import FormRegisterCart from "./FormRegisterCart";
 import FormInfoCart from "./FormInfoCart";
+import { SpinnerDiamond } from "spinners-react";
 
 const FormData = () => {
   const {
@@ -18,6 +19,7 @@ const FormData = () => {
   } = useContext(AuthContext);
 
   const [idCarro, setIdCarro] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   // variables para el formulario de registro de carro de paro
@@ -81,9 +83,10 @@ const FormData = () => {
     setShowListCart(true);
   };
 
-  useEffect(() => {
+  useEffect(() => {        
     if (user) {
       dataUsuario();
+      setLoading(false);
       navigate("/formulario_de_datos");
     }
   }, [user]);
@@ -92,7 +95,7 @@ const FormData = () => {
     <>
       {user && (
         <section className="bg-white">
-          <div className="flex flex-col lg:grid lg:min-h-screen lg:grid-cols-12">
+          <div className="flex flex-col lg:grid lg:min-h-screen lg:grid-cols-12">            
             <main className="flex flex-col mt-16 items-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
               <div className="max-w-xl lg:max-w-3xl">
                 <div className="relative -mt-16 md:mt-0">
@@ -108,9 +111,23 @@ const FormData = () => {
                     />
                   </a>
 
-                  <h1 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl capitalize">
-                    Bienvenido {usuario.firstName} {usuario.lastName}{" "}
-                  </h1>
+                  {
+                    loading ? (
+                      <div className="flex justify-center items-center mt-20 m-20">
+                        <SpinnerDiamond
+                          size={150}
+                          thickness={100}
+                          speed={200}
+                          color="#09f"
+                          secondaryColor="rgba(0, 0, 0, 0.44)"
+                        />
+                      </div>
+                    ) : (
+                        <h1 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl capitalize">
+                          Bienvenido {usuario.firstName} {usuario.lastName}{" "}                                           
+                        </h1>                                          
+                    )
+                  }
 
                   <p className="mt-4 leading-relaxed text-gray-500">
                     En este formulario podrás registrar la información sobre el
@@ -272,8 +289,8 @@ const FormData = () => {
                   </div>
                 </form>
               </div>
-            </main>
-
+            </main>                          
+          
             {!showFormCartDetails ? (
               <>
                 {showListCart ? (
@@ -297,6 +314,7 @@ const FormData = () => {
           </div>
         </section>
       )}
+          
     </>
   );
 };
