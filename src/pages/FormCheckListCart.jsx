@@ -1,13 +1,12 @@
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import MedicacionList from "./MedicationList";
-import DescartableList from "./DescartableList";
 import { Link } from "react-router-dom";
-import DataTable from "react-data-table-component";
-import { IconDelete, IconEdit, EyeIcon } from "../components/icons/Icons";
+import { EyeIcon } from "../components/icons/Icons";
 import Modal from "./ModalCarro";
 import { dataServicio } from "../context/sector";
 import { SpinnerDiamond } from "spinners-react";
+import DescartableList from "./DescartableList";
 
 const BuscarCarroPorServicio = () => {
   // const [showMedicacionList, setShowMedicacionList] = useState(false);
@@ -23,6 +22,7 @@ const BuscarCarroPorServicio = () => {
     getMedicationByCarro,
     getDescartableByCarro,
     medications,
+    descartables,
   } = useContext(AuthContext);
 
   useEffect(() => {
@@ -50,16 +50,11 @@ const BuscarCarroPorServicio = () => {
     }
   };
 
-  // Muestra el formulario para editar el carro seleccionado
-  const handleEdit = (carro) => {
-    setIsModalOpen(true);
-    setSelectedCarros(carro);
-  };
-
   // Muestra el detalle del carro seleccionado, elementos descartables y medicaciones
   const handleViewDetailsCar = async (idCarro) => {
     setViewDetailsCarros(!viewDetailsCarros);
-    await getMedicationByCarro(idCarro);    
+    await getMedicationByCarro(idCarro);
+    await getDescartableByCarro(idCarro);
   };
 
   return (
@@ -139,11 +134,11 @@ const BuscarCarroPorServicio = () => {
                         key={carro.id}
                         className="min-w-xl p-6 mb-5 flex flex-col bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
                       >
-                        <h5 className="mb-2 text-2xl font-bold border-b-2 border-slate-400 tracking-tight text-gray-900 dark:text-white">
+                        <h5 className="mb-2 text-2xl font-bold border-b-2 border-slate-400 tracking-tight text-gray-900 dark:text-white pb-2">
                           Información del Carro
                         </h5>
 
-                        <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700 p-2">
+                        <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700 mt-2">
                           <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
                             Número de Carro:
                           </p>
@@ -152,33 +147,30 @@ const BuscarCarroPorServicio = () => {
 
                         <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
                           <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                            Número de Precinto:
+                            Fecha Inicio:
                           </p>
-                          <p>{carro.precinto}</p>
+                          {carro.fechaInicio}
                         </div>
 
                         <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
                           <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                            Fecha Inicio:
+                            Precinto Sección Medicación:
                           </p>
-                          {carro.fechaInicio
-                            ? new Date(
-                                carro.fechaInicio.seconds * 1000
-                              ).toLocaleDateString()
-                            : ""}
+                          <p>{carro.precintoMedicacion}</p>
+                        </div>
+
+                        <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
+                          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                            Precinto Sección Descartable:
+                          </p>
+                          <p>{carro.precintoDescartable}</p>
                         </div>
 
                         <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
                           <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
                             Fecha Último Control:
                           </p>
-                          <p>
-                            {carro.fechaUltimoControl
-                              ? new Date(
-                                  carro.fechaUltimoControl.seconds * 1000
-                                ).toLocaleDateString()
-                              : ""}
-                          </p>
+                          <p>{carro.fechaUltimoControl}</p>
                         </div>
 
                         <div className="flex items-center justify-between gap-4">
@@ -188,13 +180,6 @@ const BuscarCarroPorServicio = () => {
                           >
                             Ver Detalle
                             <EyeIcon />
-                          </button>
-                          <button
-                            className="inline-flex items-center px-3 m-2 gap-2 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                            onClick={() => handleEdit(carro)}
-                          >
-                            Editar
-                            <IconEdit />
                           </button>
                         </div>
                       </div>
@@ -230,6 +215,7 @@ const BuscarCarroPorServicio = () => {
         ) : (
           <aside className="relative block h-96 lg:col-span-5 lg:h-[80%] m-10 xl:col-span-6">
             <MedicacionList medicacionList={medications} />
+            <DescartableList descartablesList={descartables} />
           </aside>
         )}
       </div>

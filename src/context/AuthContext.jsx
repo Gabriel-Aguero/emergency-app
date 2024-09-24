@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }) => {
 
   // Restablecer la contraseña
   const resetPassword = async (email) => {
-    await sendPasswordResetEmail(auth, email);    
+    await sendPasswordResetEmail(auth, email);
   };
 
   // Cerrar sesión en Firebase
@@ -211,7 +211,7 @@ export const AuthProvider = ({ children }) => {
     );
     const querySnapshot = await getDocs(q);
     const medicationsList = querySnapshot.docs.map((doc) => ({
-      id: doc.id, 
+      id: doc.id,
       idCarro: doc.data().idCarro,
       medication: doc.data().medication,
       lot: doc.data().lot,
@@ -230,6 +230,7 @@ export const AuthProvider = ({ children }) => {
     const querySnapshot = await getDocs(q);
     const descartablesList = querySnapshot.docs.map((doc) => ({
       id: doc.id,
+      idCarro: doc.data().idCarro,
       material: doc.data().material,
       lot: doc.data().lot,
       matExpiration: doc.data().matExpiration,
@@ -254,25 +255,46 @@ export const AuthProvider = ({ children }) => {
   // Actualizar la lista de medicaciones
   const updateMedication = async (data, medicationId) => {
     try {
-      const docRef = doc(db, "medicacion", medicationId);    
+      const docRef = doc(db, "medicacion", medicationId);
       await updateDoc(docRef, {
-        idCarro: data.idCarro,      
+        idCarro: data.idCarro,
         medication: data.medication,
         lot: data.lot,
         medQuantity: data.medQuantity,
-        medExpiration: data.medExpiration,      
-      });               
-      return docRef; 
-      
+        medExpiration: data.medExpiration,
+      });
+      return docRef;
     } catch (error) {
-      console.log(error); 
+      console.log(error);
     }
-    
+  };
+
+  // Actualizar la lista de descartables
+  const updateDescartable = async (data, descartableId) => {
+    try {
+      const docRef = doc(db, "descartable", descartableId);
+      await updateDoc(docRef, {
+        idCarro: data.idCarro,
+        material: data.material,
+        lot: data.lot,
+        matQuantity: data.matQuantity,
+        matExpiration: data.matExpiration,
+      });
+      return docRef;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // Eliminar un elemento de lista de medicaciones
   const deleteMedication = async (medicationId) => {
     const docRef = doc(db, "medicacion", medicationId);
+    await deleteDoc(docRef);
+  };
+
+  // Eliminar un elemento de lista de descartables
+  const deleteDescartable = async (descartableId) => {
+    const docRef = doc(db, "descartable", descartableId);
     await deleteDoc(docRef);
   };
 
@@ -317,7 +339,9 @@ export const AuthProvider = ({ children }) => {
         getDescartableByCarro,
         updateCarro,
         updateMedication,
+        updateDescartable,
         deleteMedication,
+        deleteDescartable,
       }}
     >
       {children}

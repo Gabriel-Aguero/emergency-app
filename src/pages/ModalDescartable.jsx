@@ -5,22 +5,22 @@ import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
 
 // eslint-disable-next-line react/prop-types
-const ModalCarro = ({ selectedCarros, isModalOpen, onClose }) => {
-  const [cartData, setCartData] = useState({});
-  const { updateCarro } = useContext(AuthContext);
+const ModalDescartable = ({ dataDescartable, isModalOpen, onClose }) => {
+  const [matData, setMatData] = useState({});
+  const { updateDescartable } = useContext(AuthContext);
 
   // Inicializa cartData con los valores de selectedCarros cuando el modal se abre
   useEffect(() => {
-    if (isModalOpen && selectedCarros) {
-      setCartData({
-        numCarro: selectedCarros.numCarro || "",
-        precintoMedicacion: selectedCarros.precintoMedicacion || "",
-        precintoDescartable: selectedCarros.precintoDescartable || "",
-        fechaInicio: selectedCarros.fechaInicio || "",
-        fechaUltimoControl: selectedCarros.fechaUltimoControl || "",
+    if (isModalOpen && dataDescartable) {
+      setMatData({
+        idCarro: dataDescartable.idCarro || "",
+        material: dataDescartable.material || "",
+        lot: dataDescartable.lot || "",
+        matQuantity: dataDescartable.matQuantity || "",
+        matExpiration: dataDescartable.matExpiration || "",
       });
     }
-  }, [isModalOpen, selectedCarros]);
+  }, [isModalOpen, dataDescartable]);
 
   if (!isModalOpen) return null;
 
@@ -28,20 +28,20 @@ const ModalCarro = ({ selectedCarros, isModalOpen, onClose }) => {
     e.preventDefault();
     const { name, value } = e.target;
 
-    setCartData({
-      ...cartData,
+    setMatData({
+      ...matData,
       [name]: value,
     });
   };
 
   const handleOnClick = (e) => {
     e.preventDefault();
-    updateCarro(cartData, selectedCarros.id);
+    updateDescartable(matData, dataDescartable.id);
     Swal.fire({
       position: "top-center",
       icon: "success",
       title: "Cambios guardados correctamente",
-      text: "La información del carro ha sido actualizada",
+      text: "La información ha sido actualizada",
       showConfirmButton: false,
       timer: 2000,
     });
@@ -56,44 +56,57 @@ const ModalCarro = ({ selectedCarros, isModalOpen, onClose }) => {
       >
         <div className="col-span-6 sm:col-span-6 text-center text-blue-700 font-semibold">
           <h4 className="col-span-6 sm:col-span-6 text-center text-blue-700 font-semibold">
-            Datos del Carro
+            Actualización de Información
           </h4>
-          <p className="col-span-6 sm:col-span-6 text-center text-violet-600 font-semibold underline mt-2">
-            <span>Fecha de Inicio: </span>
-            {selectedCarros.fechaInicio}
-          </p>
-        </div>
-
-        <div key={selectedCarros.id} className="col-span-6 sm:col-span-3">
-          <label
-            htmlFor="fechaInicio"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Servicio
-          </label>
-
-          <input
-            type="text"
-            name="servicioName"
-            placeholder={selectedCarros.servicioName}
-            onChange={handleChange}
-            className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm capitalize"
-            readOnly
-          />
         </div>
 
         <div className="col-span-6 sm:col-span-3 hidden">
           <label
-            htmlFor="numCarro"
-            className="block text-sm font-medium text-gray-900 dark:text-white"
+            htmlFor="idCarro"
+            className="block text-sm font-medium text-gray-700"
           >
-            Numero de carro
+            Id del Carro
           </label>
+
           <input
             type="text"
-            name="numCarro"
-            placeholder={selectedCarros.numCarro}
-            value={selectedCarros.numCarro}
+            name="idCarro"
+            placeholder={dataDescartable.idCarro}
+            value={dataDescartable.idCarro}
+            onChange={handleChange}
+            className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm capitalize"
+          />
+        </div>
+
+        <div className="col-span-6 sm:col-span-3">
+          <label
+            htmlFor="medication"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Material
+          </label>
+
+          <input
+            type="text"
+            name="material"
+            placeholder={dataDescartable.material}
+            onChange={handleChange}
+            className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm capitalize"
+          />
+        </div>
+
+        <div className="col-span-6 sm:col-span-3">
+          <label
+            htmlFor="lot"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Lote
+          </label>
+
+          <input
+            type="text"
+            name="lot"
+            placeholder={dataDescartable.lot}
             onChange={handleChange}
             className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
           />
@@ -101,52 +114,34 @@ const ModalCarro = ({ selectedCarros, isModalOpen, onClose }) => {
 
         <div className="col-span-6 sm:col-span-3">
           <label
-            htmlFor="precintoMedicacion"
+            htmlFor="matQuantity"
             className="block text-sm font-medium text-gray-700"
           >
-            Precinto Medicación
+            Cantidad
           </label>
 
           <input
             type="text"
-            name="precintoMedicacion"
+            name="medQuantity"
             onChange={handleChange}
-            placeholder={selectedCarros.precintoMedicacion}
+            placeholder={dataDescartable.matQuantity}
             className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
           />
         </div>
 
         <div className="col-span-6 sm:col-span-3">
           <label
-            htmlFor="precintoDescartable"
+            htmlFor="matExpiration"
             className="block text-sm font-medium text-gray-700"
           >
-            Precinto Descartable
-          </label>
-
-          <input
-            type="text"
-            name="precintoDescartable"
-            onChange={handleChange}
-            placeholder={selectedCarros.precintoDescartable}
-            className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-          />
-        </div>
-
-        <div className="col-span-6 sm:col-span-3">
-          <label
-            htmlFor="fecha_ultimo_control"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Fecha Último Control
+            Fecha de Vencimiento
           </label>
 
           <input
             type="date"
-            name="fechaUltimoControl"
-            placeholder={selectedCarros.fechaUltimoControl}
+            name="matExpiration"
             onChange={handleChange}
-            className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm required"
+            className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
             required
           />
         </div>
@@ -154,7 +149,7 @@ const ModalCarro = ({ selectedCarros, isModalOpen, onClose }) => {
         <button
           className="col-span-6 inline-block shrink-0 rounded-md border sm:col-span-3 border-blue-600 bg-blue-600 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
           type="submit"
-          // onClick={handleOnClick(selectedCarros)}
+          //   onClick={handleOnClick(dataDescartable)}
         >
           Guardar Cambios
         </button>
@@ -170,4 +165,4 @@ const ModalCarro = ({ selectedCarros, isModalOpen, onClose }) => {
   );
 };
 
-export default ModalCarro;
+export default ModalDescartable;

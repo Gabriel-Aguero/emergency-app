@@ -4,12 +4,18 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import MedicacionList from "./MedicationList";
+import DescartableList from "./DescartableList";
 import { EyeIcon, IconEdit } from "../components/icons/Icons";
 import ModalCarro from "./ModalCarro";
 import { IconArrowUp } from "../components/icons/Icons";
 
-const FormInfoCart = ({ carros }) => {
-  const { medications, getMedicationByCarro } = useContext(AuthContext);
+const FormInfoCart = ({ carros, serviceName }) => {
+  const {
+    medications,
+    getMedicationByCarro,
+    descartables,
+    getDescartableByCarro,
+  } = useContext(AuthContext);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCarros, setSelectedCarros] = useState();
@@ -26,21 +32,24 @@ const FormInfoCart = ({ carros }) => {
     setShowTable(true);
     setIdCarro(idCarro);
     await getMedicationByCarro(idCarro);
+    await getDescartableByCarro(idCarro);
   };
 
   return (
     <main className="flex flex-col items-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6 bg-blue-300/30">
-      <div className="space-y-4 mb-10">
-        <span className="text-xl font-semibold">
-          El servicio cuenta con {carros.length ? carros.length : "..."} Carros
-          de paro
+      <p className="text-2xl font-semibold mb-2">
+        Servicio:{" "}
+        <span className="text-orange-600 font-bold capitalize">
+          {serviceName}
         </span>
+      </p>
+      <span className="text-xl font-semibold">
+        Se han registrado {carros.length ? carros.length : "..."} Carros de paro{" "}
+      </span>
+      <div className="mb-4 flex flex-col gap-4 md:flex-row">
         {carros.map((carro) => (
-          <details
-            className="group [&_summary::-webkit-details-marker]:hidden"
-
-          >
-            <summary className="flex cursor-pointer items-center justify-between gap-1.5 rounded-lg bg-gray-50 p-4 text-gray-900">
+          <details className="group [&_summary::-webkit-details-marker]:hidden">
+            <summary className="flex cursor-pointer items-center justify-between gap-1.5 rounded-lg bg-gray-50 p-4 text-gray-900 mt-4">
               <h2 className="font-semibold text-blue-800">
                 Número de Identificación del carro: {carro.numCarro}
               </h2>
@@ -52,9 +61,7 @@ const FormInfoCart = ({ carros }) => {
               <p className="font-bold text-gray-700 dark:text-gray-400">
                 Fecha de Inicio:
               </p>
-              <span>
-                {carro.fechaInicio}
-              </span>
+              <span>{carro.fechaInicio}</span>
             </div>
 
             <div className="flex gap-4 justify-between mt-4 px-4 leading-relaxed text-gray-700 border-b py-2 border-gray-400 dark:border-gray-700">
@@ -75,9 +82,7 @@ const FormInfoCart = ({ carros }) => {
               <p className="font-bold text-gray-700 dark:text-gray-400">
                 Fecha Último Control:
               </p>
-              <span>
-                {carro.fechaUltimoControl}
-              </span>
+              <span>{carro.fechaUltimoControl}</span>
             </div>
 
             <button
@@ -105,11 +110,14 @@ const FormInfoCart = ({ carros }) => {
         ))}
       </div>
       {/* aqui tiene que ir la tabla de medicacion y material descartable   */}
-      {showTable ? 
-        <MedicacionList medicacionList={medications} 
-        idCarro={idCarro}
-        /> : ""
-        }
+      {showTable ? (
+        <>
+          <MedicacionList medicacionList={medications} idCarro={idCarro} />
+          <DescartableList descartablesList={descartables} idCarro={idCarro} />
+        </>
+      ) : (
+        ""
+      )}
     </main>
   );
 };

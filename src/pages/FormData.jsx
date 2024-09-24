@@ -67,13 +67,14 @@ const FormData = () => {
   const handleChange = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
-    
+
     setCartData({
       ...cartData,
       [name]: value,
     });
   };
 
+  // Muestra el formulario para editar el carro seleccionado
   const handleViewCar = async () => {
     await getCarrosByServicio(usuario.servicioName);
     setShowFormCartDetails(false);
@@ -91,16 +92,20 @@ const FormData = () => {
     <>
       {user && (
         <section className="bg-white">
-          <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
-            <main className="flex flex-col items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
+          <div className="flex flex-col lg:grid lg:min-h-screen lg:grid-cols-12">
+            <main className="flex flex-col mt-16 items-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
               <div className="max-w-xl lg:max-w-3xl">
-                <div className="relative -mt-16">
+                <div className="relative -mt-16 md:mt-0">
                   <a
                     className="inline-flex size-16 items-center justify-center rounded-full bg-white text-blue-600 sm:size-20"
                     href="/"
                   >
                     <span className="sr-only">Home</span>
-                    <img src="/logo.svg" alt="logo" className="h-auto rounded-full bg-slate-200" />
+                    <img
+                      src="/logo.svg"
+                      alt="logo"
+                      className="h-auto rounded-full bg-slate-200"
+                    />
                   </a>
 
                   <h1 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl capitalize">
@@ -272,7 +277,10 @@ const FormData = () => {
             {!showFormCartDetails ? (
               <>
                 {showListCart ? (
-                  <FormInfoCart carros={carros} />
+                  <FormInfoCart
+                    serviceName={usuario.servicioName}
+                    carros={carros}
+                  />
                 ) : (
                   <section className="relative flex h-96 items-end lg:col-span-5 lg:h-full xl:col-span-6">
                     <img
