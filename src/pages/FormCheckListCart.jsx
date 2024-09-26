@@ -49,9 +49,11 @@ const BuscarCarroPorServicio = () => {
 
   // Muestra el detalle del carro seleccionado, elementos descartables y medicaciones
   const handleViewDetailsCar = async (idCarro) => {
-    setViewDetailsCarros(!viewDetailsCarros);
+    setViewDetailsCarros(true);
+    setLoading(true);
     await getMedicationByCarro(idCarro);
     await getDescartableByCarro(idCarro);
+    setLoading(false);
   };
 
   return (
@@ -204,12 +206,29 @@ const BuscarCarroPorServicio = () => {
               className="absolute inset-0 object-cover"
             />
           </aside>
-        ) : (
-          <aside className="relative block h-96 lg:col-span-5 lg:h-[80%] m-10 xl:col-span-6">
-            <MedicacionList medicacionList={medications} />
-            <DescartableList descartablesList={descartables} />
-          </aside>
-        )}
+        ) : (            
+            loading ? (
+              
+              <div className="flex justify-center items-center mt-20 m-20">
+                  <SpinnerDiamond
+                    size={150}
+                    thickness={100}
+                    speed={200}
+                    color="#09f"
+                    secondaryColor="rgba(0, 0, 0, 0.44)"
+                  />
+              </div>
+              
+              ):(
+                <>
+                  <aside className="relative block h-96 lg:col-span-5 lg:h-[80%] m-10 xl:col-span-6">
+                    <MedicacionList medicacionList={medications} />
+                    <DescartableList descartablesList={descartables} />
+                  </aside>            
+                </>
+                )
+            )
+        }        
       </div>
     </section>
   );

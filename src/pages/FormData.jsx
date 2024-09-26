@@ -83,14 +83,14 @@ const FormData = () => {
     setShowListCart(true);
   };
 
-  useEffect(() => {        
+  
+useEffect(() => {        
+  dataUsuario();
     if (user) {
-      dataUsuario();
       setLoading(false);
       navigate("/formulario_de_datos");
     }
   }, [user]);
-
   return (
     <>
       {user && (
