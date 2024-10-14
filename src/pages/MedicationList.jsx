@@ -15,7 +15,7 @@ import ModalMedicacion from "./ModalMedicacion";
 import Swal from "sweetalert2";
 
 const MedicacionList = ({ medicacionList, idCarro }) => {
-  const { deleteMedication } = useContext(AuthContext);
+  const { deleteMedication, user } = useContext(AuthContext);
 
   const [sorting, setSorting] = useState([]);
   const [medicacionFiltered, setMedicacionFiltered] = useState("");
@@ -82,7 +82,10 @@ const MedicacionList = ({ medicacionList, idCarro }) => {
       header: "Cantidad",
       accessorKey: "medQuantity",
     },
-    {
+  ]; 
+    
+  if (user) {
+    columns.push({
       header: "Acciones",
       cell: (row) => {
         const dataMed = row.cell.row.original;
@@ -106,8 +109,9 @@ const MedicacionList = ({ medicacionList, idCarro }) => {
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
-    },
-  ];
+    });
+  }
+  
 
   const table = useReactTable({
     data: medicacionList,
@@ -151,7 +155,7 @@ const MedicacionList = ({ medicacionList, idCarro }) => {
             </div>
 
             <table className="min-w-full p-10 shadow-xl rounded-lg mt-1">
-              <thead className="bg-black/80 text-white">
+              <thead className="bg-slate-800 text-white">
                 {table.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
@@ -199,16 +203,16 @@ const MedicacionList = ({ medicacionList, idCarro }) => {
 
                     // Asignamos el color de fondo según los días restantes
                     if (differenceInDays > 30) {
-                      bgColor = "bg-green-400 hover:bg-green-500"; // Más de 30 días
+                      bgColor = "bg-green-400 hover:bg-green-500 font-bold"; // Más de 30 días
                     } else if (
                       differenceInDays > 20 &&
                       differenceInDays <= 30
                     ) {
-                      bgColor = "bg-yellow-200 hover:bg-yellow-300"; // Entre 20 y 30 días
+                      bgColor = "bg-yellow-200 hover:bg-yellow-300 font-bold"; // Entre 20 y 30 días
                     } else if (differenceInDays <= 20 && differenceInDays > 0) {
-                      bgColor = "bg-red-400 hover:bg-red-500"; // Menos de 20 días
+                      bgColor = "bg-red-400 hover:bg-red-500 font-bold"; // Menos de 20 días
                     } else if (differenceInDays <= 0) {
-                      bgColor = "bg-red-600 hover:bg-red-700"; // Si ya venció
+                      bgColor = "bg-red-600 hover:bg-red-700 font-bold"; // Si ya venció
                     }
                   }
 
