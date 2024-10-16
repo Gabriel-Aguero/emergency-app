@@ -42,8 +42,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Iniciar sesión en Firebase
-  const login = (email, password) => {
-    signInWithEmailAndPassword(auth, email, password);
+  const login = async (email, password) => {
+    return await signInWithEmailAndPassword(auth, email, password);
   };
 
   // Restablecer la contraseña

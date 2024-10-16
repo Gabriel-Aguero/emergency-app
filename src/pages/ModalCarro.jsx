@@ -8,7 +8,7 @@ import Swal from "sweetalert2";
 const ModalCarro = ({ selectedCarros, isModalOpen, onClose }) => {
   const [cartData, setCartData] = useState({});
   const { updateCarro } = useContext(AuthContext);
-
+  const today = new Date().toLocaleDateString();
   // Inicializa cartData con los valores de selectedCarros cuando el modal se abre
   useEffect(() => {
     if (isModalOpen && selectedCarros) {
@@ -17,7 +17,7 @@ const ModalCarro = ({ selectedCarros, isModalOpen, onClose }) => {
         precintoMedicacion: selectedCarros.precintoMedicacion || "",
         precintoDescartable: selectedCarros.precintoDescartable || "",
         fechaInicio: selectedCarros.fechaInicio || "",
-        fechaUltimoControl: selectedCarros.fechaUltimoControl || "",
+        fechaUltimoControl: today || "",
       });
     }
   }, [isModalOpen, selectedCarros]);
@@ -66,7 +66,7 @@ const ModalCarro = ({ selectedCarros, isModalOpen, onClose }) => {
 
         <div key={selectedCarros.id} className="col-span-6 sm:col-span-3">
           <label
-            htmlFor="fechaInicio"
+            htmlFor="servicioName"
             className="block text-sm font-medium text-gray-700"
           >
             Servicio
@@ -135,19 +135,20 @@ const ModalCarro = ({ selectedCarros, isModalOpen, onClose }) => {
 
         <div className="col-span-6 sm:col-span-3">
           <label
-            htmlFor="fecha_ultimo_control"
+            htmlFor="fechaUltimoControl"
             className="block text-sm font-medium text-gray-700"
           >
             Fecha Último Control
           </label>
 
           <input
-            type="date"
+            type="text"
             name="fechaUltimoControl"
-            placeholder={selectedCarros.fechaUltimoControl}
+            placeholder={today}
             onChange={handleChange}
             className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm required"
             required
+            readOnly
           />
         </div>
 

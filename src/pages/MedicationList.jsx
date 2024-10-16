@@ -82,8 +82,8 @@ const MedicacionList = ({ medicacionList, idCarro }) => {
       header: "Cantidad",
       accessorKey: "medQuantity",
     },
-  ]; 
-    
+  ];
+
   if (user) {
     columns.push({
       header: "Acciones",
@@ -111,7 +111,6 @@ const MedicacionList = ({ medicacionList, idCarro }) => {
       button: true,
     });
   }
-  
 
   const table = useReactTable({
     data: medicacionList,
@@ -210,9 +209,9 @@ const MedicacionList = ({ medicacionList, idCarro }) => {
                     ) {
                       bgColor = "bg-yellow-200 hover:bg-yellow-300 font-bold"; // Entre 20 y 30 días
                     } else if (differenceInDays <= 20 && differenceInDays > 0) {
-                      bgColor = "bg-red-400 hover:bg-red-500 font-bold"; // Menos de 20 días
+                      bgColor = "bg-red-500 hover:bg-red-500 font-bold"; // Menos de 20 días
                     } else if (differenceInDays <= 0) {
-                      bgColor = "bg-red-600 hover:bg-red-700 font-bold"; // Si ya venció
+                      bgColor = "bg-red-500 hover:bg-red-700 font-bold"; // Si ya venció
                     }
                   }
 
@@ -234,7 +233,9 @@ const MedicacionList = ({ medicacionList, idCarro }) => {
                                 : "Fecha Inválida"}
                               <br />
                               <span className="text-sm text-gray-700 font-bold">
-                                {`Días restantes: ${differenceInDays}`}
+                                {differenceInDays <= 0
+                                  ? "Medicación vencida"
+                                  : "Días restantes: " + differenceInDays}
                               </span>
                             </span>
                           ) : (
