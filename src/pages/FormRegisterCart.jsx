@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useContext, useState } from "react";
+import { dbMedication } from "../context/listado";
 import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
 
@@ -23,6 +24,7 @@ const FormRegisterCart = ({ idCarro }) => {
     matExpiration: "",
     matQuantity: "",
   });
+
 
   // Envio de datos al back de medicación
   const handleSaveDataMedication = async (e) => {
@@ -134,24 +136,21 @@ const FormRegisterCart = ({ idCarro }) => {
               className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
             />
           </div>
-
-          {/* Medicacion  */}
-          <div className="col-span-6 sm:col-span-3">
-            <label
-              htmlFor="medication"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Medicación
-            </label>
-
-            <input
-              type="text"
+       
+          <div className="col-span-6 sm:col-span-3">                        
+            <select
               name="medication"
               value={medicationData.medication}
               onChange={handleChangeMed}
-              required
-              className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm required"
-            />
+              className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+              // onChange={(e) => setServicioName(e.target.value)}
+            > 
+                {dbMedication.map((medicacion) => (
+                <option key={medicacion.idMedication} value={medicacion.medication}>
+                  {medicacion.medication.toUpperCase()}
+                </option>
+                ))}
+            </select>
           </div>
 
           {/* Lote  */}
