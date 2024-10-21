@@ -9,11 +9,7 @@ const Footer = () => {
             to="/"
             className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
           >
-            <img
-              src="/logo.svg"
-              className="h-8"
-              alt="Flowbite Logo"
-            />
+            <img src="/logo.svg" className="h-8" alt="Flowbite Logo" />
             <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
               Emergency Card
             </span>
@@ -56,7 +52,7 @@ const Footer = () => {
         </span>
       </div>
     </footer>
-  )
-}
+  );
+};
 
 export default Footer;

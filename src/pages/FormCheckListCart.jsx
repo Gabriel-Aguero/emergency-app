@@ -72,7 +72,7 @@ const BuscarCarroPorServicio = () => {
               />
             </Link>
 
-            <h1 className="mt-6 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
+            <h1 className="mt-6 text-2xl text-center font-bold text-gray-900 sm:text-3xl md:text-4xl">
               Bienvenido
             </h1>
 
@@ -122,14 +122,14 @@ const BuscarCarroPorServicio = () => {
           ) : (
             <>
               {viewCarros ? (
-                <div className="flex flex-col justify-start items-start">
+                <div className="flex flex-col justify-start items-start mx-auto">
                   <div className="flex flex-col text-right gap-2 mt-5 shadow-sm bg-white text-whiten">
                     <span>
                       El servicio cuenta con{" "}
                       {carros.length ? carros.length : "..."} Carros de paro
                     </span>
                   </div>
-                  <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 items-center mx-auto mt-5">
+                  <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 mx-auto mt-5">
                     {carros.map((carro) => (
                       <div
                         key={carro.id}
@@ -189,7 +189,7 @@ const BuscarCarroPorServicio = () => {
                 </div>
               ) : (
                 <div className="flex justify-center items-center gap-4 mt-10">
-                  <h3 className="text-xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
+                  <h3 className="text-lg font-bold text-gray-900">
                     El servicio seleccionado no tiene carros de paro registrados
                   </h3>
                 </div>
@@ -219,7 +219,7 @@ const BuscarCarroPorServicio = () => {
           </div>
         ) : (
           <>
-            <aside className="relative block h-96 lg:col-span-5 lg:h-[80%] m-10 xl:col-span-6">
+            <aside className="relative block h-screen lg:col-span-5 lg:h-[80%] m-1 xl:col-span-6">
               <MedicacionList medicacionList={medications} />
               <DescartableList descartablesList={descartables} />
             </aside>
@@ -231,72 +231,3 @@ const BuscarCarroPorServicio = () => {
 };
 
 export default BuscarCarroPorServicio;
-
-{
-  /* <div className="shadow-md sm:rounded-lg mt-20 ">
-            <table className="max-w-xl text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-              <thead className="text-xs text-gray-700 capitalize bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                  <th scope="col" className="px-4 py-3">
-                    Número de Carro
-                  </th>
-                  <th scope="col" className="px-4 py-3">
-                    Precinto Registrado
-                  </th>
-                  <th scope="col" className="px-4 py-3">
-                    Fecha Inicio
-                  </th>
-                  <th scope="col" className="px-4 py-3">
-                    Fecha Último Control
-                  </th>
-                  <th scope="col" className="px-4 py-3">
-                    Acción
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {carros.map((carro) => (
-                  <tr
-                    key={carro.id}
-                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                  >
-                    <th
-                      scope="row"
-                      className="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
-                      {carro.numCarro}
-                    </th>
-                    <td className="px-6 py-4">{carro.precinto}</td>
-                    <td className="px-6 py-4">
-                      {carro.fechaInicio
-                        ? new Date(
-                            carro.fechaInicio.seconds * 1000
-                          ).toLocaleDateString()
-                        : ""}
-                    </td>
-                    <td className="px-6 py-4">
-                      {carro.fechaUltimoControl
-                        ? new Date(
-                            carro.fechaInicio.seconds * 1000
-                          ).toLocaleDateString()
-                        : ""}
-                    </td>
-
-                    <td className="flex items-center px-4 py-4">
-                      <button
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                        onClick={() => handleEdit(carro)}
-                      >
-                        Editar
-                      </button>
-                      <button className="font-medium text-red-600 dark:text-red-500 hover:underline ms-3"
-                      onClick={() => handleView(carro)}>
-                        Ver
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div> */
-}

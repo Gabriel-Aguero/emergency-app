@@ -135,12 +135,17 @@ const MedicacionList = ({ medicacionList, idCarro }) => {
         <>
           <div className="min-w-60 p-10 flex flex-col gap-2 justify-start items-start">
             <div className="flex justify-start gap-2 items-center">
-              <button
-                onClick={() => handleAdd()}
-                className="bg-black text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
-              >
-                <IconAdd />
-              </button>
+              {user ? (
+                <button
+                  onClick={() => handleAdd()}
+                  className="bg-black text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
+                >
+                  <IconAdd />
+                </button>
+              ) : (
+                ""
+              )}
+
               <p className="text-sm text-gray-700 dark:text-gray-400 hidden">
                 {idCarro}
               </p>
@@ -148,7 +153,7 @@ const MedicacionList = ({ medicacionList, idCarro }) => {
               <input
                 type="text"
                 placeholder="Buscar por medicación"
-                className="bg-slate-50 text-white p-1 hover:bg-slate-300 transition duration-200 focus:bg-slate-600 focus:border-slate-800 focus:border-none"
+                className="bg-black/90 rounded-md text-white p-2 hover:bg-slate-300 transition duration-200 focus:bg-slate-900 focus:border-slate-800 focus:border-none"
                 onChange={(e) => setMedicacionFiltered(e.target.value)}
               />
             </div>
