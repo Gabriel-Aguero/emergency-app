@@ -1,4 +1,4 @@
-export const dbMedication = [
+export const dbMedication = [         
     {
       idMedication: "1",
       medication: "Adrenalina"

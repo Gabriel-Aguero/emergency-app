@@ -93,6 +93,7 @@ const ModalMedicacion = ({ dataMedicacion, isModalOpen, onClose }) => {
             placeholder={dataMedicacion.medication}
             onChange={handleChange}
             className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm capitalize"
+            required
           />
         </div>
 
@@ -110,6 +111,7 @@ const ModalMedicacion = ({ dataMedicacion, isModalOpen, onClose }) => {
             placeholder={dataMedicacion.lot}
             onChange={handleChange}
             className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+            required
           />
         </div>
 
@@ -127,6 +129,7 @@ const ModalMedicacion = ({ dataMedicacion, isModalOpen, onClose }) => {
             onChange={handleChange}
             placeholder={dataMedicacion.medQuantity}
             className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+            required
           />
         </div>
 

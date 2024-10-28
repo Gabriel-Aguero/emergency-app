@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useContext, useState } from "react";
-import { dbMedication } from "../context/listado";
+import { dbMedication, dbDescartable } from "../context/listado";
 import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
 
@@ -83,6 +83,9 @@ const FormRegisterCart = ({ idCarro }) => {
     });
   };
 
+  const sortedMedicacion = dbMedication.sort((a, b) => a.order - b.order);
+  const sortedDescartable = dbDescartable.sort((a, b) => a.order - b.order);
+
   // Capturo los datos del formulario de material descartable
   const handleChangeMat = (e) => {
     e.preventDefault();
@@ -108,8 +111,8 @@ const FormRegisterCart = ({ idCarro }) => {
           </p>
         </div>
 
-        {/* Formulario para el registro de medicacion y material descartable  */}
-        <form action="#" className="mt-8 grid grid-cols-6 gap-6">
+        {/* Formulario para el registro de medicacion */}
+        <form action="#" className="mt-8 grid grid-cols-6 gap-6" onSubmit={handleSaveDataMedication}>
           {/* ******************* Seccion Medicacion ****************  */}
 
           <div className="col-span-6 sm:col-span-6">
@@ -136,20 +139,35 @@ const FormRegisterCart = ({ idCarro }) => {
               className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
             />
           </div>
-       
-          <div className="col-span-6 sm:col-span-3">                        
+
+          {/* Medicación  */}
+          <div className="col-span-6 sm:col-span-3">            
+          <label
+              htmlFor="lot"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Medicación
+            </label>            
             <select
               name="medication"
               value={medicationData.medication}
               onChange={handleChangeMed}
               className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+              aria-label="Selecciona una opcion"
+              required
               // onChange={(e) => setServicioName(e.target.value)}
             > 
-                {dbMedication.map((medicacion) => (
-                <option key={medicacion.idMedication} value={medicacion.medication}>
-                  {medicacion.medication.toUpperCase()}
-                </option>
-                ))}
+              <option value="" disabled >Seleccione una medicación</option>          
+              { 
+                sortedMedicacion.map(( medicationList ) => (                                                              
+                  <option 
+                    key={medicationList.idMedication}
+                    value={medicationList.idMedication}                 
+                  >
+                    {medicationList.medication}
+                    </option>                  
+                )
+              )}                  
             </select>
           </div>
 
@@ -168,6 +186,7 @@ const FormRegisterCart = ({ idCarro }) => {
               value={medicationData.lot}
               onChange={handleChangeMed}
               className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+              required
             />
           </div>
 
@@ -186,6 +205,7 @@ const FormRegisterCart = ({ idCarro }) => {
               value={medicationData.medExpiration}
               onChange={handleChangeMed}
               className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+              required
             />
           </div>
 
@@ -204,14 +224,15 @@ const FormRegisterCart = ({ idCarro }) => {
               value={medicationData.medQuantity}
               onChange={handleChangeMed}
               className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+              required
             />
           </div>
 
           <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
             <button
               className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
-              type="button"
-              onClick={handleSaveDataMedication}
+              type="submit"
+              // onClick={handleSaveDataMedication}
             >
               Guardar
             </button>
@@ -220,8 +241,11 @@ const FormRegisterCart = ({ idCarro }) => {
           <div className="col-span-6">
             <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
           </div>
-          {/* ******************* Seccion Material descartable ****************  */}
+         
+        </form>
 
+        {/* ******************* Seccion Material descartable ****************  */}
+        <form action="#" className="mt-8 grid grid-cols-6 gap-6" onSubmit={handleSaveDataDescartable}>     
           <div className="col-span-6 sm:col-span-6">
             <h4 className="text-2xl font-bold text-gray-600">
               Sección Material Descartable
@@ -257,13 +281,27 @@ const FormRegisterCart = ({ idCarro }) => {
               Material
             </label>
 
-            <input
-              type="text"
+            <select
               name="material"
               value={material.material}
               onChange={handleChangeMat}
               className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-            />
+              aria-label="Selecciona una opción"
+              required
+              // onChange={(e) => setServicioName(e.target.value)}
+            > 
+              <option value="" disabled >Seleccione una elemento</option>          
+              { 
+                sortedDescartable.map(( descartableList ) => (                                                              
+                  <option 
+                    key={descartableList.idDescartable}
+                    value={descartableList.descartable}                 
+                  >
+                    {descartableList.descartable}
+                    </option>                  
+                )
+              )}                  
+            </select>
           </div>
 
           {/* Lote  */}
@@ -271,6 +309,7 @@ const FormRegisterCart = ({ idCarro }) => {
             <label
               htmlFor="lot"
               className="block text-sm font-medium text-gray-700"
+              required
             >
               Número de Lote
             </label>
@@ -281,6 +320,7 @@ const FormRegisterCart = ({ idCarro }) => {
               value={material.lot}
               onChange={handleChangeMat}
               className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+              required
             />
           </div>
 
@@ -289,6 +329,7 @@ const FormRegisterCart = ({ idCarro }) => {
             <label
               htmlFor="matExpiration"
               className="block text-sm font-medium text-gray-700"
+              required
             >
               Fecha de Vencimiento
             </label>
@@ -299,6 +340,7 @@ const FormRegisterCart = ({ idCarro }) => {
               value={material.matExpiration}
               onChange={handleChangeMat}
               className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+              required
             />
           </div>
 
@@ -317,14 +359,15 @@ const FormRegisterCart = ({ idCarro }) => {
               value={material.matQuantity}
               onChange={handleChangeMat}
               className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+              required
             />
           </div>
 
           <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
             <button
               className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
-              type="button"
-              onClick={handleSaveDataDescartable}
+              type="submit"
+              // onClick={handleSaveDataDescartable}
             >
               Guardar
             </button>

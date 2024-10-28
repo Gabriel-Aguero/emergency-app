@@ -6,6 +6,7 @@ import { dataServicio } from "../context/sector";
 import FormRegisterCart from "./FormRegisterCart";
 import FormInfoCart from "./FormInfoCart";
 import { SpinnerDiamond } from "spinners-react";
+import Swal from "sweetalert2";
 
 const FormData = () => {
   const {
@@ -21,6 +22,7 @@ const FormData = () => {
   const [idCarro, setIdCarro] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const today = new Date().toLocaleDateString();
 
   // variables para el formulario de registro de carro de paro
   const [cartData, setCartData] = useState({
@@ -28,12 +30,13 @@ const FormData = () => {
     precintoMedicacion: "",
     precintoDescartable: "",
     fechaInicio: "",
-    fechaUltimoControl: "",
+    fechaUltimoControl: today || "",  
     servicioName: "",
   });
 
   const [showFormCartDetails, setShowFormCartDetails] = useState(false);
   const [showListCart, setShowListCart] = useState(false);
+  
 
   // Función para cerrar sesión
   const handleLogout = async () => {
@@ -47,8 +50,9 @@ const FormData = () => {
     await getUsuario(email);
   };
 
-  // Envio de datos del carro al back
-  const cargarCarro = async () => {
+  // Envio de datos del carro al back  
+  const cargarCarro = async (e) => {
+    e.preventDefault();
     const id = await addCarro(cartData);
     setIdCarro(id);
     setCartData({
@@ -63,6 +67,15 @@ const FormData = () => {
     });
     setShowListCart(false);
     setShowFormCartDetails(true);
+
+    Swal.fire({
+      position: "top-center",
+      icon: "success",
+      title: "El carro se ha registrado correctamente",
+      text: "A continuación debe registrar la información que contiene el mismo.",
+      showConfirmButton: false,
+      timer: 3000,
+    });
   };
 
   // Capturo los datos del formulario de registro de carro de paro
@@ -135,7 +148,7 @@ useEffect(() => {
                   </p>
                 </div>
 
-                <form action="#" className="mt-8 grid grid-cols-6 gap-6">
+                <form action="#" className="mt-8 grid grid-cols-6 gap-6" onSubmit={cargarCarro}>
                   {/* fecha de inicio  */}
                   <div className="col-span-6 sm:col-span-3">
                     <label
@@ -152,6 +165,7 @@ useEffect(() => {
                       value={cartData.fechaInicio}
                       onChange={handleChange}
                       className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                      required
                     />
                   </div>
 
@@ -168,9 +182,10 @@ useEffect(() => {
                       value={cartData.servicioName}
                       onChange={handleChange}
                       className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                      required
                       // onChange={(e) => setServicioName(e.target.value)}
                     >
-                      <option value="">Seleccione un Servicio</option>
+                      <option value="" disabled>Seleccione un Servicio</option>
                       {dataServicio.map((servicio) => (
                         <option key={servicio.id} value={servicio.nombre}>
                           {servicio.nombre.toUpperCase()}
@@ -194,6 +209,7 @@ useEffect(() => {
                       value={cartData.numCarro}
                       onChange={handleChange}
                       className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                      required
                     />
                   </div>
 
@@ -213,6 +229,7 @@ useEffect(() => {
                       value={cartData.precintoMedicacion}
                       onChange={handleChange}
                       className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                      required
                     />
                   </div>
 
@@ -232,6 +249,7 @@ useEffect(() => {
                       value={cartData.precintoDescartable}
                       onChange={handleChange}
                       className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                      required
                     />
                   </div>
 
@@ -245,11 +263,14 @@ useEffect(() => {
                     </label>
 
                     <input
-                      type="date"
+                      type="text"
                       name="fechaUltimoControl"
-                      value={cartData.fechaUltimoControl || ""}
+                      placeholder={today}
+                      // value={cartData.fechaUltimoControl}
                       onChange={handleChange}
                       className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                      required
+                      readOnly
                     />
                   </div>
 
@@ -266,8 +287,8 @@ useEffect(() => {
                   <div className="col-span-6 flex flex-col gap-4 sm:flex sm:flex-row sm:items-center sm:gap-4">
                     <button
                       className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-8 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
-                      type="button"
-                      onClick={cargarCarro}
+                      type="submit"
+                      // onClick={cargarCarro}
                     >
                       Guardar
                     </button>
