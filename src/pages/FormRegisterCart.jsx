@@ -143,7 +143,7 @@ const FormRegisterCart = ({ idCarro }) => {
           {/* Medicación  */}
           <div className="col-span-6 sm:col-span-3">            
           <label
-              htmlFor="lot"
+              htmlFor="medication"
               className="block text-sm font-medium text-gray-700"
             >
               Medicación

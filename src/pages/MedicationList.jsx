@@ -13,6 +13,7 @@ import { IconAdd, IconDelete, IconEdit } from "../components/icons/Icons";
 import FormRegisterCart from "./FormRegisterCart";
 import ModalMedicacion from "./ModalMedicacion";
 import Swal from "sweetalert2";
+import ModalRegisterMedicacion from "./ModalRegisterMedicacion";
 
 const MedicacionList = ({ medicacionList, idCarro }) => {
   const { deleteMedication, user } = useContext(AuthContext);
@@ -22,7 +23,8 @@ const MedicacionList = ({ medicacionList, idCarro }) => {
   const [showFormRegisterInfo, setShowFormRegisterInfo] = useState(false);
   const [dataMedicacion, setDataMedicacion] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [isModalMedicacion, setIsModalMedicacion] = useState(false);
+  
   useEffect(() => {
     setShowFormRegisterInfo(false);
   }, [medicacionList]);
@@ -58,7 +60,7 @@ const MedicacionList = ({ medicacionList, idCarro }) => {
 
   const handleAdd = () => {
     // Implementa la lógica de agregar elementos a la tabla
-    setShowFormRegisterInfo(!showFormRegisterInfo);
+    setIsModalMedicacion(true);
   };
 
   const columns = [
@@ -291,6 +293,13 @@ const MedicacionList = ({ medicacionList, idCarro }) => {
             isModalOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
           />
+
+          <ModalRegisterMedicacion
+            idCarro = {idCarro}
+            isModalMedicacion={isModalMedicacion}
+            onClose={() => setIsModalMedicacion(false)}
+          />          
+          
         </>
       )}
     </>

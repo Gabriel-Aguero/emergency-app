@@ -61,6 +61,7 @@ const ModalMedicacion = ({ dataMedicacion, isModalOpen, onClose }) => {
           </h4>
         </div>
 
+        {/* id del carro de paro  */}
         <div className="col-span-6 sm:col-span-3 hidden">
           <label
             htmlFor="idCarro"
@@ -79,6 +80,7 @@ const ModalMedicacion = ({ dataMedicacion, isModalOpen, onClose }) => {
           />
         </div>
 
+        {/* Medicación  */}
         <div className="col-span-6 sm:col-span-3">
           <label
             htmlFor="medication"
@@ -97,6 +99,7 @@ const ModalMedicacion = ({ dataMedicacion, isModalOpen, onClose }) => {
           />
         </div>
 
+        {/* Lote  */}
         <div className="col-span-6 sm:col-span-3">
           <label
             htmlFor="lot"
@@ -115,6 +118,7 @@ const ModalMedicacion = ({ dataMedicacion, isModalOpen, onClose }) => {
           />
         </div>
 
+        {/* Cantidad */}
         <div className="col-span-6 sm:col-span-3">
           <label
             htmlFor="medQuantity"
@@ -133,6 +137,7 @@ const ModalMedicacion = ({ dataMedicacion, isModalOpen, onClose }) => {
           />
         </div>
 
+        {/* Fecha de Vencimiento */}
         <div className="col-span-6 sm:col-span-3">
           <label
             htmlFor="medExpiration"

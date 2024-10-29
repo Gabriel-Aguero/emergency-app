@@ -13,6 +13,8 @@ import { IconAdd, IconDelete, IconEdit } from "../components/icons/Icons";
 import FormRegisterCart from "./FormRegisterCart";
 import Swal from "sweetalert2";
 import ModalDescartable from "./ModalDescartable";
+import ModalRegisterDescartable from "./ModalRegisterDescartable";
+
 
 const DescartableList = ({ descartablesList, idCarro }) => {
   const { deleteDescartable, user } = useContext(AuthContext);
@@ -22,6 +24,7 @@ const DescartableList = ({ descartablesList, idCarro }) => {
   const [showFormRegisterInfo, setShowFormRegisterInfo] = useState(false);
   const [dataDescartable, setDataDescartable] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalDescartable, setIsModalDescartable] = useState(false);
 
   useEffect(() => {
     setShowFormRegisterInfo(false);
@@ -58,7 +61,7 @@ const DescartableList = ({ descartablesList, idCarro }) => {
 
   const handleAdd = () => {
     // Implementa la lógica de agregar elementos a la tabla
-    setShowFormRegisterInfo(!showFormRegisterInfo);
+    setIsModalDescartable(true);
   };
 
   const columns = [
@@ -291,6 +294,13 @@ const DescartableList = ({ descartablesList, idCarro }) => {
             isModalOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
           />
+
+          <ModalRegisterDescartable
+            idCarro={idCarro}
+            isModalDescartable={isModalDescartable}
+            onClose={() => setIsModalDescartable(false)}
+          />
+
         </>
       )}
     </>
