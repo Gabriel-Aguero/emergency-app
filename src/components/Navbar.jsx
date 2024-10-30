@@ -1,10 +1,7 @@
 import { Link } from "react-router-dom";
 import { IconMenu } from "./icons/Icons";
-import QRCode from "react-qr-code";
-import QRcode from "./QRcode";
 
 const Navbar = () => {
-  
   return (
     <header className="bg-gray-900 ">
       <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
