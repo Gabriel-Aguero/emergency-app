@@ -1,4 +1,36 @@
+import { useRef } from 'react';
+import emailjs from '@emailjs/browser';
+import Swal from "sweetalert2";
+
 export const Contacto = () => {
+
+  const form = useRef();
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm('service_78mzg5o', 'template_e6m0c49', form.current, {
+        publicKey: '1GtcUnHImByyZ1_wh',
+      })
+      .then(
+        () => {
+          form.current.reset();
+          Swal.fire({
+            position: "top-center",
+            icon: "success",
+            title: "Tu mensaje ha sido enviado",
+            text: "Pronto recibirás una respuesta",
+            showConfirmButton: false,
+            timer: 3000,
+          });
+        },
+        (error) => {
+          console.log('FAILED...', error.text);
+        },
+      );
+  };
+
   return (
     <section className="bg-gray-100">
       <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
@@ -55,29 +87,29 @@ export const Contacto = () => {
           </div>
 
           <div className="rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12">
-            <form action="#" className="space-y-4">
+            <form ref={form} onSubmit={sendEmail} className="space-y-4">
               <div>
-                <label className="sr-only" htmlFor="name">
+                <label className="sr-only" htmlFor="user_name">
                   Nombre
                 </label>
                 <input
                   className="w-full rounded-lg border-gray-200 p-3 text-sm"
                   placeholder="Nombre"
                   type="text"
-                  id="name"
+                  name="user_name"
                 />
               </div>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="sr-only" htmlFor="email">
+                  <label className="sr-only" htmlFor="user_email">
                     Email
                   </label>
                   <input
                     className="w-full rounded-lg border-gray-200 p-3 text-sm"
                     placeholder="Email"
                     type="email"
-                    id="email"
+                    name="user_email"                    
                   />
                 </div>
               </div>          
@@ -91,7 +123,7 @@ export const Contacto = () => {
                   className="w-full rounded-lg border-gray-200 p-3 text-sm"
                   placeholder="Mensaje"
                   rows="8"
-                  id="message"
+                  name="message"
                 ></textarea>
               </div>
 

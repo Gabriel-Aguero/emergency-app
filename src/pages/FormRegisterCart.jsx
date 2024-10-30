@@ -1,10 +1,14 @@
 /* eslint-disable react/prop-types */
 import { useContext, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { dbMedication, dbDescartable } from "../context/listado";
 import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 
-const FormRegisterCart = ({ idCarro }) => {
+const FormRegisterCart = () => {
+  const location = useLocation();
+  const { idCarro } = location.state || {};
   const { addMedication, addDescartable } = useContext(AuthContext);
 
   // variables para el formulario de medicación
@@ -100,17 +104,21 @@ const FormRegisterCart = ({ idCarro }) => {
   return (
     <main className="flex flex-col items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
       <div className="max-w-xl lg:max-w-3xl">
-        <div className="relative -mt-16">
-          <h1 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl capitalize">
-            Formulario de registro
+        <div className="mt-5">
+          <h1 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
+            Complete la Información con el contenido del carro de Emergencia 
           </h1>
 
-          <p className="mt-4 leading-relaxed text-gray-500">
-            En este formulario podrás registrar la medicacion y el material
-            descartable del carro de paro.
+          <p className="mt-4 leading-relaxed text-gray-500 mb-2">
+            En este formulario usted podrá registrar la información en cuanto a la medicacion y el material
+            descartable que contiene el carro de Emergencia.
           </p>
+          <Link to="/formulario_de_datos" className="mt-5 text-blue-500 hover:underline">
+            Registrar un nuevo carro de paro
+          </Link>
         </div>
 
+        <section className="bg-white w-full ">
         {/* Formulario para el registro de medicacion */}
         <form action="#" className="mt-8 grid grid-cols-6 gap-6" onSubmit={handleSaveDataMedication}>
           {/* ******************* Seccion Medicacion ****************  */}
@@ -162,7 +170,7 @@ const FormRegisterCart = ({ idCarro }) => {
                 sortedMedicacion.map(( medicationList ) => (                                                              
                   <option 
                     key={medicationList.idMedication}
-                    value={medicationList.idMedication}                 
+                    value={medicationList.medication}                 
                   >
                     {medicationList.medication}
                     </option>                  
@@ -373,6 +381,7 @@ const FormRegisterCart = ({ idCarro }) => {
             </button>
           </div>
         </form>
+        </section>
       </div>
     </main>
   );

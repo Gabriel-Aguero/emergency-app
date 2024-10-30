@@ -161,7 +161,7 @@ const DescartableList = ({ descartablesList, idCarro }) => {
             </div>
 
             <table className="w-full p-1 shadow-xl rounded-lg mt-1 overflow-x-auto">
-              <thead className="bg-slate-800/85 text-xs md:text-sm text-white">
+              <thead className="bg-slate-800/75 text-xs md:text-sm text-white">
                 {table.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (

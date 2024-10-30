@@ -3,8 +3,6 @@ import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { IconAlertWarning } from "../components/icons/Icons";
 import { dataServicio } from "../context/sector";
-import FormRegisterCart from "./FormRegisterCart";
-import FormInfoCart from "./FormInfoCart";
 import { SpinnerDiamond } from "spinners-react";
 import Swal from "sweetalert2";
 
@@ -14,12 +12,10 @@ const FormData = () => {
     logout,
     getUsuario,
     addCarro,
-    usuario,
-    carros,
-    getCarrosByServicio,
+    usuario,   
   } = useContext(AuthContext);
 
-  const [idCarro, setIdCarro] = useState(null);
+  // const [idCarro, setIdCarro] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const today = new Date().toLocaleDateString();
@@ -34,8 +30,7 @@ const FormData = () => {
     servicioName: "",
   });
 
-  const [showFormCartDetails, setShowFormCartDetails] = useState(false);
-  const [showListCart, setShowListCart] = useState(false);
+  // const [showListCart, setShowListCart] = useState(false);
   
 
   // Función para cerrar sesión
@@ -53,21 +48,7 @@ const FormData = () => {
   // Envio de datos del carro al back  
   const cargarCarro = async (e) => {
     e.preventDefault();
-    const id = await addCarro(cartData);
-    setIdCarro(id);
-    setCartData({
-      ...cartData,
-      numCarro: "",
-      precintoMedicacion: "",
-      precintoDescartable: "",
-      cantidadCarros: "",
-      servicioName: "",
-      fechaInicio: "",
-      fechaUltimoControl: "",
-    });
-    setShowListCart(false);
-    setShowFormCartDetails(true);
-
+    const id = await addCarro(cartData);    
     Swal.fire({
       position: "top-center",
       icon: "success",
@@ -76,6 +57,8 @@ const FormData = () => {
       showConfirmButton: false,
       timer: 3000,
     });
+
+    navigate("/register_info_cart", {state: {idCarro: id}});
   };
 
   // Capturo los datos del formulario de registro de carro de paro
@@ -89,11 +72,12 @@ const FormData = () => {
     });
   };
 
-  // Muestra el formulario para editar el carro seleccionado
+  // Muestra el detalle de los carros registrados
   const handleViewCar = async () => {
-    await getCarrosByServicio(usuario.servicioName);
-    setShowFormCartDetails(false);
-    setShowListCart(true);
+    // await getCarrosByServicio(usuario.servicioName);    
+
+    navigate("/info_cart", {state: {serviceName: usuario.servicioName}});
+    // setShowListCart(true);
   };
 
   
@@ -287,8 +271,7 @@ useEffect(() => {
                   <div className="col-span-6 flex flex-col gap-4 sm:flex sm:flex-row sm:items-center sm:gap-4">
                     <button
                       className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-8 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
-                      type="submit"
-                      // onClick={cargarCarro}
+                      type="submit"                      
                     >
                       Guardar
                     </button>
@@ -311,27 +294,15 @@ useEffect(() => {
                 </form>
               </div>
             </main>                          
-          
-            {!showFormCartDetails ? (
-              <>
-                {showListCart ? (
-                  <FormInfoCart
-                    serviceName={usuario.servicioName}
-                    carros={carros}
-                  />
-                ) : (
-                  <section className="relative flex h-96 items-end lg:col-span-5 lg:h-full xl:col-span-6">
-                    <img
-                      alt="imagen de carro"
-                      src="./public/carroParo.svg"
-                      className="absolute inset-20 top-px sm:top-0 sm:left-0 object-cover"
-                    />
-                  </section>
-                )}
-              </>
-            ) : (
-              <FormRegisterCart idCarro={idCarro} />
-            )}
+
+            <section className="relative flex h-96 items-end lg:col-span-5 lg:h-full xl:col-span-6">
+              <img
+                alt="imagen de carro"
+                src="./public/carroParo.svg"
+                className="absolute inset-20 top-px sm:top-0 sm:left-0 object-cover"
+              />
+            </section>
+      
           </div>
         </section>
       )}

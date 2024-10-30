@@ -11,7 +11,7 @@ const About = () => {
     {
       title: "Objetivo",
       description:
-        "Esta aplicación fue creada para mejorar la gestión del carro de paro en hospitales y clínicas, facilitando el control de medicamentos, descartables y gestionando su vencimiento. El objetivo principal es optimizar el proceso de verificación en tiempo y calidad, y reducir los errores por vencimientos a la hora de requerir el uso del carro de paro, proporcionando una herramienta simple y accesible para los profesionales de la salud.",
+        "Esta aplicación fue creada para mejorar la gestión del carro de paro en hospitales y clínicas, facilitando el control de medicamentos, descartables y gestionando su vencimiento. El objetivo principal es optimizar el proceso de verificación en tiempo y calidad, y reducir los errores por vencimientos a la hora de requerir el uso del carro de paro, proporcionando una herramienta simple, accesible y gratuita para los profesionales de la salud.",
       icons: "⚡",
     },
     {
@@ -29,7 +29,7 @@ const About = () => {
     {
       title: "Soporte y Mantenimiento",
       description:
-        "Nos comprometemos a ofrecer soporte continuo y actualizaciones periódicas para mantener la aplicación al día con los últimos avances tecnológicos y normativos",
+        "Me comprometo a ofrecerte soporte continuo y realizar las actualizaciones periódicas para mantener la aplicación al día con los últimos avances tecnológicos y normativos",
       icons: "💬",
     },
     {
@@ -78,6 +78,7 @@ const About = () => {
           </p>
           <a
             href="https://cafecito.app/gabyaguero"
+            target="_blank"
             className="inline-block rounded bg-cyan-600 px-12 py-3 font-medium text-white transition hover:bg-cyan-700 focus:outline-none focus:ring focus:ring-yellow-400"
           >
             <IconCoffe />

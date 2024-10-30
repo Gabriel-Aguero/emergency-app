@@ -66,7 +66,7 @@ const Home = () => {
                 href="#home"
               >
                 Regitrarme
-              </a>
+              </a>             
             </div>
           </div>
         </div>

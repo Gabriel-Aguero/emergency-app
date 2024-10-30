@@ -1,14 +1,10 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
 import { IconMenu } from "./icons/Icons";
+import QRCode from "react-qr-code";
+import QRcode from "./QRcode";
 
 const Navbar = () => {
-  // const [isOpen, setIsOpen] = useState(false);
-
-  // const toggleMenu = () => {
-  //   setIsOpen(!isOpen);
-  // };
-
+  
   return (
     <header className="bg-gray-900 ">
       <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
@@ -59,6 +55,15 @@ const Navbar = () => {
                     href="#"
                   >
                     Contacto
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/qrcode"
+                    className="text-gray-500 text-xl transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
+                    href="#"
+                  >
+                    Código QR
                   </Link>
                 </li>
               </ul>

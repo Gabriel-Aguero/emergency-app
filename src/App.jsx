@@ -11,6 +11,9 @@ import Footer from "./components/Footer.jsx";
 import { Contacto } from "./pages/Contacto.jsx";
 import FormResetPassword from "./pages/FormResetPassword.jsx";
 import About from "./pages/About.jsx";
+import FormRegisterCart from "./pages/FormRegisterCart.jsx";
+import FormInfoCart from "./pages/FormInfoCart.jsx";
+import QRcode from "./components/QRcode.jsx";
 function App() {
   return (
     <>
@@ -28,9 +31,12 @@ function App() {
             </ProtectedRoutes>
           }
         />
+        <Route path="/register_info_cart" element={<FormRegisterCart />} />
+        <Route path="/info_cart" element={<FormInfoCart />} />
         <Route path="/reset_password" element={<FormResetPassword />} />
         <Route path="/about" element={<About />} />
         <Route path="/contacto" element={<Contacto />} />
+        <Route path="/qrcode" element={<QRcode />} />
       </Routes>
       <Footer />
     </>
