@@ -93,9 +93,11 @@ const ModalMedicacion = ({ dataMedicacion, isModalOpen, onClose }) => {
             type="text"
             name="medication"
             placeholder={dataMedicacion.medication}
+            value={dataMedicacion.medication}
             onChange={handleChange}
             className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm capitalize"
             required
+            readOnly
           />
         </div>
 
@@ -112,6 +114,7 @@ const ModalMedicacion = ({ dataMedicacion, isModalOpen, onClose }) => {
             type="text"
             name="lot"
             placeholder={dataMedicacion.lot}
+            value={dataMedicacion.lot}
             onChange={handleChange}
             className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
             required

@@ -15,7 +15,6 @@ import Swal from "sweetalert2";
 import ModalDescartable from "./ModalDescartable";
 import ModalRegisterDescartable from "./ModalRegisterDescartable";
 
-
 const DescartableList = ({ descartablesList, idCarro }) => {
   const { deleteDescartable, user } = useContext(AuthContext);
 
@@ -141,7 +140,7 @@ const DescartableList = ({ descartablesList, idCarro }) => {
               {user ? (
                 <button
                   onClick={() => handleAdd()}
-                  className="bg-black text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
+                  className="bg-black/55 text-white rounded-md p-1 hover:bg-slate-600 transition duration-200"
                 >
                   <IconAdd />
                 </button>
@@ -156,20 +155,20 @@ const DescartableList = ({ descartablesList, idCarro }) => {
               <input
                 type="text"
                 placeholder="Buscar por medicación"
-                className="bg-black/90 text-white rounded-md p-2 hover:bg-slate-300 transition duration-200 focus:bg-slate-800 focus:border-slate-800 focus:border-none"
+                className="bg-black/25 text-white rounded-md p-2 hover:bg-slate-300 transition duration-200 focus:bg-slate-800 focus:border-slate-800 focus:border-none"
                 onChange={(e) => setDescartableFiltered(e.target.value)}
               />
             </div>
 
-            <table className="min-w-full p-10 shadow-xl rounded-lg mt-1">
-              <thead className="bg-slate-800 text-white">
+            <table className="w-full p-1 shadow-xl rounded-lg mt-1 overflow-x-auto">
+              <thead className="bg-slate-800/85 text-xs md:text-sm text-white">
                 {table.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
                       <th
                         key={header.id}
                         onClick={header.column.getToggleSortingHandler()}
-                        className="text-center py-3 px-4 uppercase font-semibold text-sm"
+                        className="text-center py-2 md:py-3 md:px-4 uppercase font-semibold text-xs md:text-sm"
                       >
                         {header.isPlaceholder ? null : (
                           <div>
@@ -216,10 +215,8 @@ const DescartableList = ({ descartablesList, idCarro }) => {
                       differenceInDays <= 30
                     ) {
                       bgColor = "bg-yellow-200 hover:bg-yellow-300 font-bold"; // Entre 20 y 30 días
-                    } else if (differenceInDays <= 20 && differenceInDays > 0) {
-                      bgColor = "bg-red-500 hover:bg-red-500 font-bold"; // Menos de 20 días
-                    } else if (differenceInDays <= 0) {
-                      bgColor = "bg-red-500 hover:bg-red-700 font-bold"; // Si ya venció
+                    } else if (differenceInDays <= 20) {
+                      bgColor = "bg-red-400/75 hover:bg-red-500 font-bold"; // Menos de 20 días
                     }
                   }
 
@@ -300,7 +297,6 @@ const DescartableList = ({ descartablesList, idCarro }) => {
             isModalDescartable={isModalDescartable}
             onClose={() => setIsModalDescartable(false)}
           />
-
         </>
       )}
     </>

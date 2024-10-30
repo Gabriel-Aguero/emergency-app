@@ -90,8 +90,10 @@ const ModalDescartable = ({ dataDescartable, isModalOpen, onClose }) => {
             type="text"
             name="material"
             placeholder={dataDescartable.material}
+            value={dataDescartable.material}
             onChange={handleChange}
             className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm capitalize"
+            readOnly
           />
         </div>
 
@@ -107,6 +109,7 @@ const ModalDescartable = ({ dataDescartable, isModalOpen, onClose }) => {
             type="text"
             name="lot"
             placeholder={dataDescartable.lot}
+            value={dataDescartable.lot}
             onChange={handleChange}
             className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
           />

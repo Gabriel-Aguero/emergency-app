@@ -24,7 +24,7 @@ const MedicacionList = ({ medicacionList, idCarro }) => {
   const [dataMedicacion, setDataMedicacion] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalMedicacion, setIsModalMedicacion] = useState(false);
-  
+
   useEffect(() => {
     setShowFormRegisterInfo(false);
   }, [medicacionList]);
@@ -136,11 +136,11 @@ const MedicacionList = ({ medicacionList, idCarro }) => {
       ) : (
         <>
           <div className="min-w-60 p-10 flex flex-col gap-2 justify-start items-start">
-            <div className="flex justify-start gap-2 items-center">
+            <div className="mx-6 flex justify-start gap-2 items-center">
               {user ? (
                 <button
                   onClick={() => handleAdd()}
-                  className="bg-black text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
+                  className="bg-black/55 text-white rounded-md p-1 hover:bg-slate-600 transition duration-200"
                 >
                   <IconAdd />
                 </button>
@@ -155,20 +155,20 @@ const MedicacionList = ({ medicacionList, idCarro }) => {
               <input
                 type="text"
                 placeholder="Buscar por medicación"
-                className="bg-black/90 rounded-md text-white p-2 hover:bg-slate-300 transition duration-200 focus:bg-slate-900 focus:border-slate-800 focus:border-none"
+                className="bg-black/25 rounded-md text-white p-2 hover:bg-slate-300 transition duration-200 focus:bg-slate-900 focus:border-slate-800 focus:border-none"
                 onChange={(e) => setMedicacionFiltered(e.target.value)}
               />
             </div>
 
-            <table className="min-w-full p-10 shadow-xl rounded-lg mt-1">
-              <thead className="bg-slate-800 text-white">
+            <table className="w-full p-1 shadow-xl rounded-lg mt-1 overflow-x-auto">
+              <thead className="bg-slate-800/75 text-xs md:text-sm text-white">
                 {table.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
                       <th
                         key={header.id}
                         onClick={header.column.getToggleSortingHandler()}
-                        className="text-center py-3 px-4 uppercase font-semibold text-sm"
+                        className="text-center py-2 md:py-3 md:px-4 uppercase font-semibold md:text-sm text-xs"
                       >
                         {header.isPlaceholder ? null : (
                           <div>
@@ -215,10 +215,8 @@ const MedicacionList = ({ medicacionList, idCarro }) => {
                       differenceInDays <= 30
                     ) {
                       bgColor = "bg-yellow-200 hover:bg-yellow-300 font-bold"; // Entre 20 y 30 días
-                    } else if (differenceInDays <= 20 && differenceInDays > 0) {
-                      bgColor = "bg-red-500 hover:bg-red-500 font-bold"; // Menos de 20 días
-                    } else if (differenceInDays <= 0) {
-                      bgColor = "bg-red-500 hover:bg-red-700 font-bold"; // Si ya venció
+                    } else if (differenceInDays <= 20) {
+                      bgColor = "bg-red-400/75 hover:bg-red-500 font-bold"; // Menos de 20 días
                     }
                   }
 
@@ -295,11 +293,10 @@ const MedicacionList = ({ medicacionList, idCarro }) => {
           />
 
           <ModalRegisterMedicacion
-            idCarro = {idCarro}
+            idCarro={idCarro}
             isModalMedicacion={isModalMedicacion}
             onClose={() => setIsModalMedicacion(false)}
-          />          
-          
+          />
         </>
       )}
     </>
