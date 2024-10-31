@@ -55,7 +55,7 @@ const Register = () => {
         <aside className="relative block h-16 lg:order-last lg:col-span-5 lg:h-full xl:col-span-6">
           <img
             alt=""
-            src="/public/register.svg"
+            src="/register.svg"
             className="absolute inset-0 h-full w-full object-cover"
           />
         </aside>
@@ -229,5 +229,3 @@ const Register = () => {
 };
 
 export default Register;
-
-
