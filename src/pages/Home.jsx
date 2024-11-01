@@ -30,8 +30,7 @@ const Home = () => {
     }
   };
 
-  const checkCarros = () => {
-    console.log("checkCarros");
+  const checkCarros = () => {   
     navigate("/check_carros");
   };
 

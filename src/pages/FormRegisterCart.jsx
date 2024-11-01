@@ -11,6 +11,9 @@ const FormRegisterCart = () => {
   const { idCarro } = location.state || {};
   const { addMedication, addDescartable } = useContext(AuthContext);
 
+  const sortedMedicacion = dbMedication.sort((a, b) => a.order - b.order);
+  const sortedDescartable = dbDescartable.sort((a, b) => a.order - b.order);
+
   // variables para el formulario de medicación
   const [medicationData, setMedicationData] = useState({
     idCarro: "",
@@ -28,7 +31,6 @@ const FormRegisterCart = () => {
     matExpiration: "",
     matQuantity: "",
   });
-
 
   // Envio de datos al back de medicación
   const handleSaveDataMedication = async (e) => {
@@ -86,9 +88,6 @@ const FormRegisterCart = () => {
       [name]: value,
     });
   };
-
-  const sortedMedicacion = dbMedication.sort((a, b) => a.order - b.order);
-  const sortedDescartable = dbDescartable.sort((a, b) => a.order - b.order);
 
   // Capturo los datos del formulario de material descartable
   const handleChangeMat = (e) => {

@@ -7,6 +7,7 @@ import { SpinnerDiamond } from "spinners-react";
 import Swal from "sweetalert2";
 
 const FormData = () => {
+ 
   const {
     user,
     logout,
@@ -29,10 +30,7 @@ const FormData = () => {
     fechaUltimoControl: today || "",  
     servicioName: "",
   });
-
-  // const [showListCart, setShowListCart] = useState(false);
   
-
   // Función para cerrar sesión
   const handleLogout = async () => {
     await logout();
@@ -73,11 +71,8 @@ const FormData = () => {
   };
 
   // Muestra el detalle de los carros registrados
-  const handleViewCar = async () => {
-    // await getCarrosByServicio(usuario.servicioName);    
-
-    navigate("/info_cart", {state: {serviceName: usuario.servicioName}});
-    // setShowListCart(true);
+  const handleViewCar = async () => {      
+    navigate("/info_cart", {state: {serviceName: usuario.servicioName}});    
   };
 
   

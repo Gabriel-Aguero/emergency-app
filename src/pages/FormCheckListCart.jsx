@@ -1,25 +1,20 @@
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
-import MedicacionList from "./MedicationList";
 import { Link } from "react-router-dom";
 import { EyeIcon } from "../components/icons/Icons";
 import { dataServicio } from "../context/sector";
 import { SpinnerDiamond } from "spinners-react";
-import DescartableList from "./DescartableList";
 
 const BuscarCarroPorServicio = () => {
   // const [showMedicacionList, setShowMedicacionList] = useState(false);
   const [servicioName, setServicioName] = useState("");
   const [viewCarros, setViewCarros] = useState(false);
-  const [viewDetailsCarros, setViewDetailsCarros] = useState(false);
   const [loading, setLoading] = useState(false);
   const {
     getCarrosByServicio,
     carros,
     getMedicationByCarro,
-    getDescartableByCarro,
-    medications,
-    descartables,
+    getDescartableByCarro,   
   } = useContext(AuthContext);
 
   useEffect(() => {
@@ -29,14 +24,7 @@ const BuscarCarroPorServicio = () => {
     }
   }, [carros]);
 
-  // const verDetalleCarro = async (idCarro) => {
-  //   try {
-  //     await getDescartableByCarro(idCarro);
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  // };
-
+  
   // Muestra los carrros de paro por el servicio seleccionado
   const handleViewCar = async (servicioName) => {
     // aqui poner el spinner
@@ -45,24 +33,20 @@ const BuscarCarroPorServicio = () => {
       setViewCarros(false);
       await getCarrosByServicio(servicioName);
       setLoading(false);
-      setViewDetailsCarros(false);
     }
   };
 
   // Muestra el detalle del carro seleccionado, elementos descartables y medicaciones
   const handleViewDetailsCar = async (idCarro) => {
-    setViewDetailsCarros(true);
-    setLoading(true);
     await getMedicationByCarro(idCarro);
     await getDescartableByCarro(idCarro);
-    setLoading(false);
   };
 
   return (
     <section className="bg-white">
-      <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
-        <main className="flex flex-col items-start px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
-          <div className="max-w-xl lg:max-w-3xl">
+      <div className="flex items-center justify-center lg:min-h-screen">
+        <main className="flex flex-col items-start px-8 py-8 sm:px-12 lg:px-16 lg:py-12">
+          <div className="flex flex-col items-center justify-center max-w-xl lg:max-w-3xl">
             <Link to="/" className="block text-blue-600">
               <span className="sr-only">Home</span>
               <img
@@ -82,8 +66,8 @@ const BuscarCarroPorServicio = () => {
               detalle de los mismos.
             </p>
 
-            <form action="#" className="mt-8 grid grid-cols-6 gap-6">
-              <div className="col-span-6 sm:col-span-3 flex">
+            <form action="#" className="mt-8 flex justify-start items-start">
+              <div className="flex justify-start items-start gap-2 w-full">
                 <select
                   id="servicio"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -110,7 +94,7 @@ const BuscarCarroPorServicio = () => {
 
           {/* los carros de paro se muestran al ejecutar el boton ir  */}
           {loading ? (
-            <div className="flex justify-center items-center mt-20 m-20">
+            <div className="flex justify-center items-center mt-20 mx-auto">
               <SpinnerDiamond
                 size={150}
                 thickness={100}
@@ -188,7 +172,7 @@ const BuscarCarroPorServicio = () => {
                   </div>
                 </div>
               ) : (
-                <div className="flex justify-center items-center gap-4 mt-10">
+                <div className="flex justify-center items-center gap-4 mx-auto mt-10">
                   <h3 className="text-lg font-bold text-gray-900">
                     El servicio seleccionado no tiene carros de paro registrados
                   </h3>
@@ -196,35 +180,7 @@ const BuscarCarroPorServicio = () => {
               )}
             </>
           )}
-        </main>
-
-        {/* esta seccion seria para visualizar el detalle del carro, se muestra cuando el usuario ha seleccionado un carro  */}
-        {!viewDetailsCarros ? (
-          <aside className="relative block h-96 lg:col-span-5 lg:h-[80%] m-10 xl:col-span-6">
-            <img
-              alt=""
-              src="/public/task.svg"
-              className="absolute inset-0 object-cover"
-            />
-          </aside>
-        ) : loading ? (
-          <div className="flex justify-center items-center mt-20 m-20">
-            <SpinnerDiamond
-              size={150}
-              thickness={100}
-              speed={200}
-              color="#09f"
-              secondaryColor="rgba(0, 0, 0, 0.44)"
-            />
-          </div>
-        ) : (
-          <>
-            <aside className="relative block h-screen lg:col-span-5 lg:h-[80%] m-1 xl:col-span-6">
-              <MedicacionList medicacionList={medications} />
-              <DescartableList descartablesList={descartables} />
-            </aside>
-          </>
-        )}
+        </main>   
       </div>
     </section>
   );

@@ -6,7 +6,6 @@ import { useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import MedicacionList from "./MedicationList";
 import DescartableList from "./DescartableList";
-import { EyeIcon, IconEdit, IconInfo } from "../components/icons/Icons";
 import ModalCarro from "./ModalCarro";
 import { SpinnerDiamond } from "spinners-react";
 

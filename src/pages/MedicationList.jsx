@@ -1,29 +1,23 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import {
-  useReactTable,
-  getCoreRowModel,
-  flexRender,
-  getPaginationRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
-} from "@tanstack/react-table";
-import { IconAdd, IconDelete, IconEdit } from "../components/icons/Icons";
+import { FaCheckCircle, FaExclamationTriangle, FaTimesCircle } from 'react-icons/fa';
+import { IconArrowDown, IconArrowUp, } from "../components/icons/Icons";
 import FormRegisterCart from "./FormRegisterCart";
 import ModalMedicacion from "./ModalMedicacion";
 import Swal from "sweetalert2";
 import ModalRegisterMedicacion from "./ModalRegisterMedicacion";
 
 const MedicacionList = ({ medicacionList, idCarro }) => {
-  const { deleteMedication, user } = useContext(AuthContext);
+  const { deleteMedication, getMedicationByCarro } = useContext(AuthContext);
 
-  const [sorting, setSorting] = useState([]);
-  const [medicacionFiltered, setMedicacionFiltered] = useState("");
+  // const [sorting, setSorting] = useState([]);
+  // const [medicacionFiltered, setMedicacionFiltered] = useState("");
   const [showFormRegisterInfo, setShowFormRegisterInfo] = useState(false);
   const [dataMedicacion, setDataMedicacion] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalMedicacion, setIsModalMedicacion] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     setShowFormRegisterInfo(false);
@@ -58,76 +52,34 @@ const MedicacionList = ({ medicacionList, idCarro }) => {
     });
   };
 
-  const handleAdd = () => {
-    // Implementa la lógica de agregar elementos a la tabla
-    setIsModalMedicacion(true);
+  // const handleAdd = () => {
+  //   // Implementa la lógica de agregar elementos a la tabla
+  //   setIsModalMedicacion(true);
+  // };
+
+  
+
+  const toggleAccordion = (id) => {
+    setIsOpen((prevId) => (prevId === id ? null : id));
   };
 
-  const columns = [
-    // {
-    //   header: "ID",
-    //   accessorKey: "id",
-    // },
-    {
-      header: "Medicacion",
-      accessorKey: "medication",
-    },
-    {
-      header: "Fecha de Vencimiento",
-      accessorKey: "medExpiration",
-    },
-    {
-      header: "lote",
-      accessorKey: "lot",
-    },
-    {
-      header: "Cantidad",
-      accessorKey: "medQuantity",
-    },
-  ];
+  const getIconAndDaysByExpiration = (expirationDate) => {
+    const currentDate = new Date();
+    const expiryDate = new Date(expirationDate);
+    const timeDiff = expiryDate - currentDate;
+    const daysUntilExpiration = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
 
-  if (user) {
-    columns.push({
-      header: "Acciones",
-      cell: (row) => {
-        const dataMed = row.cell.row.original;
-        return (
-          <div className="flex gap-2 justify-center">
-            <button
-              onClick={() => handleEdit(dataMed)}
-              className="bg-blue-500 text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
-            >
-              <IconEdit />
-            </button>
-            <button
-              onClick={() => handleDelete(dataMed.id)}
-              className="bg-red-500 text-white rounded-md p-1 hover:bg-red-700 transition duration-200"
-            >
-              <IconDelete />
-            </button>
-          </div>
-        );
-      },
-      ignoreRowClick: true,
-      allowOverflow: true,
-      button: true,
-    });
-  }
+    let icon;
+    if (daysUntilExpiration > 40) {
+      icon = <FaCheckCircle className="text-green-500" aria-label="Check icon indicating safe expiration date" />;
+    } else if (daysUntilExpiration > 20) {
+      icon = <FaExclamationTriangle className="text-yellow-500" aria-label="Warning icon indicating approaching expiration date" />;
+    } else {
+      icon = <FaTimesCircle className="text-red-500" aria-label="Danger icon indicating near expiration date" />;
+    }
 
-  const table = useReactTable({
-    data: medicacionList,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    state: {
-      sorting,
-      globalFilter: medicacionFiltered,
-    },
-    onSortingChange: setSorting,
-    onGlobalFilterChange: setMedicacionFiltered,
-  });
+    return { icon, daysUntilExpiration };
+  };
 
   return (
     <>
@@ -135,157 +87,65 @@ const MedicacionList = ({ medicacionList, idCarro }) => {
         <FormRegisterCart idCarro={idCarro} />
       ) : (
         <>
-          <div className="min-w-60 p-10 flex flex-col gap-2 justify-start items-start">
-            <div className="mx-6 flex justify-start gap-2 items-center">
-              {user ? (
-                <button
-                  onClick={() => handleAdd()}
-                  className="bg-black/55 text-white rounded-md p-1 hover:bg-slate-600 transition duration-200"
-                >
-                  <IconAdd />
-                </button>
-              ) : (
-                ""
-              )}
+        {/* aqui recorro la lista de medicamentos para mostrar  */}        
+        {
+         
+          medicacionList.map((list) => {
+            const { icon, daysUntilExpiration } = getIconAndDaysByExpiration(list.medExpiration);
+            return(
+              <div key={list.id}>
+              <div id={`accordion-${list.id}`} 
+                data-accordion="collapse" 
+                data-active-classes="bg-white dark:bg-gray-900 text-gray-900 dark:text-white" 
+                data-inactive-classes="text-gray-500 dark:text-gray-400"
+                className="border flex flex-col rounded-lg border-gray-300 dark:border-gray-700 mt-2 mb-2 shadow-md gap-4"
+              >            
+                <h2 id={`accordion-heading-${list.id}`} className="p-2">
+                  <button type="button" onClick={() => toggleAccordion(list.id)} 
+                    className="flex items-center justify-between w-full py-2 rtl:text-right text-xl font-bold text-gray-500" 
+                    data-accordion-target="#accordion-flush-body-1" aria-expanded={isOpen === list.id} 
+                    aria-controls={`accordion-body-${list.id}`}>
 
-              <p className="text-sm text-gray-700 dark:text-gray-400 hidden">
-                {idCarro}
-              </p>
-              {/* creamos el input para buscar por medicacion */}
-              <input
-                type="text"
-                placeholder="Buscar por medicación"
-                className="bg-black/25 rounded-md text-white p-2 hover:bg-slate-300 transition duration-200 focus:bg-slate-900 focus:border-slate-800 focus:border-none"
-                onChange={(e) => setMedicacionFiltered(e.target.value)}
-              />
-            </div>
-
-            <table className="w-full p-1 shadow-xl rounded-lg mt-1 overflow-x-auto">
-              <thead className="bg-slate-800/75 text-xs md:text-sm text-white">
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <tr key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <th
-                        key={header.id}
-                        onClick={header.column.getToggleSortingHandler()}
-                        className="text-center py-2 md:py-3 md:px-4 uppercase font-semibold md:text-sm text-xs"
-                      >
-                        {header.isPlaceholder ? null : (
-                          <div>
-                            {flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-
-                            {
-                              { asc: "⬆️", desc: "⬇️" }[
-                                header.column.getIsSorted() ?? null
-                              ]
-                            }
-                          </div>
-                        )}
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody>
-                {table.getRowModel().rows.map((row) => {
-                  // Obtenemos la fecha de vencimiento para cada fila
-                  const expirationString = row.original.medExpiration;
-                  let bgColor = ""; // Por defecto no hay color
-                  let differenceInDays = 0; // Inicializamos la variable para días restantes
-
-                  if (expirationString) {
-                    const expirationDate = new Date(expirationString); // Convertimos el string a fecha
-                    const today = new Date(); // Fecha actual
-
-                    // Calcula la diferencia en días
-                    const differenceInTime =
-                      expirationDate.getTime() - today.getTime();
-                    differenceInDays = Math.ceil(
-                      differenceInTime / (1000 * 3600 * 24)
-                    ); // Diferencia en días
-
-                    // Asignamos el color de fondo según los días restantes
-                    if (differenceInDays > 30) {
-                      bgColor = "bg-green-400 hover:bg-green-500 font-bold"; // Más de 30 días
-                    } else if (
-                      differenceInDays > 20 &&
-                      differenceInDays <= 30
-                    ) {
-                      bgColor = "bg-yellow-200 hover:bg-yellow-300 font-bold"; // Entre 20 y 30 días
-                    } else if (differenceInDays <= 20) {
-                      bgColor = "bg-red-400/75 hover:bg-red-500 font-bold"; // Menos de 20 días
-                    }
-                  }
-
-                  return (
-                    <tr
-                      key={row.id}
-                      className={`border-b border-gray-500 text-center ${bgColor}`}
+                      <span className="flex items-center gap-2">
+                      {icon}
+                      {list.medication} - {daysUntilExpiration < 0 ? "Vencido" : `Vence en ${daysUntilExpiration} días` }
+                      </span>
+                    {/* <svg data-accordion-icon className="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                      <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5 5 1 1 5"/>
+                    </svg> */}
+                    { isOpen ? <IconArrowUp /> : <IconArrowDown />}
+                  </button>
+                </h2>
+                <div id={`accordion-body-${list.id}`}
+                  className={`overflow-hidden p-4 transition-all duration-300 ease-in-out ${isOpen === list.id ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}        
+                  aria-labelledby={`accordion-heading-${list.id}`}>
+                  <div className="py-2 flex flex-col gap-2 font-medium">
+                    <p className="text-gray-500 dark:text-gray-400">Fecha de vencimiento: {list.medExpiration}</p>
+                    <p className="text-gray-500 dark:text-gray-400">Número de lote: {list.lot}</p>
+                    <p className="text-gray-500 dark:text-gray-400">Cantidad: {list.medQuantity}</p>
+                  </div>  
+                  <div className="flex gap-4 mt-4">
+                    <button
+                      onClick={() => handleEdit(list.id)}
+                      className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
                     >
-                      {row.getVisibleCells().map((cell) => (
-                        <td
-                          key={cell.id}
-                          className="py-3 text-black px-4 capitalize"
-                        >
-                          {cell.column.id === "medExpiration" ? (
-                            <span>
-                              {/* Muestra la fecha y los días restantes */}
-                              {expirationString
-                                ? expirationString
-                                : "Fecha Inválida"}
-                              <br />
-                              <span className="text-sm text-gray-700 font-bold">
-                                {differenceInDays <= 0
-                                  ? "Medicación vencida"
-                                  : "Días restantes: " + differenceInDays}
-                              </span>
-                            </span>
-                          ) : (
-                            flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )
-                          )}
-                        </td>
-                      ))}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-
-            {/* paginación de la tabla medicacion  */}
-            <div className="flex mt-2 gap-2 items-center">
-              <button
-                className="bg-black text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
-                onClick={() => table.setPageIndex(0)}
-              >
-                Primer Pagina
-              </button>
-              <button
-                className="bg-black text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
-                onClick={() => table.previousPage()}
-              >
-                Pagina Anterior
-              </button>
-              <button
-                className="bg-black text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
-                onClick={() => table.setPageIndex(table.getPageIndex() + 1)}
-              >
-                Siguiente Pagina
-              </button>
-              <button
-                className="bg-black text-white rounded-md p-1 hover:bg-blue-700 transition duration-200"
-                onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-              >
-                Última Pagina
-              </button>
-            </div>
-          </div>
-
+                      Editar
+                    </button>
+                    <button
+                      onClick={() => handleDelete(list.id)}
+                      className="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700"
+                    >
+                      Eliminar
+                    </button>
+                  </div>                
+                </div>                                     
+              </div>
+              </div>
+            )
+          })
+          
+        }
+        
           <ModalMedicacion
             dataMedicacion={dataMedicacion}
             isModalOpen={isModalOpen}
