@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 import ModalRegisterMedicacion from "./ModalRegisterMedicacion";
 
 const MedicacionList = ({ medicacionList, idCarro }) => {
-  const { deleteMedication, getMedicationByCarro } = useContext(AuthContext);
+  const { deleteMedication } = useContext(AuthContext);
 
   // const [sorting, setSorting] = useState([]);
   // const [medicacionFiltered, setMedicacionFiltered] = useState("");

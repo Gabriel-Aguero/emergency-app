@@ -49,11 +49,7 @@ const BuscarCarroPorServicio = () => {
           <div className="flex flex-col items-center justify-center max-w-xl lg:max-w-3xl">
             <Link to="/" className="block text-blue-600">
               <span className="sr-only">Home</span>
-              <img
-                src="/public/bienvenido.svg"
-                alt="Logo"
-                className="h-40 sm:h-52"
-              />
+              <img src="/bienvenido.svg" alt="Logo" className="h-40 sm:h-52" />
             </Link>
 
             <h1 className="mt-6 text-2xl text-center font-bold text-gray-900 sm:text-3xl md:text-4xl">

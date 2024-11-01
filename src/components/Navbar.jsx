@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
 import { IconMenu } from "./icons/Icons";
-import QRCode from "react-qr-code";
-import QRcode from "./QRcode";
+import { useState } from "react";
 
 const Navbar = () => {
-  
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
   return (
     <header className="bg-gray-900 ">
       <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
@@ -26,7 +29,8 @@ const Navbar = () => {
             </a>
           </div>
 
-          <div className="hidden md:block">
+          {/* menu de navegación para dispositivos mas grandes */}
+          <div className="hidden md:block" id="menu">
             <nav aria-label="Global">
               <ul className="flex items-center gap-6 text-sm">
                 <li>
@@ -70,15 +74,59 @@ const Navbar = () => {
             </nav>
           </div>
 
+          {/* menu despegable para dispositivos mobiles */}
+          {isMenuOpen && (
+            <nav className="md:hidden mt-80 bg-cyan-950/90 w-full -ml-20 px-20 py-12 text-center z-10">
+              <ul className="space-y-4 text-center text-gray-100">
+                <li className="flex items-center justify-center hover:to-blue-400">
+                  <Link
+                    to="/"
+                    className="text-xl transition hover:text-gray-500/75 hover:bg-blue-500 dark:text-white dark:hover:text-white/75"
+                    onClick={toggleMenu}
+                  >
+                    Inicio
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/about"
+                    className="text-xl transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
+                    onClick={toggleMenu}
+                  >
+                    Acerca de
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/contacto"
+                    className="text-xl transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
+                    onClick={toggleMenu}
+                  >
+                    Contacto
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/qrcode"
+                    className="text-xl transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
+                    onClick={toggleMenu}
+                  >
+                    Código QR
+                  </Link>
+                </li>
+              </ul>
+            </nav>
+          )}
+
           <div className="flex items-center gap-4">
             <div className="sm:flex sm:gap-4">
-              <Link
+              {/* <Link
                 to="#home"
                 className="rounded-md bg-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow hover:bg-blue-600/75"
                 href="#"
               >
                 Ingresar
-              </Link>
+              </Link> */}
 
               <div className="hidden sm:flex">
                 <Link
@@ -89,21 +137,19 @@ const Navbar = () => {
                   Crear Cuenta
                 </Link>
               </div>
-            </div>
 
-            <div className="block md:hidden">
-              <button className="rounded bg-gray-100 p-2 text-gray-600 transition hover:text-gray-600/75">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="size-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+              {/* menu de navegación para dispositivos mobiles */}
+              <div className="block md:hidden">
+                <button
+                  onClick={toggleMenu}
+                  className="rounded bg-gray-100 p-2 text-gray-600 transition hover:text-gray-600/75"
                 >
                   <IconMenu />
-                </svg>
-              </button>
+                </button>
+              </div>
             </div>
+
+            {/* boton hamburguesa de menu     */}
           </div>
         </div>
       </div>

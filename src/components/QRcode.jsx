@@ -1,34 +1,43 @@
+<<<<<<< HEAD
 import { useRef } from "react";
 import QRCode from "react-qr-code";
+=======
+import React from "react";
+import QRCodeSVG from "react-qr-code";
+>>>>>>> 73c92b908369129a3db70e6970104f157f497ddc
 
 const QRcode = () => {
-  const qrRef = useRef();
-
-  // Cambia esta URL por la de tu sitio web
+  // URL del sitio web
   const url = "https://www.google.com";
 
   const downloadQRCode = () => {
-    const canvas = qrRef.current.querySelector("canvas");
-    const pngUrl = canvas
-      .toDataURL("image/png")
-      .replace("image/png", "image/octet-stream");
-    const downloadLink = document.createElement("a");
-    downloadLink.href = pngUrl;
-    downloadLink.download = "qrcode.png";
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
+    const svg = document.getElementById("QRCode");
+    const svgData = new XMLSerializer().serializeToString(svg);
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    const img = new Image();
+
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+
+      // Convierte el canvas en un archivo PNG y crea el enlace de descarga
+      const pngFile = canvas.toDataURL("image/png");
+      const downloadLink = document.createElement("a");
+      downloadLink.download = "QRCode.png";
+      downloadLink.href = pngFile;
+      downloadLink.click();
+    };
+
+    // Convierte el SVG a formato de imagen
+    img.src = `data:image/svg+xml;base64,${btoa(svgData)}`;
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <QRCode
-        value={url}
-        size={200}
-        level="H"
-        includeMargin={true}
-        ref={qrRef}
-      />
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      {/* Renderiza el código QR en formato SVG */}
+      <QRCodeSVG id="QRCode" value={url} />
       <button
         onClick={downloadQRCode}
         className="mt-4 bg-blue-500 text-white p-2 rounded"
