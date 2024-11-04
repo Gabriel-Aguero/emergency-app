@@ -20,11 +20,12 @@ const Home = () => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {   
     e.preventDefault();
     try {
-      await login(user.email, user.password);
-      navigate("/formulario_de_datos");
+      await login(user.email, user.password);                
+      navigate("/formulario_de_datos", { state: { email: user.email } });
+
     } catch (error) {
       console.error("Error logging in: ", error);
     }

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState, useContext } from "react";
+import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import {
   useReactTable,
@@ -10,24 +10,22 @@ import {
   getFilteredRowModel,
 } from "@tanstack/react-table";
 import { IconAdd, IconDelete, IconEdit } from "../components/icons/Icons";
-import FormRegisterCart from "./FormRegisterCart";
 import Swal from "sweetalert2";
 import ModalDescartable from "./ModalDescartable";
 import ModalRegisterDescartable from "./ModalRegisterDescartable";
 
-const DescartableList = ({ descartablesList, idCarro }) => {
+const DescartableList = ({ descartablesList }) => {
   const { deleteDescartable, user } = useContext(AuthContext);
 
   const [sorting, setSorting] = useState([]);
   const [descartableFiltered, setDescartableFiltered] = useState("");
-  const [showFormRegisterInfo, setShowFormRegisterInfo] = useState(false);
+  
   const [dataDescartable, setDataDescartable] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalDescartable, setIsModalDescartable] = useState(false);
 
-  useEffect(() => {
-    setShowFormRegisterInfo(false);
-  }, [descartablesList]);
+  // useEffect(() => {    
+  // }, [descartablesList]);
 
   const handleEdit = (data) => {
     setDataDescartable(data);
@@ -63,11 +61,7 @@ const DescartableList = ({ descartablesList, idCarro }) => {
     setIsModalDescartable(true);
   };
 
-  const columns = [
-    // {
-    //   header: "ID",
-    //   accessorKey: "id",
-    // },
+  const columns = [    
     {
       header: "Material",
       accessorKey: "material",
@@ -130,11 +124,8 @@ const DescartableList = ({ descartablesList, idCarro }) => {
   });
 
   return (
-    <>
-      {showFormRegisterInfo ? (
-        <FormRegisterCart idCarro={idCarro} />
-      ) : (
-        <>
+          <>
+      
           <div className="min-w-60 p-10 flex flex-col gap-2 justify-start items-start">
             <div className="flex justify-start gap-2 items-center">
               {user ? (
@@ -149,7 +140,7 @@ const DescartableList = ({ descartablesList, idCarro }) => {
               )}
 
               <p className="text-sm text-gray-700 dark:text-gray-400 hidden">
-                {idCarro}
+                {descartablesList.idCarro}
               </p>
               {/* creamos el input para buscar por medicacion */}
               <input
@@ -293,13 +284,11 @@ const DescartableList = ({ descartablesList, idCarro }) => {
           />
 
           <ModalRegisterDescartable
-            idCarro={idCarro}
+            idCarro={descartablesList.idCarro}
             isModalDescartable={isModalDescartable}
             onClose={() => setIsModalDescartable(false)}
           />
-        </>
-      )}
-    </>
+        </>      
   );
 };
 

@@ -1,6 +1,5 @@
-import { useRef } from "react";
-import QRCode from "react-qr-code";
 import QRCodeSVG from "react-qr-code";
+
 
 const QRcode = () => {
   // URL del sitio web

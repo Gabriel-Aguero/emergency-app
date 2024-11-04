@@ -13,8 +13,8 @@ import FormResetPassword from "./pages/FormResetPassword.jsx";
 import About from "./pages/About.jsx";
 import FormRegisterCart from "./pages/FormRegisterCart.jsx";
 import FormInfoCart from "./pages/FormInfoCart.jsx";
+import MedicationList from "./pages/MedicationList.jsx";
 import QRcode from "./components/QRcode.jsx";
-import MedicacionList from "./pages/MedicationList.jsx";
 function App() {
   return (
     <>
@@ -33,8 +33,8 @@ function App() {
           }
         />
         <Route path="/register_info_cart" element={<FormRegisterCart />} />
-        <Route path="/details_cart" element={<MedicacionList />} />
         <Route path="/info_cart" element={<FormInfoCart />} />
+        <Route path="/contenido_del_carro" element={<MedicationList />} />
         <Route path="/reset_password" element={<FormResetPassword />} />
         <Route path="/about" element={<About />} />
         <Route path="/contacto" element={<Contacto />} />

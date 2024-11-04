@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { EyeIcon } from "../components/icons/Icons";
 import { dataServicio } from "../context/sector";
 import { SpinnerDiamond } from "spinners-react";
@@ -14,9 +14,8 @@ const BuscarCarroPorServicio = () => {
     getCarrosByServicio,
     carros,
     getMedicationByCarro,
-    getDescartableByCarro,
+    getDescartableByCarro,   
   } = useContext(AuthContext);
-  const navigate = useNavigate();
 
   useEffect(() => {
     setViewCarros(false);
@@ -25,6 +24,7 @@ const BuscarCarroPorServicio = () => {
     }
   }, [carros]);
 
+  
   // Muestra los carrros de paro por el servicio seleccionado
   const handleViewCar = async (servicioName) => {
     // aqui poner el spinner
@@ -38,10 +38,8 @@ const BuscarCarroPorServicio = () => {
 
   // Muestra el detalle del carro seleccionado, elementos descartables y medicaciones
   const handleViewDetailsCar = async (idCarro) => {
-    //aqui me lleva a la pagia donde esta el listado de medicaciones y descartables
-    navigate("/details_cart", { state: { idCarro: idCarro } });
-    //await getMedicationByCarro(idCarro);
-    //await getDescartableByCarro(idCarro);
+    await getMedicationByCarro(idCarro);
+    await getDescartableByCarro(idCarro);
   };
 
   return (
@@ -178,7 +176,7 @@ const BuscarCarroPorServicio = () => {
               )}
             </>
           )}
-        </main>
+        </main>   
       </div>
     </section>
   );

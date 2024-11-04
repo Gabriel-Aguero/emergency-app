@@ -1,4 +1,5 @@
 import { useState, useContext, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { IconAlertWarning } from "../components/icons/Icons";
@@ -6,9 +7,10 @@ import { dataServicio } from "../context/sector";
 import { SpinnerDiamond } from "spinners-react";
 import Swal from "sweetalert2";
 
+
 const FormData = () => {
  
-  const {
+  const {    
     user,
     logout,
     getUsuario,
@@ -17,6 +19,8 @@ const FormData = () => {
   } = useContext(AuthContext);
 
   // const [idCarro, setIdCarro] = useState(null);
+  const location = useLocation();
+  const { email } = location.state || {};
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const today = new Date().toLocaleDateString();
@@ -76,9 +80,8 @@ const FormData = () => {
   };
 
   
-useEffect(() => {        
-  dataUsuario();
-  console.log(usuario);
+useEffect(() => {          
+    dataUsuario();  
     if (user) {
       setLoading(false);
       navigate("/formulario_de_datos");
@@ -117,7 +120,7 @@ useEffect(() => {
                       </div>
                     ) : (
                         <h1 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl capitalize">
-                          Bienvenido {usuario.firstName} {usuario.lastName}{" "}                                           
+                          Bienvenido {usuario.firstName} {usuario.lastName}{" "}
                         </h1>                                          
                     )
                   }
@@ -294,7 +297,7 @@ useEffect(() => {
             <section className="relative flex h-96 items-end lg:col-span-5 lg:h-full xl:col-span-6">
               <img
                 alt="imagen de carro"
-                src="./public/carroParo.svg"
+                src="/carroParo.svg"
                 className="absolute inset-20 top-px sm:top-0 sm:left-0 object-cover"
               />
             </section>
