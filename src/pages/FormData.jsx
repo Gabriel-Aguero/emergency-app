@@ -78,6 +78,7 @@ const FormData = () => {
   
 useEffect(() => {        
   dataUsuario();
+  console.log(usuario);
     if (user) {
       setLoading(false);
       navigate("/formulario_de_datos");

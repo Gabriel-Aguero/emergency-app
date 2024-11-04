@@ -34,7 +34,7 @@ const FormInfoCart = () => {
   };
 
   const recuperarCarrosPorServicio = async () => {
-    await getCarrosByServicio(serviceName);
+   await getCarrosByServicio(serviceName);
   };
 
   useEffect(() => {
