@@ -14,6 +14,7 @@ import About from "./pages/About.jsx";
 import FormRegisterCart from "./pages/FormRegisterCart.jsx";
 import FormInfoCart from "./pages/FormInfoCart.jsx";
 import QRcode from "./components/QRcode.jsx";
+import MedicacionList from "./pages/MedicationList.jsx";
 function App() {
   return (
     <>
@@ -32,6 +33,7 @@ function App() {
           }
         />
         <Route path="/register_info_cart" element={<FormRegisterCart />} />
+        <Route path="/details_cart" element={<MedicacionList />} />
         <Route path="/info_cart" element={<FormInfoCart />} />
         <Route path="/reset_password" element={<FormResetPassword />} />
         <Route path="/about" element={<About />} />

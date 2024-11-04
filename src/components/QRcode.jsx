@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 import { useRef } from "react";
 import QRCode from "react-qr-code";
-=======
-import React from "react";
 import QRCodeSVG from "react-qr-code";
->>>>>>> 73c92b908369129a3db70e6970104f157f497ddc
 
 const QRcode = () => {
   // URL del sitio web
