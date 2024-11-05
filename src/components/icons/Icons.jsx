@@ -245,3 +245,48 @@ export const IconInfo = () => (
     <path d="M11 14h1v4h1" /><path d="M12 11h.01" />
   </svg>
 )
+
+export const IconCheck = ({color}) => (
+  <svg  xmlns="http://www.w3.org/2000/svg"  
+    width="24"  height="24"  viewBox="0 0 24 24"  
+    fill={color}  stroke="currentColor"  
+    strokeWidth="2"  strokeLinecap="round"  
+    strokeLinejoin="round"  
+    className="icon icon-tabler icons-tabler-outline icon-tabler-checks">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <path d="M7 12l5 5l10 -10" />
+      <path d="M2 12l5 5m5 -5l5 -5" />
+  </svg>
+)
+
+export const IconWarning = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+    <path d="M12.5 8a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0 -3z" />
+    <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12zM8.5 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+    <path d="M12 13a1.5 1.5 0 0 0 0 3a1.5 1.5 0 0 1 0 -3" />
+    <path d="M12.5 6a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0 -3z" />
+  </svg>
+) 
+
+export const IconDanger = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+    <path d="M12 9v2m0 4v.01" />
+    <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" />
+  </svg>
+) 

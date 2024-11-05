@@ -1,9 +1,19 @@
 import { Link } from "react-router-dom";
 import { IconMenu } from "./icons/Icons";
 import { useState } from "react";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
+  };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -119,23 +129,24 @@ const Navbar = () => {
           )}
 
           <div className="flex items-center gap-4">
-            <div className="sm:flex sm:gap-4">
-              {/* <Link
-                to="#home"
-                className="rounded-md bg-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow hover:bg-blue-600/75"
-                href="#"
-              >
-                Ingresar
-              </Link> */}
-
-              <div className="hidden sm:flex">
+            <div className="sm:flex sm:gap-4">              
+              <div className="hidden sm:flex gap-2">
                 <Link
                   to="/register"
-                  className="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-blue-600 hover:bg-blue-600 hover:text-white transition-all "
+                  className="rounded-md bg-gray-300 px-5 py-2.5 text-sm font-bold text-blue-600 hover:bg-blue-600 hover:text-white transition-all "
                   href="#"
                 >
                   Crear Cuenta
                 </Link>
+                
+                <button
+                  onClick={handleLogout}
+                  className="rounded-md bg-blue-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-blue-800 hover:text-white transition-all "
+                  href="#"
+                >
+                  Cerrar Sesión
+                </button>
+
               </div>
 
               {/* menu de navegación para dispositivos mobiles */}
