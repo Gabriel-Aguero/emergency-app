@@ -7,15 +7,12 @@ import { SpinnerDiamond } from "spinners-react";
 import { useNavigate } from "react-router-dom";
 
 const BuscarCarroPorServicio = () => {
-  // const [showMedicacionList, setShowMedicacionList] = useState(false);
   const [servicioName, setServicioName] = useState("");
   const [viewCarros, setViewCarros] = useState(false);
   const [loading, setLoading] = useState(false);
   const {
     getCarrosByServicio,
     carros,
-    getMedicationByCarro,
-    getDescartableByCarro,
   } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -36,13 +33,6 @@ const BuscarCarroPorServicio = () => {
       setLoading(false);
     }
   };
-
-  // Muestra el detalle del carro seleccionado, elementos descartables y medicaciones
-  // const handleViewDetailsCar = async (idCarro) => {
-
-  //   await getMedicationByCarro(idCarro);
-  //   await getDescartableByCarro(idCarro);
-  // };
 
   const handleViewDetailsMedication = async (idCarro) => {
     // activo el spinner
