@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
+import { dataServicio } from "../context/sector";
 
 const Register = () => {
   const [user, setUser] = useState({
@@ -48,6 +49,8 @@ const Register = () => {
       console.error("Error:", error.message);
     }
   };
+
+  const servicioSelect = dataServicio.sort((a, b) => a.order - b.order);
 
   return (
     <section className="bg-white">
@@ -128,19 +131,30 @@ const Register = () => {
                 />
               </div>
 
+              {/* servicio */}
               <div className="col-span-6 sm:col-span-3">
-                <label className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="servicioName"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Servicio
                 </label>
-
-                <input
-                  type="text"
+                <select
                   name="servicioName"
-                  placeholder="Servicio"
                   onChange={handleChangeUsers}
                   className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
                   required
-                />
+                  // onChange={(e) => setServicioName(e.target.value)}
+                >
+                  <option value="" disabled>
+                    Seleccione un Servicio
+                  </option>
+                  {servicioSelect.map((servicio) => (
+                    <option key={servicio.id} value={servicio.nombre}>
+                      {servicio.nombre.toUpperCase()}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="col-span-6 sm:col-span-3">

@@ -7,34 +7,36 @@ import { useNavigate } from "react-router-dom";
 import ModalCarro from "./ModalCarro";
 
 const FormInfoCart = () => {
-  const {        
-    carros,
-    getCarrosByServicio,
-  } = useContext(AuthContext);
+  const { carros, getCarrosByServicio } = useContext(AuthContext);
 
   const location = useLocation();
   const { serviceName } = location.state || {};
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCarros, setSelectedCarros] = useState();      
+  const [selectedCarros, setSelectedCarros] = useState();
   const navigate = useNavigate();
 
   // Muestra el formulario para editar el carro seleccionado
   const handleEdit = (carro) => {
     setIsModalOpen(true);
     setSelectedCarros(carro);
-  };   
-
-  const recuperarCarrosPorServicio = async () => {
-   await getCarrosByServicio(serviceName);
   };
 
-  useEffect( () => {
+  const recuperarCarrosPorServicio = async () => {
+    await getCarrosByServicio(serviceName);
+  };
+
+  useEffect(() => {
     recuperarCarrosPorServicio();
   }, []);
 
-  const handleViewDetailsCar = async (idCarro) => {
-    // activo el spinner         
-    navigate("/contenido_del_carro", {state: {idCarro: idCarro}});    
+  const handleViewDetailsMedication = async (idCarro) => {
+    // activo el spinner
+    navigate("/lista_medicacion", { state: { idCarro: idCarro } });
+  };
+
+  const handleViewDetailsDescartable = async (idCarro) => {
+    // activo el spinner
+    navigate("/lista_descartable", { state: { idCarro: idCarro } });
   };
 
   return (
@@ -50,79 +52,119 @@ const FormInfoCart = () => {
       </span>
       <div className="mb-6 mt-5 flex flex-col md:flex md:flex-row gap-4 ">
         {carros.map((carro) => (
-         
-         <article key={carro.id} className="rounded-xl border border-gray-700 bg-gray-800 p-6">
-          <div className="flex items-center gap-4">
-            <img
-              alt=""
-              src="/carts.svg"
-              className="size-16 object-cover"
-            />
+          <article
+            key={carro.id}
+            className="rounded-xl border border-gray-700 bg-gray-800 p-6"
+          >
+            <div className="flex items-center gap-4">
+              <img alt="" src="/carts.svg" className="size-16 object-cover" />
 
-            <div>
-              <h3 className="text-lg font-medium text-white">Número de Carro: {carro.numCarro}</h3>
+              <div>
+                <h3 className="text-lg font-medium text-white">
+                  Número de Carro: {carro.numCarro}
+                </h3>
 
-              <div className="flow-root mt-2">
-                  <ul className="-m-1 flex flex-wrap justify-between gap-2">
+                <div className="flow-root mt-2">
+                  <ul className="-m-1 flex flex-col flex-wrap justify-between gap-2">
                     <li className="p-1 leading-none">
-                      <button href="#" className="text-md font-medium text-orange-300" onClick={ () => handleViewDetailsCar(carro.id) }> Ver detalle </button>
+                      <button
+                        href="#"
+                        className="text-md font-medium text-orange-300"
+                        onClick={() => handleViewDetailsMedication(carro.id)}
+                      >
+                        Lista de medicación
+                      </button>
+                    </li>
+                    <li className="p-1 leading-none">
+                      <button
+                        href="#"
+                        className="text-md font-medium text-orange-300"
+                        onClick={() => handleViewDetailsDescartable(carro.id)}
+                      >
+                        Lista de descartable
+                      </button>
                     </li>
 
                     <li className="p-1 leading-none">
-                    <button href="#" className="text-md font-medium text-orange-300" onClick={ () => handleEdit(carro) }> Editar </button>
+                      <button
+                        href="#"
+                        className="text-md font-medium text-orange-300"
+                        onClick={() => handleEdit(carro)}
+                      >
+                        Editar información del carro
+                      </button>
                     </li>
-                    
                   </ul>
+                </div>
               </div>
             </div>
-          </div>
 
-          <ul className="mt-4 space-y-2">
-            <li>
-                <a href="#" className="block h-full rounded-lg border border-gray-700 p-4 hover:border-cyan-600">
-                  <strong className="font-medium text-white">Fecha de Inicio</strong>
+            <ul className="mt-4 space-y-2">
+              <li>
+                <a
+                  href="#"
+                  className="block h-full rounded-lg border border-gray-700 p-4 hover:border-cyan-600"
+                >
+                  <strong className="font-medium text-white">
+                    Fecha de Inicio
+                  </strong>
 
                   <p className="mt-1 text-xs font-medium text-gray-300">
                     {carro.fechaInicio}
                   </p>
                 </a>
-            </li>
-            
-            <li>
-                <a href="#" className="block h-full rounded-lg border border-gray-700 p-4 hover:border-cyan-600">
-                  <strong className="font-medium text-white">Precinto Medicación</strong>
+              </li>
+
+              <li>
+                <a
+                  href="#"
+                  className="block h-full rounded-lg border border-gray-700 p-4 hover:border-cyan-600"
+                >
+                  <strong className="font-medium text-white">
+                    Precinto Medicación
+                  </strong>
 
                   <p className="mt-1 text-xs font-medium text-gray-300">
                     {carro.precintoMedicacion}
                   </p>
                 </a>
-            </li>
+              </li>
 
-            <li>
-                <a href="#" className="block h-full rounded-lg border border-gray-700 p-4 hover:border-cyan-600">
-                  <strong className="font-medium text-white">Precinto Descartable</strong>
+              <li>
+                <a
+                  href="#"
+                  className="block h-full rounded-lg border border-gray-700 p-4 hover:border-cyan-600"
+                >
+                  <strong className="font-medium text-white">
+                    Precinto Descartable
+                  </strong>
 
                   <p className="mt-1 text-xs font-medium text-gray-300">
                     {carro.precintoDescartable}
                   </p>
                 </a>
-            </li>
-            
-            <li>
-                <a href="#" className="block h-full rounded-lg border border-gray-700 p-4 hover:border-cyan-600">
-                  <strong className="font-medium text-white">Fecha Último Control</strong>
+              </li>
+
+              <li>
+                <a
+                  href="#"
+                  className="block h-full rounded-lg border border-gray-700 p-4 hover:border-cyan-600"
+                >
+                  <strong className="font-medium text-white">
+                    Fecha Último Control
+                  </strong>
 
                   <p className="mt-1 text-xs font-medium text-gray-300">
                     {carro.fechaUltimoControl}
                   </p>
                 </a>
-            </li>
-          </ul>
-         </article>
+              </li>
+            </ul>
+          </article>
         ))}
       </div>
-      {/* aqui tiene que ir la tabla de medicacion y material descartable   */}      
-      <ModalCarro 
+      {/* aqui tiene que ir la tabla de medicacion y material descartable   */}
+      <ModalCarro
         isModalOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         selectedCarros={selectedCarros}
@@ -132,4 +174,3 @@ const FormInfoCart = () => {
 };
 
 export default FormInfoCart;
-

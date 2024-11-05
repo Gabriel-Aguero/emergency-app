@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { EyeIcon } from "../components/icons/Icons";
 import { dataServicio } from "../context/sector";
 import { SpinnerDiamond } from "spinners-react";
+import { useNavigate } from "react-router-dom";
 
 const BuscarCarroPorServicio = () => {
   // const [showMedicacionList, setShowMedicacionList] = useState(false);
@@ -14,8 +15,9 @@ const BuscarCarroPorServicio = () => {
     getCarrosByServicio,
     carros,
     getMedicationByCarro,
-    getDescartableByCarro,   
+    getDescartableByCarro,
   } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setViewCarros(false);
@@ -24,7 +26,6 @@ const BuscarCarroPorServicio = () => {
     }
   }, [carros]);
 
-  
   // Muestra los carrros de paro por el servicio seleccionado
   const handleViewCar = async (servicioName) => {
     // aqui poner el spinner
@@ -37,9 +38,15 @@ const BuscarCarroPorServicio = () => {
   };
 
   // Muestra el detalle del carro seleccionado, elementos descartables y medicaciones
-  const handleViewDetailsCar = async (idCarro) => {
-    await getMedicationByCarro(idCarro);
-    await getDescartableByCarro(idCarro);
+  // const handleViewDetailsCar = async (idCarro) => {
+
+  //   await getMedicationByCarro(idCarro);
+  //   await getDescartableByCarro(idCarro);
+  // };
+
+  const handleViewDetailsMedication = async (idCarro) => {
+    // activo el spinner
+    navigate("/lista_medicacion", { state: { idCarro: idCarro } });
   };
 
   return (
@@ -157,7 +164,9 @@ const BuscarCarroPorServicio = () => {
                         <div className="flex items-center justify-between gap-4">
                           <button
                             className="inline-flex items-center px-3 m-2 py-2 gap-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                            onClick={() => handleViewDetailsCar(carro.id)}
+                            onClick={() =>
+                              handleViewDetailsMedication(carro.id)
+                            }
                           >
                             Ver Detalle
                             <EyeIcon />
@@ -176,7 +185,7 @@ const BuscarCarroPorServicio = () => {
               )}
             </>
           )}
-        </main>   
+        </main>
       </div>
     </section>
   );

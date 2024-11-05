@@ -15,6 +15,7 @@ import FormRegisterCart from "./pages/FormRegisterCart.jsx";
 import FormInfoCart from "./pages/FormInfoCart.jsx";
 import MedicationList from "./pages/MedicationList.jsx";
 import QRcode from "./components/QRcode.jsx";
+import DescartableList from "./pages/DescartableList.jsx";
 function App() {
   return (
     <>
@@ -34,7 +35,8 @@ function App() {
         />
         <Route path="/register_info_cart" element={<FormRegisterCart />} />
         <Route path="/info_cart" element={<FormInfoCart />} />
-        <Route path="/contenido_del_carro" element={<MedicationList />} />
+        <Route path="/lista_medicacion" element={<MedicationList />} />
+        <Route path="/lista_descartable" element={<DescartableList />} />
         <Route path="/reset_password" element={<FormResetPassword />} />
         <Route path="/about" element={<About />} />
         <Route path="/contacto" element={<Contacto />} />

@@ -1,5 +1,4 @@
 import { useState, useContext, useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { IconAlertWarning } from "../components/icons/Icons";
@@ -7,20 +6,11 @@ import { dataServicio } from "../context/sector";
 import { SpinnerDiamond } from "spinners-react";
 import Swal from "sweetalert2";
 
-
 const FormData = () => {
- 
-  const {    
-    user,
-    logout,
-    getUsuario,
-    addCarro,
-    usuario,   
-  } = useContext(AuthContext);
+  const { user, logout, getUsuario, addCarro, usuario } =
+    useContext(AuthContext);
 
   // const [idCarro, setIdCarro] = useState(null);
-  const location = useLocation();
-  const { email } = location.state || {};
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const today = new Date().toLocaleDateString();
@@ -31,10 +21,10 @@ const FormData = () => {
     precintoMedicacion: "",
     precintoDescartable: "",
     fechaInicio: "",
-    fechaUltimoControl: today || "",  
+    fechaUltimoControl: today || "",
     servicioName: "",
   });
-  
+
   // Función para cerrar sesión
   const handleLogout = async () => {
     await logout();
@@ -47,10 +37,10 @@ const FormData = () => {
     await getUsuario(email);
   };
 
-  // Envio de datos del carro al back  
+  // Envio de datos del carro al back
   const cargarCarro = async (e) => {
     e.preventDefault();
-    const id = await addCarro(cartData);    
+    const id = await addCarro(cartData);
     Swal.fire({
       position: "top-center",
       icon: "success",
@@ -60,7 +50,7 @@ const FormData = () => {
       timer: 3000,
     });
 
-    navigate("/register_info_cart", {state: {idCarro: id}});
+    navigate("/register_info_cart", { state: { idCarro: id } });
   };
 
   // Capturo los datos del formulario de registro de carro de paro
@@ -75,13 +65,12 @@ const FormData = () => {
   };
 
   // Muestra el detalle de los carros registrados
-  const handleViewCar = async () => {      
-    navigate("/info_cart", {state: {serviceName: usuario.servicioName}});    
+  const handleViewCar = async () => {
+    navigate("/info_cart", { state: { serviceName: usuario.servicioName } });
   };
 
-  
-useEffect(() => {          
-    dataUsuario();  
+  useEffect(() => {
+    dataUsuario();
     if (user) {
       setLoading(false);
       navigate("/formulario_de_datos");
@@ -91,7 +80,7 @@ useEffect(() => {
     <>
       {user && (
         <section className="bg-white">
-          <div className="flex flex-col lg:grid lg:min-h-screen lg:grid-cols-12">            
+          <div className="flex flex-col lg:grid lg:min-h-screen lg:grid-cols-12">
             <main className="flex flex-col mt-16 items-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
               <div className="max-w-xl lg:max-w-3xl">
                 <div className="relative -mt-16 md:mt-0">
@@ -107,23 +96,21 @@ useEffect(() => {
                     />
                   </a>
 
-                  {
-                    loading ? (
-                      <div className="flex justify-center items-center mt-20 m-20">
-                        <SpinnerDiamond
-                          size={150}
-                          thickness={100}
-                          speed={200}
-                          color="#09f"
-                          secondaryColor="rgba(0, 0, 0, 0.44)"
-                        />
-                      </div>
-                    ) : (
-                        <h1 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl capitalize">
-                          Bienvenido {usuario.firstName} {usuario.lastName}{" "}
-                        </h1>                                          
-                    )
-                  }
+                  {loading ? (
+                    <div className="flex justify-center items-center mt-20 m-20">
+                      <SpinnerDiamond
+                        size={150}
+                        thickness={100}
+                        speed={200}
+                        color="#09f"
+                        secondaryColor="rgba(0, 0, 0, 0.44)"
+                      />
+                    </div>
+                  ) : (
+                    <h1 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl capitalize">
+                      Bienvenido {usuario.firstName} {usuario.lastName}{" "}
+                    </h1>
+                  )}
 
                   <p className="mt-4 leading-relaxed text-gray-500">
                     En este formulario podrás registrar la información sobre el
@@ -131,7 +118,11 @@ useEffect(() => {
                   </p>
                 </div>
 
-                <form action="#" className="mt-8 grid grid-cols-6 gap-6" onSubmit={cargarCarro}>
+                <form
+                  action="#"
+                  className="mt-8 grid grid-cols-6 gap-6"
+                  onSubmit={cargarCarro}
+                >
                   {/* fecha de inicio  */}
                   <div className="col-span-6 sm:col-span-3">
                     <label
@@ -168,7 +159,9 @@ useEffect(() => {
                       required
                       // onChange={(e) => setServicioName(e.target.value)}
                     >
-                      <option value="" disabled>Seleccione un Servicio</option>
+                      <option value="" disabled>
+                        Seleccione un Servicio
+                      </option>
                       {dataServicio.map((servicio) => (
                         <option key={servicio.id} value={servicio.nombre}>
                           {servicio.nombre.toUpperCase()}
@@ -270,7 +263,7 @@ useEffect(() => {
                   <div className="col-span-6 flex flex-col gap-4 sm:flex sm:flex-row sm:items-center sm:gap-4">
                     <button
                       className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-8 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
-                      type="submit"                      
+                      type="submit"
                     >
                       Guardar
                     </button>
@@ -292,7 +285,7 @@ useEffect(() => {
                   </div>
                 </form>
               </div>
-            </main>                          
+            </main>
 
             <section className="relative flex h-96 items-end lg:col-span-5 lg:h-full xl:col-span-6">
               <img
@@ -301,11 +294,9 @@ useEffect(() => {
                 className="absolute inset-20 top-px sm:top-0 sm:left-0 object-cover"
               />
             </section>
-      
           </div>
         </section>
       )}
-          
     </>
   );
 };
