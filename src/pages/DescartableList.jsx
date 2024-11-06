@@ -7,24 +7,46 @@ import { Link, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 import ModalDescartable from "./ModalDescartable";
 import ModalRegisterDescartable from "./ModalRegisterDescartable";
+import DoneAllIcon from '@mui/icons-material/DoneAll';
+import WarningIcon from '@mui/icons-material/Warning';
+import { green, pink, yellow } from "@mui/material/colors";
+import NotificationImportantIcon from '@mui/icons-material/NotificationImportant';
 
 const DescartableList = () => {
   const location = useLocation();
   const { idCarro } = location.state || {};
-  const { deleteDescartable, getDescartableByCarro, descartables } =
+  const { deleteDescartable, getDescartableByCarro, descartables, user } =
     useContext(AuthContext);
   const [dataDescartable, setDataDescartable] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalDescartable, setIsModalDescartable] = useState(false);
+  const [viewListDescartable, setViewListDescartable] = useState(false);
+  // useEffect(() => {
+  //   console.log(descartables);
+  //   getListDescartable();
+  // }, [descartables]);
 
-  useEffect(() => {
-    console.log(descartables);
-    getListDescartable();
-  }, [descartables]);
+  const getDaysUntilExpiration = (expirationDate) => {
+    const today = new Date();
+    const expDate = new Date(expirationDate);
+    const diffTime = expDate - today;
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  };
+
+  const getColorAndIcon = (days) => {
+    if (days < 20) {
+      return { bgColor: "bg-red-400/70", icon: <NotificationImportantIcon sx={{ color: pink[900] }} /> };
+    } else if (days >= 20 && days < 30) {
+      return { bgColor: "bg-yellow-300", icon: <WarningIcon sx={{ color: yellow[900] }} /> };
+    } else if (days >= 30 ) {
+      return { bgColor: "bg-emerald-300", icon: <DoneAllIcon sx={{ color: green[900] }} /> };
+    }
+  };
 
   const getListDescartable = async () => {
     await getDescartableByCarro(idCarro);
-  };
+    setViewListDescartable(true);
+  };  
 
   const handleEdit = (data) => {
     setDataDescartable(data);
@@ -63,61 +85,98 @@ const DescartableList = () => {
   return (
     <>
       <div className="flex flex-col items-center justify-center min-h-screen">
+      
         <div className="flex flex-col items-center justify-center gap-4 ">
           <h1 className="text-xl font-bold text-gray-900/60 sm:text-3xl md:text-3xl mt-10">
             Lista de Medicaciones
           </h1>
-          <Link to="/info_cart" className="text-blue-500 hover:underline">
-            Volver al listado de carros
-          </Link>
+          <button
+            className="bg-blue-500 text-white rounded-md flex gap-2 p-2 hover:bg-blue-700 transition duration-200"
+            onClick={()=>getListDescartable()}
+          >
+            Ver lista de descartables
+          </button>
+          { user ? (
+            <>
+            <div className="flex flex-col items-center justify-center gap-4">
+              <Link to="/info_cart" className="text-blue-500 hover:underline">
+                Volver al listado de carros
+              </Link>              
+              
+              <button
+                className="bg-blue-500 text-white rounded-md flex gap-2 p-2 hover:bg-blue-700 transition duration-200"
+                onClick={handleAdd}
+              >
+                Agregar nueva Medicación <IconAdd />
+              </button>              
+            </div>
+            </>
+          ):(
+            <>
+            <Link to="/check_carros" className="text-blue-600 text-lg font-bold hover:text-blue-800  hover:underline">
+                Volver al listado de carros
+              </Link>             
+            </>
+          )
+         }
+          
         </div>
-        <button
-          className="bg-blue-500 mt-5 text-white rounded-md flex gap-2 p-1 hover:bg-blue-700 transition duration-200"
-          onClick={handleAdd}
-        >
-          Agregar nueva Medicación <IconAdd />
-        </button>
-        <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-7xl w-full">
-          {descartables.map((list) => {
-            return (
-              <>
-                <div key={list.id} className="mx-auto p-4 mt-5">
-                  <div className="bg-white shadow-md r shadow-slate-800/80 rounded-lg p-4 mb-4 max-w-md transition-all duration-300 hover:shadow-blue-800/60">
-                    <h2 className="text-lg font-bold text-gray-800 border-b capitalize">
-                      {list.material}
-                    </h2>
-                    <div className="mt-2 text-gray-600">
-                      <p>
-                        <strong>Fecha de vencimiento:</strong>{" "}
-                        {list.matExpiration}
-                      </p>
-                      <p>
-                        <strong>Cantidad:</strong> {list.matQuantity}
-                      </p>
-                      <p>
-                        <strong>Número de lote:</strong> {list.lot}
-                      </p>
-                    </div>
-                    <div className="mt-4 flex justify-between gap-3">
-                      <button
-                        onClick={() => handleEdit(list)}
-                        className="bg-blue-500 text-white font-semibold py-1 px-3 rounded hover:bg-blue-600 transition duration-300"
-                      >
-                        Editar
-                      </button>
-                      <button
-                        onClick={() => handleDelete(list.id)}
-                        className="bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600 transition duration-300"
-                      >
-                        Eliminar
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </>
-            );
-          })}
-        </div>
+
+        { viewListDescartable && (
+          <>
+            <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-7xl w-full">
+              {descartables.map((list) => {
+
+                const daysUntilExpiration = getDaysUntilExpiration(list.matExpiration);
+                const { bgColor, icon } = getColorAndIcon(daysUntilExpiration);
+                return (                  
+                    <div key={list.id} className="mx-auto p-4 mt-5">
+                      <div className={`bg-white shadow-md r ${bgColor} shadow-slate-800/80 rounded-lg p-4 mb-4 max-w-md transition-all duration-300 hover:shadow-blue-800/60`}>
+                        <h2 className="text-lg font-bold text-gray-800 border-b capitalize flex gap-2">
+                          {icon}
+                          {list.material}
+                        </h2>
+                        <div className="mt-2 text-gray-600">
+                          <p>
+                            <strong>Fecha de vencimiento:</strong>{" "}
+                            {list.matExpiration}
+                          </p>
+                          <p>
+                            <strong>Cantidad:</strong> {list.matQuantity}
+                          </p>
+                          <p>
+                            <strong>Número de lote:</strong> {list.lot}
+                          </p>
+                        </div>
+                        {user ? (
+                            <>
+                              <div className="mt-4 flex justify-between gap-3">
+                                <button
+                                  onClick={() => handleEdit(list)}
+                                  className="bg-blue-500 text-white font-semibold py-1 px-3 rounded hover:bg-blue-600 transition duration-300"
+                                >
+                                  Editar
+                                </button>
+                                <button
+                                  onClick={() => handleDelete(list.id)}
+                                  className="bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600 transition duration-300"
+                                >
+                                  Eliminar
+                                </button>
+                              </div>
+                            </>
+                          ):(
+                            <>                      
+                            </>
+                          )
+                        }
+                      </div>
+                    </div>                  
+                );
+              })}
+            </div>
+          </>
+        )}
       </div>
 
       <ModalDescartable

@@ -39,6 +39,12 @@ const BuscarCarroPorServicio = () => {
     navigate("/lista_medicacion", { state: { idCarro: idCarro } });
   };
 
+  const handleViewDetailsDescartable = async (idCarro) => {
+    // activo el spinner
+    navigate("/lista_descartable", { state: { idCarro: idCarro } });
+  };
+  
+
   return (
     <section className="bg-white">
       <div className="flex items-center justify-center lg:min-h-screen">
@@ -158,7 +164,16 @@ const BuscarCarroPorServicio = () => {
                               handleViewDetailsMedication(carro.id)
                             }
                           >
-                            Ver Detalle
+                            Lista de medicación
+                            <EyeIcon />
+                          </button>
+                          <button
+                            className="inline-flex items-center px-3 m-2 py-2 gap-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            onClick={() =>
+                              handleViewDetailsDescartable(carro.id)
+                            }
+                          >
+                            Lista de descartables
                             <EyeIcon />
                           </button>
                         </div>
