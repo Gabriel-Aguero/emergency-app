@@ -15,9 +15,9 @@ import NotificationImportantIcon from '@mui/icons-material/NotificationImportant
 
 
 
-const MedicacionList = () => {
-  const location = useLocation();
-  const { idCarro } = location.state || {};
+const MedicacionList = ({idCarro}) => {
+  // const location = useLocation();
+  // const { idCarro } = location.state || {};
   const { deleteMedication, getMedicationByCarro, medications, user } =
     useContext(AuthContext);
   const [dataMedicacion, setDataMedicacion] = useState({});
@@ -39,11 +39,11 @@ const MedicacionList = () => {
 
   const getColorAndIcon = (days) => {
     if (days < 20) {
-      return { bgColor: "bg-red-400/70", icon: <NotificationImportantIcon sx={{ color: pink[800] }} /> };
+      return { bgColor: "bg-red-700/40", icon: <NotificationImportantIcon sx={{ color: pink[800] }} /> };
     } else if (days >= 20 && days < 30) {
       return { bgColor: "bg-yellow-200", icon: <WarningIcon sx={{ color: yellow[900] }} /> };
     } else if (days >= 30 ) {
-      return { bgColor: "bg-emerald-300", icon: <DoneAllIcon sx={{ color: green[900] }} /> };
+      return { bgColor: "bg-emerald-400/40", icon: <DoneAllIcon sx={{ color: green[900] }} /> };
     }
   };
 
@@ -98,28 +98,17 @@ const MedicacionList = () => {
             onClick={()=> getListMedication()}>
             Ver lista de mediciones 
           </button>          
-         { user ? (
-            <>
-            <div className="flex flex-col items-center justify-center gap-4">
-              <Link to="/info_cart" className="text-blue-500 hover:underline">
-                Volver al listado de carros
-              </Link>              
+     
+         { user && (            
+            <div className="flex flex-col items-center justify-center gap-4">                          
               <button
                 className="bg-blue-500 text-white rounded-md flex gap-2 p-2 hover:bg-blue-700 transition duration-200"
                 onClick={handleAdd}
               >
                 Agregar nueva Medicación <IconAdd />
               </button>              
-            </div>
-            </>
-          ):(
-            <>
-            <Link to="/check_carros" className="text-blue-600 text-lg font-bold hover:text-blue-800  hover:underline">
-                Volver al listado de carros
-              </Link>             
-            </>
-          )
-         }
+            </div>            
+          )}
         </div>
 
         { viewListMedicacion && (

@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import ModalCarro from "./ModalCarro";
+import { EyeIcon, IconEdit } from "../components/icons/Icons";
 
 const FormInfoCart = () => {
   const { carros, getCarrosByServicio } = useContext(AuthContext);
@@ -14,6 +15,9 @@ const FormInfoCart = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCarros, setSelectedCarros] = useState();
   const navigate = useNavigate();
+
+  // ordeno los carros por fecha de creacion 
+  const sortedCarros = [...carros].sort((a, b) => a.fechaInicio.localeCompare(b.fechaInicio));
 
   // Muestra el formulario para editar el carro seleccionado
   const handleEdit = (carro) => {
@@ -29,14 +33,9 @@ const FormInfoCart = () => {
     recuperarCarrosPorServicio();
   }, []);
 
-  const handleViewDetailsMedication = async (idCarro) => {
+  const handleViewDetails = async (idCarro) => {
     // activo el spinner
-    navigate("/lista_medicacion", { state: { idCarro: idCarro } });
-  };
-
-  const handleViewDetailsDescartable = async (idCarro) => {
-    // activo el spinner
-    navigate("/lista_descartable", { state: { idCarro: idCarro } });
+    navigate("/elementos_del_carro", { state: { idCarro: idCarro } });
   };
 
   return (
@@ -50,117 +49,72 @@ const FormInfoCart = () => {
       <span className="text-xl font-semibold">
         Se han registrado {carros.length ? carros.length : "..."} Carros de paro{" "}
       </span>
-      <div className="mb-6 mt-5 flex flex-col md:flex md:flex-row gap-4 ">
-        {carros.map((carro) => (
-          <article
-            key={carro.id}
-            className="rounded-xl border border-gray-700 bg-gray-800 p-6"
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 mx-auto mt-5">
+        {sortedCarros.map((carro) => (
+            <div
+              key={carro.id}
+              className="min-w-xl p-6 mb-5 flex flex-col bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
           >
-            <div className="flex items-center gap-4">
-              <img alt="" src="/carts.svg" className="size-16 object-cover" />
+            <h5 className="mb-2 text-2xl font-bold border-b-2 border-slate-400 tracking-tight text-gray-900 dark:text-white pb-2">
+              Información del Carro 
+            </h5>
 
-              <div>
-                <h3 className="text-lg font-medium text-white">
-                  Número de Carro: {carro.numCarro}
-                </h3>
-
-                <div className="flow-root mt-2">
-                  <ul className="-m-1 flex flex-col flex-wrap justify-between gap-2">
-                    <li className="p-1 leading-none">
-                      <button
-                        href="#"
-                        className="text-md font-medium text-orange-300"
-                        onClick={() => handleViewDetailsMedication(carro.id)}
-                      >
-                        Lista de medicación
-                      </button>
-                    </li>
-                    <li className="p-1 leading-none">
-                      <button
-                        href="#"
-                        className="text-md font-medium text-orange-300"
-                        onClick={() => handleViewDetailsDescartable(carro.id)}
-                      >
-                        Lista de descartable
-                      </button>
-                    </li>
-
-                    <li className="p-1 leading-none">
-                      <button
-                        href="#"
-                        className="text-md font-medium text-orange-300"
-                        onClick={() => handleEdit(carro)}
-                      >
-                        Editar información del carro
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+            <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700 mt-2">
+              <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                Número de Carro:
+              </p>
+              <p>{carro.numCarro}</p>
             </div>
 
-            <ul className="mt-4 space-y-2">
-              <li>
-                <a
-                  href="#"
-                  className="block h-full rounded-lg border border-gray-700 p-4 hover:border-cyan-600"
-                >
-                  <strong className="font-medium text-white">
-                    Fecha de Inicio
-                  </strong>
+            <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
+              <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                Fecha Inicio:
+              </p>
+              {carro.fechaInicio}
+            </div>
 
-                  <p className="mt-1 text-xs font-medium text-gray-300">
-                    {carro.fechaInicio}
-                  </p>
-                </a>
-              </li>
+            <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
+              <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                Precinto Sección Medicación:
+              </p>
+              <p>{carro.precintoMedicacion}</p>
+            </div>
 
-              <li>
-                <a
-                  href="#"
-                  className="block h-full rounded-lg border border-gray-700 p-4 hover:border-cyan-600"
-                >
-                  <strong className="font-medium text-white">
-                    Precinto Medicación
-                  </strong>
+            <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
+              <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                Precinto Sección Descartable:
+              </p>
+              <p>{carro.precintoDescartable}</p>
+            </div>
 
-                  <p className="mt-1 text-xs font-medium text-gray-300">
-                    {carro.precintoMedicacion}
-                  </p>
-                </a>
-              </li>
+            <div className="flex justify-between gap-4 border-b border-gray-200 dark:border-gray-700">
+              <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                Fecha Último Control:
+              </p>
+              <p>{carro.fechaUltimoControl}</p>
+            </div>
 
-              <li>
-                <a
-                  href="#"
-                  className="block h-full rounded-lg border border-gray-700 p-4 hover:border-cyan-600"
-                >
-                  <strong className="font-medium text-white">
-                    Precinto Descartable
-                  </strong>
-
-                  <p className="mt-1 text-xs font-medium text-gray-300">
-                    {carro.precintoDescartable}
-                  </p>
-                </a>
-              </li>
-
-              <li>
-                <a
-                  href="#"
-                  className="block h-full rounded-lg border border-gray-700 p-4 hover:border-cyan-600"
-                >
-                  <strong className="font-medium text-white">
-                    Fecha Último Control
-                  </strong>
-
-                  <p className="mt-1 text-xs font-medium text-gray-300">
-                    {carro.fechaUltimoControl}
-                  </p>
-                </a>
-              </li>
-            </ul>
-          </article>
+            <div className="flex items-center justify-between gap-4">
+              <button
+                className="inline-flex items-center px-3 m-2 py-2 gap-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                onClick={() =>
+                  handleViewDetails(carro.id)
+                }
+              >
+                Lista de medicación
+                <EyeIcon />
+              </button>
+              <button
+                className="inline-flex items-center px-3 m-2 py-2 gap-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                onClick={() =>
+                  handleEdit(carro)
+                }
+              >
+                Editar 
+                <IconEdit />
+              </button>
+            </div>
+            </div>
         ))}
       </div>
       {/* aqui tiene que ir la tabla de medicacion y material descartable   */}

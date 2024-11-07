@@ -84,7 +84,7 @@ const DescartableList = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center min-h-screen">
+      <div className="flex flex-col items-center min-h-screen">
       
         <div className="flex flex-col items-center justify-center gap-4 ">
           <h1 className="text-xl font-bold text-gray-900/60 sm:text-3xl md:text-3xl mt-10">
@@ -96,13 +96,10 @@ const DescartableList = () => {
           >
             Ver lista de descartables
           </button>
+        
           { user ? (
             <>
-            <div className="flex flex-col items-center justify-center gap-4">
-              <Link to="/info_cart" className="text-blue-500 hover:underline">
-                Volver al listado de carros
-              </Link>              
-              
+            <div className="flex flex-col items-center justify-center gap-4">             
               <button
                 className="bg-blue-500 text-white rounded-md flex gap-2 p-2 hover:bg-blue-700 transition duration-200"
                 onClick={handleAdd}

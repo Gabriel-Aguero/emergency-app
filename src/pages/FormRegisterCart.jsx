@@ -11,8 +11,8 @@ const FormRegisterCart = () => {
   const { idCarro } = location.state || {};
   const { addMedication, addDescartable } = useContext(AuthContext);
 
-  const sortedMedicacion = dbMedication.sort((a, b) => a.order - b.order);
-  const sortedDescartable = dbDescartable.sort((a, b) => a.order - b.order);
+  const sortedMedicacion = [...dbMedication].sort((a, b) => a.medication.localeCompare(b.medication));
+  const sortedDescartable = [...dbDescartable].sort((a, b) => a.descripcion.localeCompare(b.descripcion));  
 
   // variables para el formulario de medicación
   const [medicationData, setMedicationData] = useState({
@@ -105,7 +105,7 @@ const FormRegisterCart = () => {
       <div className="max-w-xl lg:max-w-3xl">
         <div className="mt-5">
           <h1 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
-            Complete la Información con el contenido del carro de Emergencia
+            Complete la Información con el contenido del carro de paro
           </h1>
 
           <p className="mt-4 leading-relaxed text-gray-500 mb-2">
@@ -121,6 +121,8 @@ const FormRegisterCart = () => {
           </Link>
         </div>
 
+            
+        {/* ******************* Seccion Medicacion ****************  */}
         <section className="bg-white w-full ">
           {/* Formulario para el registro de medicacion */}
           <form
@@ -128,7 +130,6 @@ const FormRegisterCart = () => {
             className="mt-8 grid grid-cols-6 gap-6"
             onSubmit={handleSaveDataMedication}
           >
-            {/* ******************* Seccion Medicacion ****************  */}
 
             <div className="col-span-6 sm:col-span-6">
               <h4 className="text-2xl font-bold text-gray-600">
@@ -313,10 +314,10 @@ const FormRegisterCart = () => {
                 </option>
                 {sortedDescartable.map((descartableList) => (
                   <option
-                    key={descartableList.idDescartable}
-                    value={descartableList.descartable}
+                    key={descartableList.id}
+                    value={descartableList.descripcion}
                   >
-                    {descartableList.descartable}
+                    {descartableList.descripcion}
                   </option>
                 ))}
               </select>

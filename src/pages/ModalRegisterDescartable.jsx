@@ -44,7 +44,7 @@ const ModalRegisterDescartable = ({ idCarro, isModalDescartable, onClose }) => {
         });
     };
 
-    const sortedDescartable = dbDescartable.sort((a, b) => a.order - b.order);
+    const sortedDescartable = [...dbDescartable].sort((a, b) => a.descripcion.localeCompare(b.descripcion));
 
     
     return (              
@@ -94,14 +94,14 @@ const ModalRegisterDescartable = ({ idCarro, isModalDescartable, onClose }) => {
                         aria-label="Selecciona una opcion"
                         required            
                     > 
-                        <option value="" disabled >Seleccione una medicación</option>          
+                        <option value="" disabled >Seleccione un material</option>          
                         { 
-                        sortedDescartable.map(( MaterialList ) => (                                                              
+                        sortedDescartable.map(( descartableList ) => (                                                              
                             <option 
-                            key={MaterialList.idDescartable}
-                            value={MaterialList.material}                 
+                            key={descartableList.id}
+                            value={descartableList.descripcion}                 
                             >
-                            {MaterialList.material}
+                            {descartableList.descripcion}
                             </option>                  
                         )
                         )}                  
@@ -172,6 +172,7 @@ const ModalRegisterDescartable = ({ idCarro, isModalDescartable, onClose }) => {
                 >
                 Guardar Cambios
                 </button>
+
                 <button
                 className="col-span-6 inline-block shrink-0 rounded-md border sm:col-span-3 border-blue-600 bg-blue-600 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
                 type="button"
