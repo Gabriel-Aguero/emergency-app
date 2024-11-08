@@ -69,6 +69,11 @@ const FormData = () => {
     navigate("/info_cart", { state: { serviceName: usuario.servicioName } });
   };
 
+  // ordeno los servicios alfabeticamente
+  const sortedServicios = [...dataServicio].sort((a, b) =>
+    a.nombre.localeCompare(b.nombre)
+  );
+
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
@@ -162,10 +167,10 @@ const FormData = () => {
                       required
                       // onChange={(e) => setServicioName(e.target.value)}
                     >
-                      <option value="" disabled>
+                      <option value="" selected disabled>
                         Seleccione un Servicio
                       </option>
-                      {dataServicio.map((servicio) => (
+                      {sortedServicios.map((servicio) => (
                         <option key={servicio.id} value={servicio.nombre}>
                           {servicio.nombre.toUpperCase()}
                         </option>

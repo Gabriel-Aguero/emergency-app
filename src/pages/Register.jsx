@@ -1,7 +1,6 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import { dataServicio } from "../context/sector";
 
@@ -50,12 +49,18 @@ const Register = () => {
     }
   };
 
-  const servicioSelect = dataServicio.sort((a, b) => a.order - b.order);
+  // ordeno los servicios alfabeticamente
+  
+  const sortedServicios = [...dataServicio].sort((a, b) =>
+    a.nombre.localeCompare(b.nombre)
+  );
+
+  
 
   return (
     <section className="bg-white">
       <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
-        <aside className="relative block h-16 lg:order-last lg:col-span-5 lg:h-full xl:col-span-6">
+        <aside className="hidden lg:block relative h-16 lg:order-last lg:col-span-5 lg:h-full xl:col-span-6">
           <img
             alt=""
             src="/register.svg"
@@ -68,7 +73,7 @@ const Register = () => {
             <a className="block text-blue-600" href="#">
               <span className="sr-only">Home</span>
               <img
-                src="/public/bienvenido.svg"
+                src="/bienvenido.svg"
                 alt="Logo"
                 className="h-40 sm:h-52"
               />
@@ -86,6 +91,8 @@ const Register = () => {
               onSubmit={handleSubmit}
               className="mt-8 grid grid-cols-6 gap-6"
             >
+
+              {/* nombre */}
               <div className="col-span-6 sm:col-span-3">
                 <label className="block text-sm font-medium text-gray-700">
                   Nombre
@@ -101,6 +108,7 @@ const Register = () => {
                 />
               </div>
 
+              {/* apellido */}
               <div className="col-span-6 sm:col-span-3">
                 <label className="block text-sm font-medium text-gray-700">
                   Apellido
@@ -116,6 +124,7 @@ const Register = () => {
                 />
               </div>
 
+              {/* legajo */}
               <div className="col-span-6 sm:col-span-3">
                 <label className="block text-sm font-medium text-gray-700">
                   Legajo
@@ -146,10 +155,10 @@ const Register = () => {
                   required
                   // onChange={(e) => setServicioName(e.target.value)}
                 >
-                  <option value="" disabled>
+                  <option value="" selected disabled>
                     Seleccione un Servicio
                   </option>
-                  {servicioSelect.map((servicio) => (
+                  {sortedServicios.map((servicio) => (
                     <option key={servicio.id} value={servicio.nombre}>
                       {servicio.nombre.toUpperCase()}
                     </option>
@@ -157,6 +166,7 @@ const Register = () => {
                 </select>
               </div>
 
+              {/* email */}
               <div className="col-span-6 sm:col-span-3">
                 <label className="block text-sm font-medium text-gray-700">
                   {" "}
@@ -173,6 +183,7 @@ const Register = () => {
                 />
               </div>
 
+              {/* password */}
               <div className="col-span-6 sm:col-span-3">
                 <label className="block text-sm font-medium text-gray-700">
                   {" "}
@@ -207,11 +218,11 @@ const Register = () => {
               <div className="col-span-6">
                 <p className="text-sm text-gray-500">
                   Al crear una cuenta acepta nuestros
-                  <a href="#" className="text-gray-700 underline">
+                  <Link to="/terminos_y_condiciones" className="text-gray-700 underline">
                     {" "}
-                    terminos y condiciones{" "}
-                  </a>
-                  y
+                    terminos y condiciones asi como la{" "}
+                  </Link>
+                  y {" "}
                   <a href="#" className="text-gray-700 underline">
                     política de privacidad
                   </a>

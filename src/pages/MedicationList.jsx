@@ -39,11 +39,11 @@ const MedicacionList = ({idCarro}) => {
 
   const getColorAndIcon = (days) => {
     if (days < 20) {
-      return { bgColor: "bg-red-700/40", icon: <NotificationImportantIcon sx={{ color: pink[800] }} /> };
+      return { bgColor: "bg-red-300", icon: <NotificationImportantIcon sx={{ color: pink[800] }} /> };
     } else if (days >= 20 && days < 30) {
       return { bgColor: "bg-yellow-200", icon: <WarningIcon sx={{ color: yellow[900] }} /> };
     } else if (days >= 30 ) {
-      return { bgColor: "bg-emerald-400/40", icon: <DoneAllIcon sx={{ color: green[900] }} /> };
+      return { bgColor: "bg-green-300", icon: <DoneAllIcon sx={{ color: green[900] }} /> };
     }
   };
 
@@ -88,7 +88,7 @@ const MedicacionList = ({idCarro}) => {
 
   return (
     <>
-      <div className="flex flex-col items-center  min-h-screen">
+      <div className="flex flex-col items-center  min-h-screen bg-">
         <div className="flex flex-col items-center justify-center gap-4 ">
           <h1 className="text-xl font-bold text-gray-900/60 sm:text-3xl md:text-3xl mt-10">
             Lista de Medicaciones

@@ -1,17 +1,17 @@
-import { IconCoffe } from "../components/icons/Icons";
+// import { IconCoffe } from "../components/icons/Icons";
 
 const About = () => {
   const items = [
     {
       title: "Sobre mí",
       description:
-        "👋 Hola soy Gabriel Agüero, Licenciado en Enfermería y Programador Front end. Soy un profesional con experiencia en el desarrollo de aplicaciones web y mi deseo es crear soluciones que mejoren la experiencia de los usuarios.",
+        "👋 Hola soy Gabriel Agüero, Licenciado en Enfermería y Programador Frontend. Cuento con una gran experiencia en el desarrollo de aplicaciones web y mi deseo es crear herramientas que ayuden a la labor de los profesionales de la salud. 💪",
       icons: "👨‍💻",
     },
     {
       title: "Objetivo",
       description:
-        "Esta aplicación fue creada para mejorar la gestión del carro de paro en hospitales y clínicas, facilitando el control de medicamentos, descartables y gestionando su vencimiento. El objetivo principal es optimizar el proceso de verificación en tiempo y calidad, y reducir los errores por vencimientos a la hora de requerir el uso del carro de paro, proporcionando una herramienta simple, accesible y gratuita para los profesionales de la salud.",
+        "Esta aplicación fue creada para mejorar la gestión del carro de paro en hospitales y clínicas, facilitando el control de medicamentos, descartables y gestionando su vencimiento. El objetivo principal es optimizar el proceso de verificación en tiempo y calidad, y a su ves reducir los errores por vencimientos a la hora de requerir el uso de elementos del carro de paro, proporcionando una herramienta simple y accesible para los profesionales de la salud.",
       icons: "⚡",
     },
     {
@@ -23,7 +23,7 @@ const About = () => {
     {
       title: "Tecnologías Utilizada",
       description:
-        "La aplicación se ha desarrollado utilizando, HTML, CSS y JavaScript. Además, se ha utilizado React para el front-end y Firebase para el back-end. También se han utilizado diferentes librerías que complementan el sitio web. Finalmente, se ha utilizado Tailwind CSS para dar estilo a la aplicación y proporcionar un diseño atractivo y moderno.",
+        "La aplicación se ha desarrollado utilizando, HTML, CSS y JavaScript. Además, se ha utilizado React para el front-end y Firebase para el back-end. También se han utilizado diferentes librerías que complementan el sitio web. Para darle estilo al sitio se ha utilizado Tailwind CSS buscando proporcionar un diseño atractivo y moderno.",  
       icons: "💻",
     },
     {
@@ -69,7 +69,7 @@ const About = () => {
           ))}
         </div>
 
-        <div className="mt-12 text-center">
+        {/* <div className="mt-12 text-center">
           <p className="text-md text-gray-300 text-pretty border p-4 rounded-lg mb-5">
             * Los servicios de la aplicación proporcionan gastos que son cuenta
             del programador para mantenerla en funcionamiento y constante
@@ -83,7 +83,7 @@ const About = () => {
           >
             <IconCoffe />
           </a>
-        </div>
+        </div> */}
       </div>
     </section>
   );

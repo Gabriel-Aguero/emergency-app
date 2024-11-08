@@ -3,7 +3,7 @@ import QRCodeSVG from "react-qr-code";
 
 const QRcode = () => {
   // URL del sitio web
-  const url = "https://www.google.com";
+  const url = "https://emergency-app-gabrielagueros-projects.vercel.app/";
 
   const downloadQRCode = () => {
     const svg = document.getElementById("QRCode");

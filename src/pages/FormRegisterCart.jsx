@@ -173,7 +173,7 @@ const FormRegisterCart = () => {
                 required
                 // onChange={(e) => setServicioName(e.target.value)}
               >
-                <option value="" disabled>
+                <option value="" selected disabled>
                   Seleccione una medicación
                 </option>
                 {sortedMedicacion.map((medicationList) => (
@@ -309,7 +309,7 @@ const FormRegisterCart = () => {
                 required
                 // onChange={(e) => setServicioName(e.target.value)}
               >
-                <option value="" disabled>
+                <option value="" selected disabled>
                   Seleccione una elemento
                 </option>
                 {sortedDescartable.map((descartableList) => (

@@ -36,7 +36,7 @@ const DescartableList = () => {
   const getColorAndIcon = (days) => {
     if (days < 20) {
       return {
-        bgColor: "bg-red-400/70",
+        bgColor: "bg-red-400",
         icon: <NotificationImportantIcon sx={{ color: pink[900] }} />,
       };
     } else if (days >= 20 && days < 30) {
@@ -46,7 +46,7 @@ const DescartableList = () => {
       };
     } else if (days >= 30) {
       return {
-        bgColor: "bg-emerald-300",
+        bgColor: "bg-green-300",
         icon: <DoneAllIcon sx={{ color: green[900] }} />,
       };
     }
@@ -105,8 +105,8 @@ const DescartableList = () => {
             Ver lista de descartables
           </button>
 
-          {user ? (
-            <>
+          {user && (
+            
               <div className="flex flex-col items-center justify-center gap-4">
                 <button
                   className="bg-blue-500 text-white rounded-md flex gap-2 p-2 hover:bg-blue-700 transition duration-200"
@@ -115,16 +115,7 @@ const DescartableList = () => {
                   Agregar nueva Medicación <IconAdd />
                 </button>
               </div>
-            </>
-          ) : (
-            <>
-              <Link
-                to="/check_carros"
-                className="text-blue-600 text-lg font-bold hover:text-blue-800  hover:underline"
-              >
-                Volver al listado de carros
-              </Link>
-            </>
+            
           )}
         </div>
 

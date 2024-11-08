@@ -17,6 +17,7 @@ import MedicationList from "./pages/MedicationList.jsx";
 import QRcode from "./components/QRcode.jsx";
 import DescartableList from "./pages/DescartableList.jsx";
 import { ContainerElementsCart } from "./pages/ContainerElementsCart.jsx";
+import TerminosyCondiciones from "./pages/TerminosyCondiciones.jsx";
 function App() {
   return (
     <>
@@ -43,6 +44,7 @@ function App() {
         <Route path="/lista_medicacion" element={<MedicationList />} />
         <Route path="/lista_descartable" element={<DescartableList />} />
         <Route path="/reset_password" element={<FormResetPassword />} />
+        <Route path="/terminos_y_condiciones" element={<TerminosyCondiciones />} />
         <Route path="/about" element={<About />} />
         <Route path="/contacto" element={<Contacto />} />
         <Route path="/qrcode" element={<QRcode />} />

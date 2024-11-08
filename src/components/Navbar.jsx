@@ -11,6 +11,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
+    setIsMenuOpen(false);
     await logout();
     navigate("/");
   };
@@ -18,10 +19,12 @@ const Navbar = () => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
   return (
     <header className="bg-gray-900 ">
-      <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <div className="w-full flex h-16 items-center justify-between">
+         
           <div className="md:flex md:items-center md:gap-12">
             <a className="block text-teal-600 dark:text-teal-600" href="/">
               <span className="sr-only">Home</span>
@@ -85,13 +88,35 @@ const Navbar = () => {
           </div>
 
           {/* menu despegable para dispositivos mobiles */}
+          {/* <nav className="md:hidden absolute top-16 left-0 w-full bg-cyan-950/90 p-6 text-center z-10 transition-all duration-300 ease-in-out"> */}
+
           {isMenuOpen && (
-            <nav className="md:hidden mt-80 bg-cyan-950/90 w-full -ml-20 px-20 py-12 text-center z-10">
+            <nav className={`fixed inset-0 z-20 bg-cyan-950/90 flex items-center justify-center transform transition-transform duration-1000 ease-in-out ${
+              isMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
+            }`}>
               <ul className="space-y-4 text-center text-gray-100">
-                <li className="flex items-center justify-center hover:to-blue-400">
+              <li>
                   <Link
                     to="/"
-                    className="text-xl transition hover:text-gray-500/75 hover:bg-blue-500 dark:text-white dark:hover:text-white/75"
+                    className="text-xl transition hover:text-blue-500 dark:hover:text-blue-400" 
+                    onClick={toggleMenu}
+                  >
+                    Iniciar Sesión
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/"
+                    className="text-xl transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
+                    onClick={handleLogout}
+                  >
+                    Cerrar Sesión
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/"
+                    className="text-xl transition hover:text-gray-500/75 hover:bg-blue-500 dark:text-white dark:hover:text-white/75"                    
                     onClick={toggleMenu}
                   >
                     Inicio
@@ -101,7 +126,7 @@ const Navbar = () => {
                   <Link
                     to="/about"
                     className="text-xl transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                    onClick={toggleMenu}
+                    onClick={toggleMenu}                    
                   >
                     Acerca de
                   </Link>
@@ -110,7 +135,7 @@ const Navbar = () => {
                   <Link
                     to="/contacto"
                     className="text-xl transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                    onClick={toggleMenu}
+                    onClick={toggleMenu}                    
                   >
                     Contacto
                   </Link>
@@ -118,50 +143,48 @@ const Navbar = () => {
                 <li>
                   <Link
                     to="/qrcode"
-                    className="text-xl transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                    onClick={toggleMenu}
+                    className="text-xl transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75" 
+                    onClick={toggleMenu}                   
                   >
                     Código QR
                   </Link>
                 </li>
+                
               </ul>
             </nav>
           )}
 
+          {/* botones de inicio de sesion y registro e icono hamburguesa */}
           <div className="flex items-center gap-4">
-            <div className="sm:flex sm:gap-4">              
-              <div className="hidden sm:flex gap-2">
+            <div className="flex gap-4">              
                 <Link
-                  to="/register"
-                  className="rounded-md bg-gray-300 px-5 py-2.5 text-sm font-bold text-blue-600 hover:bg-blue-600 hover:text-white transition-all "
+                  to="/"
+                  className="hidden md:flex rounded-md bg-gray-300 px-5 py-2.5 text-sm font-bold text-blue-600 hover:bg-blue-600 hover:text-white transition-all "
                   href="#"
                 >
-                  Crear Cuenta
+                  Iniciar Sesión
                 </Link>
                 
                 <button
                   onClick={handleLogout}
-                  className="rounded-md bg-blue-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-blue-800 hover:text-white transition-all "
+                  className="hidden md:flex rounded-md bg-blue-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-blue-800 hover:text-white transition-all "
                   href="#"
                 >
                   Cerrar Sesión
                 </button>
 
-              </div>
-
-              {/* menu de navegación para dispositivos mobiles */}
-              <div className="block md:hidden">
                 <button
                   onClick={toggleMenu}
-                  className="rounded bg-gray-100 p-2 text-gray-600 transition hover:text-gray-600/75"
+                  className="md:hidden rounded bg-gray-100 p-2 text-gray-600 transition hover:text-blue-500 z-20"
                 >
                   <IconMenu />
-                </button>
-              </div>
+                </button>            
             </div>
 
             {/* boton hamburguesa de menu     */}
           </div>
+
+
         </div>
       </div>
     </header>
