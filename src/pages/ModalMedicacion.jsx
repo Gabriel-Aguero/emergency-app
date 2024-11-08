@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 
 // eslint-disable-next-line react/prop-types
 const ModalMedicacion = ({ dataMedicacion, isModalOpen, onClose }) => {
-  const [medData, setMedData] = useState({});
+  const [medData, setMedData] = useState(dataMedicacion);
   const { updateMedication } = useContext(AuthContext);
 
   // Inicializa cartData con los valores de selectedCarros cuando el modal se abre
@@ -35,19 +35,55 @@ const ModalMedicacion = ({ dataMedicacion, isModalOpen, onClose }) => {
     });
   };
 
-  const handleOnClick = (e) => {
+  // const handleOnClick = (e) => {
+  //   e.preventDefault();
+  //   updateMedication(medData, dataMedicacion.id);
+  //   Swal.fire({
+  //     position: "top-center",
+  //     icon: "success",
+  //     title: "Cambios guardados correctamente",
+  //     text: "La información ha sido actualizada",
+  //     showConfirmButton: false,
+  //     timer: 2000,
+  //   });
+  //   onClose();
+  // };
+
+  const handleOnClick = async (e) => {
     e.preventDefault();
-    updateMedication(medData, dataMedicacion.id);
-    Swal.fire({
-      position: "top-center",
-      icon: "success",
-      title: "Cambios guardados correctamente",
-      text: "La información ha sido actualizada",
-      showConfirmButton: false,
-      timer: 2000,
-    });
-    onClose();
+
+    try {
+      await updateMedication(medData, dataMedicacion.id); // Envía la actualización a la API
+      Swal.fire({
+        position: "top-center",
+        icon: "success",
+        title: "Cambios guardados correctamente",
+        text: "La información ha sido actualizada",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+      onClose(); // Llama a onClose() que incluye `fetchMedicationList()`
+    } catch (error) {
+      console.error("Error updating medication:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo actualizar la información",
+        confirmButtonColor: "#d33",
+      });
+    }
   };
+
+
+
+
+
+
+
+
+
+
+
 
   return (
     <div className="flex flex-col fixed inset-0 z-50 items-center justify-center gap-4 w-full mt-5 border p-4 shadow-lg shadow-slate-700">

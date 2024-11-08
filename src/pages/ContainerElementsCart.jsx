@@ -36,7 +36,7 @@ export const ContainerElementsCart = () => {
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           onClick={() => viewListDescartable()}
         >
-          Sessión descartables
+          Sección descartables
         </button>
 
         {user ? (
@@ -59,15 +59,7 @@ export const ContainerElementsCart = () => {
       <div className="flex flex-col items-center justify-center gap-4 mt-10">
         {loading ? (
           <>
-            <div className="flex justify-center items-center mt-20 m-20">
-              <SpinnerDiamond
-                size={150}
-                thickness={100}
-                speed={200}
-                color="#09f"
-                secondaryColor="rgba(0, 0, 0, 0.44)"
-              />
-            </div>
+            <img src="/register.svg" alt="Logo" className="h-96 w-auto" />
           </>
         ) : // <MedicacionList />
         // aqui debo preguntar si el viewElements es true

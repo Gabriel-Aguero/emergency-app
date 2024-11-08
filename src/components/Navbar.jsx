@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { logout } = useContext(AuthContext);
+  const { logout, user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -95,31 +95,34 @@ const Navbar = () => {
               isMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
             }`}>
               <ul className="space-y-4 text-center text-gray-100">
-              <li>
-                  <Link
-                    to="/"
-                    className="text-xl transition hover:text-blue-500 dark:hover:text-blue-400" 
-                    onClick={toggleMenu}
-                  >
-                    Iniciar Sesión
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/"
-                    className="text-xl transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
-                    onClick={handleLogout}
-                  >
-                    Cerrar Sesión
-                  </Link>
-                </li>
+                { user ? (
+                  <li>
+                    <Link
+                      to="/"
+                      className="text-xl transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
+                      onClick={handleLogout}
+                    >
+                      Cerrar Sesión
+                    </Link>
+                  </li>
+                ):(
+                  <li>
+                    <Link
+                      to="/"
+                      className="text-xl transition hover:text-blue-500 dark:hover:text-blue-400" 
+                      onClick={toggleMenu}
+                    >
+                      Iniciar Sesión
+                    </Link>
+                  </li>
+                )}                                                
                 <li>
                   <Link
                     to="/"
                     className="text-xl transition hover:text-gray-500/75 hover:bg-blue-500 dark:text-white dark:hover:text-white/75"                    
                     onClick={toggleMenu}
                   >
-                    Inicio
+                    Home
                   </Link>
                 </li>
                 <li>

@@ -18,7 +18,18 @@ import QRcode from "./components/QRcode.jsx";
 import DescartableList from "./pages/DescartableList.jsx";
 import { ContainerElementsCart } from "./pages/ContainerElementsCart.jsx";
 import TerminosyCondiciones from "./pages/TerminosyCondiciones.jsx";
+import { useLocation } from 'react-router-dom';
+import { useEffect } from "react";
+
+
 function App() {
+
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Lleva el scroll al inicio
+  }, [location.pathname]); // Ejecuta el efecto cada vez que cambia la ruta
+  
   return (
     <>
       <Navbar />
