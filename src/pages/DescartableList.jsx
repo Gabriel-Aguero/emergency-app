@@ -7,10 +7,10 @@ import { Link, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 import ModalDescartable from "./ModalDescartable";
 import ModalRegisterDescartable from "./ModalRegisterDescartable";
-import DoneAllIcon from '@mui/icons-material/DoneAll';
-import WarningIcon from '@mui/icons-material/Warning';
+import DoneAllIcon from "@mui/icons-material/DoneAll";
+import WarningIcon from "@mui/icons-material/Warning";
 import { green, pink, yellow } from "@mui/material/colors";
-import NotificationImportantIcon from '@mui/icons-material/NotificationImportant';
+import NotificationImportantIcon from "@mui/icons-material/NotificationImportant";
 
 const DescartableList = () => {
   const location = useLocation();
@@ -35,18 +35,27 @@ const DescartableList = () => {
 
   const getColorAndIcon = (days) => {
     if (days < 20) {
-      return { bgColor: "bg-red-400/70", icon: <NotificationImportantIcon sx={{ color: pink[900] }} /> };
+      return {
+        bgColor: "bg-red-400/70",
+        icon: <NotificationImportantIcon sx={{ color: pink[900] }} />,
+      };
     } else if (days >= 20 && days < 30) {
-      return { bgColor: "bg-yellow-300", icon: <WarningIcon sx={{ color: yellow[900] }} /> };
-    } else if (days >= 30 ) {
-      return { bgColor: "bg-emerald-300", icon: <DoneAllIcon sx={{ color: green[900] }} /> };
+      return {
+        bgColor: "bg-yellow-300",
+        icon: <WarningIcon sx={{ color: yellow[900] }} />,
+      };
+    } else if (days >= 30) {
+      return {
+        bgColor: "bg-emerald-300",
+        icon: <DoneAllIcon sx={{ color: green[900] }} />,
+      };
     }
   };
 
   const getListDescartable = async () => {
     await getDescartableByCarro(idCarro);
     setViewListDescartable(true);
-  };  
+  };
 
   const handleEdit = (data) => {
     setDataDescartable(data);
@@ -85,90 +94,91 @@ const DescartableList = () => {
   return (
     <>
       <div className="flex flex-col items-center min-h-screen">
-      
         <div className="flex flex-col items-center justify-center gap-4 ">
           <h1 className="text-xl font-bold text-gray-900/60 sm:text-3xl md:text-3xl mt-10">
-            Lista de Medicaciones
+            Lista de descartables
           </h1>
           <button
             className="bg-blue-500 text-white rounded-md flex gap-2 p-2 hover:bg-blue-700 transition duration-200"
-            onClick={()=>getListDescartable()}
+            onClick={() => getListDescartable()}
           >
             Ver lista de descartables
           </button>
-        
-          { user ? (
+
+          {user ? (
             <>
-            <div className="flex flex-col items-center justify-center gap-4">             
-              <button
-                className="bg-blue-500 text-white rounded-md flex gap-2 p-2 hover:bg-blue-700 transition duration-200"
-                onClick={handleAdd}
+              <div className="flex flex-col items-center justify-center gap-4">
+                <button
+                  className="bg-blue-500 text-white rounded-md flex gap-2 p-2 hover:bg-blue-700 transition duration-200"
+                  onClick={handleAdd}
+                >
+                  Agregar nueva Medicación <IconAdd />
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/check_carros"
+                className="text-blue-600 text-lg font-bold hover:text-blue-800  hover:underline"
               >
-                Agregar nueva Medicación <IconAdd />
-              </button>              
-            </div>
-            </>
-          ):(
-            <>
-            <Link to="/check_carros" className="text-blue-600 text-lg font-bold hover:text-blue-800  hover:underline">
                 Volver al listado de carros
-              </Link>             
+              </Link>
             </>
-          )
-         }
-          
+          )}
         </div>
 
-        { viewListDescartable && (
+        {viewListDescartable && (
           <>
             <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-7xl w-full">
               {descartables.map((list) => {
-
-                const daysUntilExpiration = getDaysUntilExpiration(list.matExpiration);
+                const daysUntilExpiration = getDaysUntilExpiration(
+                  list.matExpiration
+                );
                 const { bgColor, icon } = getColorAndIcon(daysUntilExpiration);
-                return (                  
-                    <div key={list.id} className="mx-auto p-4 mt-5">
-                      <div className={`bg-white shadow-md r ${bgColor} shadow-slate-800/80 rounded-lg p-4 mb-4 max-w-md transition-all duration-300 hover:shadow-blue-800/60`}>
-                        <h2 className="text-lg font-bold text-gray-800 border-b capitalize flex gap-2">
-                          {icon}
-                          {list.material}
-                        </h2>
-                        <div className="mt-2 text-gray-600">
-                          <p>
-                            <strong>Fecha de vencimiento:</strong>{" "}
-                            {list.matExpiration}
-                          </p>
-                          <p>
-                            <strong>Cantidad:</strong> {list.matQuantity}
-                          </p>
-                          <p>
-                            <strong>Número de lote:</strong> {list.lot}
-                          </p>
-                        </div>
-                        {user ? (
-                            <>
-                              <div className="mt-4 flex justify-between gap-3">
-                                <button
-                                  onClick={() => handleEdit(list)}
-                                  className="bg-blue-500 text-white font-semibold py-1 px-3 rounded hover:bg-blue-600 transition duration-300"
-                                >
-                                  Editar
-                                </button>
-                                <button
-                                  onClick={() => handleDelete(list.id)}
-                                  className="bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600 transition duration-300"
-                                >
-                                  Eliminar
-                                </button>
-                              </div>
-                            </>
-                          ):(
-                            <>                      
-                            </>
-                          )
-                        }
+                return (
+                  <div key={list.id} className="mx-auto p-4 mt-5">
+                    <div
+                      className={`bg-white shadow-md r ${bgColor} shadow-slate-800/80 rounded-lg p-4 mb-4 max-w-md transition-all duration-300 hover:shadow-blue-800/60`}
+                    >
+                      <h2 className="text-lg font-bold text-gray-800 border-b capitalize flex gap-2">
+                        {icon}
+                        {list.material}
+                      </h2>
+                      <div className="mt-2 text-gray-600">
+                        <p>
+                          <strong>Fecha de vencimiento:</strong>{" "}
+                          {list.matExpiration}
+                        </p>
+                        <p>
+                          <strong>Cantidad:</strong> {list.matQuantity}
+                        </p>
+                        <p>
+                          <strong>Número de lote:</strong> {list.lot}
+                        </p>
                       </div>
-                    </div>                  
+                      {user ? (
+                        <>
+                          <div className="mt-4 flex justify-between gap-3">
+                            <button
+                              onClick={() => handleEdit(list)}
+                              className="bg-blue-500 text-white font-semibold py-1 px-3 rounded hover:bg-blue-600 transition duration-300"
+                            >
+                              Editar
+                            </button>
+                            <button
+                              onClick={() => handleDelete(list.id)}
+                              className="bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600 transition duration-300"
+                            >
+                              Eliminar
+                            </button>
+                          </div>
+                        </>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+                  </div>
                 );
               })}
             </div>

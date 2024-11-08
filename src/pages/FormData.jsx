@@ -70,11 +70,14 @@ const FormData = () => {
   };
 
   useEffect(() => {
-    dataUsuario();
-    if (user) {
-      setLoading(false);
-      navigate("/formulario_de_datos");
-    }
+    setLoading(true);
+    setTimeout(() => {
+      dataUsuario();
+      if (user) {
+        setLoading(false);
+        navigate("/formulario_de_datos");
+      }
+    }, 1000);
   }, [user]);
   return (
     <>

@@ -36,7 +36,10 @@ function App() {
         />
         <Route path="/register_info_cart" element={<FormRegisterCart />} />
         <Route path="/info_cart" element={<FormInfoCart />} />
-        <Route path="/elementos_del_carro" element={<ContainerElementsCart />} />
+        <Route
+          path="/elementos_del_carro"
+          element={<ContainerElementsCart />}
+        />
         <Route path="/lista_medicacion" element={<MedicationList />} />
         <Route path="/lista_descartable" element={<DescartableList />} />
         <Route path="/reset_password" element={<FormResetPassword />} />
