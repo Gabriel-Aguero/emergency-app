@@ -11,7 +11,7 @@ const About = () => {
     {
       title: "Objetivo",
       description:
-        "Esta aplicación fue creada para mejorar la gestión del carro de paro en hospitales y clínicas, facilitando el control de medicamentos, descartables y gestionando su vencimiento. El objetivo principal es optimizar el proceso de verificación en tiempo y calidad, y a su ves reducir los errores por vencimientos a la hora de requerir el uso de elementos del carro de paro, proporcionando una herramienta simple y accesible para los profesionales de la salud.",
+        "Esta aplicación fue creada para mejorar la gestión del carro de paro en hospitales y clínicas, facilitando el control de medicamentos, descartables y gestionando su vencimiento. El objetivo principal es optimizar el proceso de verificación en tiempo y calidad, y a su vez reducir los errores por vencimientos a la hora de requerir el uso de elementos del carro de paro, proporcionando una herramienta simple y accesible para los profesionales de la salud.",
       icons: "⚡",
     },
     {
@@ -23,7 +23,7 @@ const About = () => {
     {
       title: "Tecnologías Utilizada",
       description:
-        "La aplicación se ha desarrollado utilizando, HTML, CSS y JavaScript. Además, se ha utilizado React para el front-end y Firebase para el back-end. También se han utilizado diferentes librerías que complementan el sitio web. Para darle estilo al sitio se ha utilizado Tailwind CSS buscando proporcionar un diseño atractivo y moderno.",  
+        "La aplicación se ha desarrollado utilizando, HTML, CSS y JavaScript. Además, se ha utilizado React para el front-end y Firebase para el back-end. También se han utilizado diferentes librerías que complementan el sitio web. Para darle estilo al sitio se ha utilizado Tailwind CSS buscando proporcionar un diseño atractivo y moderno.",
       icons: "💻",
     },
     {
@@ -35,7 +35,7 @@ const About = () => {
     {
       title: "Colabora",
       description:
-        "Tu contribución es importante. Si tienes ideas o mejoras, no dudes en compartirlas. Juntos podemos optimizar la experiencia y funcionalidad de esta aplicación.",
+        "Tu contribución es importante. Si tienes ideas o mejoras, no dudes en compartirlas. Juntos podemos optimizar la experiencia y funcionalidad de la aplicación.",
       icons: "🤝",
     },
   ];

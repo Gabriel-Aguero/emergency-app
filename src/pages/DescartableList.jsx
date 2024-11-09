@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { IconAdd, IconDelete, IconEdit } from "../components/icons/Icons";
-import { Link, useLocation } from "react-router-dom";
+import { IconAdd } from "../components/icons/Icons";
 import Swal from "sweetalert2";
 import ModalDescartable from "./ModalDescartable";
 import ModalRegisterDescartable from "./ModalRegisterDescartable";
@@ -12,19 +11,13 @@ import WarningIcon from "@mui/icons-material/Warning";
 import { green, pink, yellow } from "@mui/material/colors";
 import NotificationImportantIcon from "@mui/icons-material/NotificationImportant";
 
-const DescartableList = () => {
-  const location = useLocation();
-  const { idCarro } = location.state || {};
+const DescartableList = ({ idCarro }) => {
   const { deleteDescartable, getDescartableByCarro, descartables, user } =
     useContext(AuthContext);
   const [dataDescartable, setDataDescartable] = useState({});
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModalDescartable, setIsModalDescartable] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [viewListDescartable, setViewListDescartable] = useState(false);
-  // useEffect(() => {
-  //   console.log(descartables);
-  //   getListDescartable();
-  // }, [descartables]);
 
   const getDaysUntilExpiration = (expirationDate) => {
     const today = new Date();
@@ -57,16 +50,28 @@ const DescartableList = () => {
     setViewListDescartable(true);
   };
 
-  const handleEdit = (data) => {
+  const openEditModal = (data) => {
     setDataDescartable(data);
-    setIsModalOpen(true);
+    setIsEditModalOpen(true);
   };
 
-  const handleDelete = (id) => {
-    // Implementa la lógica de eliminación
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+    setDataDescartable(null);
+  };
 
+  const openAddModal = () => {
+    // abre el modal
+    setIsAddModalOpen(true);
+  };
+
+  const closeAddModal = () => {
+    setIsAddModalOpen(false);
+  };
+
+  const handleDelete = (id, getListDescartable) => {
     Swal.fire({
-      title: "Estas seguro de eliminar este elemento?",
+      title: "¿Estás seguro de eliminar este elemento?",
       text: "Si eliminas este elemento no se podrá recuperar",
       icon: "warning",
       showCancelButton: true,
@@ -76,19 +81,19 @@ const DescartableList = () => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteDescartable(id);
-        Swal.fire({
-          title: "Eliminado!",
-          text: "El elemento ha sido eliminado correctamente",
-          icon: "success",
+        deleteDescartable(id).then(() => {
+          Swal.fire({
+            title: "¡Eliminado!",
+            text: "El elemento ha sido eliminado correctamente",
+            icon: "success",
+            confirmButtonText: "Aceptar",
+            confirmButtonColor: "#3085d6",
+          }).then(() => {
+            getListDescartable(); // Llamada para actualizar la lista
+          });
         });
       }
     });
-  };
-
-  const handleAdd = () => {
-    // Implementa la lógica de agregar elementos a la tabla
-    setIsModalDescartable(true);
   };
 
   return (
@@ -106,16 +111,14 @@ const DescartableList = () => {
           </button>
 
           {user && (
-            
-              <div className="flex flex-col items-center justify-center gap-4">
-                <button
-                  className="bg-blue-500 text-white rounded-md flex gap-2 p-2 hover:bg-blue-700 transition duration-200"
-                  onClick={handleAdd}
-                >
-                  Agregar nueva Medicación <IconAdd />
-                </button>
-              </div>
-            
+            <div className="flex flex-col items-center justify-center gap-4">
+              <button
+                className="bg-blue-500 text-white rounded-md flex gap-2 p-2 hover:bg-blue-700 transition duration-200"
+                onClick={openAddModal}
+              >
+                Agregar nuevo material <IconAdd />
+              </button>
+            </div>
           )}
         </div>
 
@@ -152,13 +155,15 @@ const DescartableList = () => {
                         <>
                           <div className="mt-4 flex justify-between gap-3">
                             <button
-                              onClick={() => handleEdit(list)}
+                              onClick={() => openEditModal(list)}
                               className="bg-blue-500 text-white font-semibold py-1 px-3 rounded hover:bg-blue-600 transition duration-300"
                             >
                               Editar
                             </button>
                             <button
-                              onClick={() => handleDelete(list.id)}
+                              onClick={() =>
+                                handleDelete(list.id, getListDescartable)
+                              }
                               className="bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600 transition duration-300"
                             >
                               Eliminar
@@ -177,17 +182,23 @@ const DescartableList = () => {
         )}
       </div>
 
-      <ModalDescartable
-        dataDescartable={dataDescartable}
-        isModalOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
+      {isEditModalOpen && (
+        <ModalDescartable
+          dataDescartable={dataDescartable}
+          onClose={() => {
+            closeEditModal();
+            getListDescartable();
+          }}
+        />
+      )}
 
-      <ModalRegisterDescartable
-        idCarro={descartables.idCarro}
-        isModalDescartable={isModalDescartable}
-        onClose={() => setIsModalDescartable(false)}
-      />
+      {isAddModalOpen && (
+        <ModalRegisterDescartable
+          idCarro={idCarro}
+          onClose={closeAddModal}
+          onAdd={getListDescartable}
+        />
+      )}
     </>
   );
 };

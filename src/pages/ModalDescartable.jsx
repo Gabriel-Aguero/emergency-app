@@ -1,28 +1,15 @@
 /* eslint-disable react/prop-types */
 
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
 
 // eslint-disable-next-line react/prop-types
-const ModalDescartable = ({ dataDescartable, isModalOpen, onClose }) => {
-  const [matData, setMatData] = useState({});
+const ModalDescartable = ({ dataDescartable, onClose }) => {
+  const [matData, setMatData] = useState(dataDescartable);
   const { updateDescartable } = useContext(AuthContext);
 
-  // Inicializa cartData con los valores de selectedCarros cuando el modal se abre
-  useEffect(() => {
-    if (isModalOpen && dataDescartable) {
-      setMatData({
-        idCarro: dataDescartable.idCarro || "",
-        material: dataDescartable.material || "",
-        lot: dataDescartable.lot || "",
-        matQuantity: dataDescartable.matQuantity || "",
-        matExpiration: dataDescartable.matExpiration || "",
-      });
-    }
-  }, [isModalOpen, dataDescartable]);
-
-  if (!isModalOpen) return null;
+  if (!dataDescartable) return null;
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -34,18 +21,29 @@ const ModalDescartable = ({ dataDescartable, isModalOpen, onClose }) => {
     });
   };
 
-  const handleOnClick = (e) => {
+  const handleOnClick = async (e) => {
     e.preventDefault();
-    updateDescartable(matData, dataDescartable.id);
-    Swal.fire({
-      position: "top-center",
-      icon: "success",
-      title: "Cambios guardados correctamente",
-      text: "La información ha sido actualizada",
-      showConfirmButton: false,
-      timer: 2000,
-    });
-    onClose();
+
+    try {
+      await updateDescartable(matData, dataDescartable.id); // Envía la actualización a la API
+      Swal.fire({
+        position: "top-center",
+        icon: "success",
+        title: "Cambios guardados correctamente",
+        text: "La información ha sido actualizada",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+      onClose(); // Llama a onClose() que incluye `getListMedication()`
+    } catch (error) {
+      console.error("Error updating medication:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo actualizar la información",
+        confirmButtonColor: "#d33",
+      });
+    }
   };
 
   return (
@@ -60,6 +58,7 @@ const ModalDescartable = ({ dataDescartable, isModalOpen, onClose }) => {
           </h4>
         </div>
 
+        {/* id oculto del carro  */}
         <div className="col-span-6 sm:col-span-3 hidden">
           <label
             htmlFor="idCarro"
@@ -78,6 +77,7 @@ const ModalDescartable = ({ dataDescartable, isModalOpen, onClose }) => {
           />
         </div>
 
+        {/* Material  */}
         <div className="col-span-6 sm:col-span-3">
           <label
             htmlFor="medication"
@@ -97,6 +97,7 @@ const ModalDescartable = ({ dataDescartable, isModalOpen, onClose }) => {
           />
         </div>
 
+        {/* Lote  */}
         <div className="col-span-6 sm:col-span-3">
           <label
             htmlFor="lot"
@@ -109,12 +110,13 @@ const ModalDescartable = ({ dataDescartable, isModalOpen, onClose }) => {
             type="text"
             name="lot"
             placeholder={dataDescartable.lot}
-            value={dataDescartable.lot}
+            // value={dataDescartable.lot}
             onChange={handleChange}
             className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
           />
         </div>
 
+        {/* Cantidad */}
         <div className="col-span-6 sm:col-span-3">
           <label
             htmlFor="matQuantity"
@@ -125,13 +127,14 @@ const ModalDescartable = ({ dataDescartable, isModalOpen, onClose }) => {
 
           <input
             type="text"
-            name="medQuantity"
+            name="matQuantity"
             onChange={handleChange}
             placeholder={dataDescartable.matQuantity}
             className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
           />
         </div>
 
+        {/* Fecha de Vencimiento */}
         <div className="col-span-6 sm:col-span-3">
           <label
             htmlFor="matExpiration"
