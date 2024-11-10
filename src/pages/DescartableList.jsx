@@ -18,6 +18,7 @@ const DescartableList = ({ idCarro }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [viewListDescartable, setViewListDescartable] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getDaysUntilExpiration = (expirationDate) => {
     const today = new Date();
@@ -46,12 +47,19 @@ const DescartableList = ({ idCarro }) => {
   };
 
   useEffect(() => {
-    getDescartableByCarro(idCarro);
+    getListDescartableByCarro(idCarro);
   }, []);
 
+  const getListDescartableByCarro = async (idCarro) => {
+    await getDescartableByCarro(idCarro);
+    setIsLoading(false);
+  };
+
   const getListDescartable = async () => {
+    if (isLoading) return;
     if (descartables.length > 0) {
       setViewListDescartable(true);
+      getListDescartableByCarro(idCarro);
     } else {
       // aqui poongo un alert
       Swal.fire({

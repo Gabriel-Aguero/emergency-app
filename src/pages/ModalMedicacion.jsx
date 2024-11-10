@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
 
@@ -71,7 +71,7 @@ const ModalMedicacion = ({ dataMedicacion, onClose }) => {
             type="text"
             name="idCarro"
             placeholder={dataMedicacion.idCarro}
-            value={dataMedicacion.idCarro}
+            value={idCarro}
             onChange={handleChange}
             className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm capitalize"
           />

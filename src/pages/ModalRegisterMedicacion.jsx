@@ -19,7 +19,7 @@ const ModalRegisterMedicacion = ({ idCarro, onClose, onAdd }) => {
     e.preventDefault();
     await addMedication(dataMedicacion);
     Swal.fire({
-      position: "top-center",
+      position: "center",
       icon: "success",
       title: "Datos guardados correctamente",
       text: "Ha añadido una nueva medicación",
@@ -52,7 +52,7 @@ const ModalRegisterMedicacion = ({ idCarro, onClose, onAdd }) => {
         {/* titulo  */}
         <div className="col-span-6 sm:col-span-6 text-center text-blue-700 font-semibold">
           <h4 className="col-span-6 sm:col-span-6 text-center text-blue-700 font-semibold">
-            Formulario de registro
+            Formulario de registro {idCarro}
           </h4>
         </div>
 

@@ -46,6 +46,7 @@ const FormInfoCart = ({ servicioName: propServicioName }) => {
   }, [serviceName]);
 
   const handleViewDetails = async (idCarro) => {
+    console.log(idCarro);
     // activo el spinner
     navigate("/elementos_del_carro", {
       state: { idCarro: idCarro, servicioName: serviceName },

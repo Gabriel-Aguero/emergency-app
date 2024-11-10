@@ -18,6 +18,7 @@ const MedicacionList = ({ idCarro }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [viewListMedicacion, setViewListMedicacion] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getDaysUntilExpiration = (expirationDate) => {
     const today = new Date();
@@ -46,12 +47,20 @@ const MedicacionList = ({ idCarro }) => {
   };
 
   useEffect(() => {
-    getMedicationByCarro(idCarro);
-  }, []);
+    getListMedicationByCarro(idCarro);
+  }, [idCarro]);
+
+  const getListMedicationByCarro = async (idCarro) => {
+    await getMedicationByCarro(idCarro);
+    setIsLoading(false);
+  };
 
   const getListMedication = async () => {
+    if (isLoading) return;
+
     if (medications.length > 0) {
       setViewListMedicacion(true);
+      getListMedicationByCarro(idCarro);
     } else {
       // aqui poongo un alert
       Swal.fire({
