@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import { dataServicio } from "../context/sector";
-
+import Swal from "sweetalert2";
 const Register = () => {
   const [user, setUser] = useState({
     email: "",
@@ -42,6 +42,25 @@ const Register = () => {
         servicioName: servicioName,
       });
 
+      Swal.fire({
+        position: "top-center",
+        icon: "success",
+        title: "Cambios guardados correctamente",
+        text: "La información ha sido actualizada",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+
+      // limpiaar los campos
+      setUser({
+        email: "",
+        password: "",
+        firstName: "",
+        lastName: "",
+        legajo: 0,
+        servicioName: "",
+      });
+
       // Agrgrar algun popus de visualización de datos
       navigate("/");
     } catch (error) {
@@ -50,12 +69,10 @@ const Register = () => {
   };
 
   // ordeno los servicios alfabeticamente
-  
+
   const sortedServicios = [...dataServicio].sort((a, b) =>
     a.nombre.localeCompare(b.nombre)
   );
-
-  
 
   return (
     <section className="bg-white">
@@ -72,11 +89,7 @@ const Register = () => {
           <div className="max-w-xl lg:max-w-3xl">
             <a className="block text-blue-600" href="#">
               <span className="sr-only">Home</span>
-              <img
-                src="/bienvenido.svg"
-                alt="Logo"
-                className="h-40 sm:h-52"
-              />
+              <img src="/bienvenido.svg" alt="Logo" className="h-40 sm:h-52" />
             </a>
 
             <h1 className="mt-6 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
@@ -91,7 +104,6 @@ const Register = () => {
               onSubmit={handleSubmit}
               className="mt-8 grid grid-cols-6 gap-6"
             >
-
               {/* nombre */}
               <div className="col-span-6 sm:col-span-3">
                 <label className="block text-sm font-medium text-gray-700">
@@ -218,11 +230,14 @@ const Register = () => {
               <div className="col-span-6">
                 <p className="text-sm text-gray-500">
                   Al crear una cuenta acepta nuestros
-                  <Link to="/terminos_y_condiciones" className="text-gray-700 underline">
+                  <Link
+                    to="/terminos_y_condiciones"
+                    className="text-gray-700 underline"
+                  >
                     {" "}
                     terminos y condiciones asi como la{" "}
                   </Link>
-                  y {" "}
+                  y{" "}
                   <a href="#" className="text-gray-700 underline">
                     política de privacidad
                   </a>

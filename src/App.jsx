@@ -11,25 +11,20 @@ import Footer from "./components/Footer.jsx";
 import { Contacto } from "./pages/Contacto.jsx";
 import FormResetPassword from "./pages/FormResetPassword.jsx";
 import About from "./pages/About.jsx";
-import FormRegisterCart from "./pages/FormRegisterCart.jsx";
 import FormInfoCart from "./pages/FormInfoCart.jsx";
-import MedicationList from "./pages/MedicationList.jsx";
 import QRcode from "./components/QRcode.jsx";
-import DescartableList from "./pages/DescartableList.jsx";
 import { ContainerElementsCart } from "./pages/ContainerElementsCart.jsx";
 import TerminosyCondiciones from "./pages/TerminosyCondiciones.jsx";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
-
 function App() {
-
   const location = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0); // Lleva el scroll al inicio
   }, [location.pathname]); // Ejecuta el efecto cada vez que cambia la ruta
-  
+
   return (
     <>
       <Navbar />
@@ -46,16 +41,16 @@ function App() {
             </ProtectedRoutes>
           }
         />
-        <Route path="/register_info_cart" element={<FormRegisterCart />} />
         <Route path="/info_cart" element={<FormInfoCart />} />
         <Route
           path="/elementos_del_carro"
           element={<ContainerElementsCart />}
         />
-        <Route path="/lista_medicacion" element={<MedicationList />} />
-        <Route path="/lista_descartable" element={<DescartableList />} />
         <Route path="/reset_password" element={<FormResetPassword />} />
-        <Route path="/terminos_y_condiciones" element={<TerminosyCondiciones />} />
+        <Route
+          path="/terminos_y_condiciones"
+          element={<TerminosyCondiciones />}
+        />
         <Route path="/about" element={<About />} />
         <Route path="/contacto" element={<Contacto />} />
         <Route path="/qrcode" element={<QRcode />} />

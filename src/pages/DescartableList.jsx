@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { IconAdd } from "../components/icons/Icons";
 import Swal from "sweetalert2";
@@ -29,12 +29,12 @@ const DescartableList = ({ idCarro }) => {
   const getColorAndIcon = (days) => {
     if (days < 20) {
       return {
-        bgColor: "bg-red-400",
+        bgColor: "bg-red-300",
         icon: <NotificationImportantIcon sx={{ color: pink[900] }} />,
       };
     } else if (days >= 20 && days < 30) {
       return {
-        bgColor: "bg-yellow-300",
+        bgColor: "bg-yellow-200",
         icon: <WarningIcon sx={{ color: yellow[900] }} />,
       };
     } else if (days >= 30) {
@@ -45,9 +45,23 @@ const DescartableList = ({ idCarro }) => {
     }
   };
 
+  useEffect(() => {
+    getDescartableByCarro(idCarro);
+  }, []);
+
   const getListDescartable = async () => {
-    await getDescartableByCarro(idCarro);
-    setViewListDescartable(true);
+    if (descartables.length > 0) {
+      setViewListDescartable(true);
+    } else {
+      // aqui poongo un alert
+      Swal.fire({
+        icon: "warning",
+        title: "No hay descartables registrados",
+        text: "Agrega nuevos descartables",
+        confirmButtonText: "Aceptar",
+        confirmButtonColor: "#d33",
+      });
+    }
   };
 
   const openEditModal = (data) => {
@@ -122,7 +136,7 @@ const DescartableList = ({ idCarro }) => {
           )}
         </div>
 
-        {viewListDescartable && (
+        {viewListDescartable && descartables.length > 0 && (
           <>
             <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-7xl w-full">
               {descartables.map((list) => {
@@ -131,49 +145,61 @@ const DescartableList = ({ idCarro }) => {
                 );
                 const { bgColor, icon } = getColorAndIcon(daysUntilExpiration);
                 return (
-                  <div key={list.id} className="mx-auto p-4 mt-5">
-                    <div
-                      className={`bg-white shadow-md r ${bgColor} shadow-slate-800/80 rounded-lg p-4 mb-4 max-w-md transition-all duration-300 hover:shadow-blue-800/60`}
-                    >
-                      <h2 className="text-lg font-bold text-gray-800 border-b capitalize flex gap-2">
-                        {icon}
-                        {list.material}
-                      </h2>
-                      <div className="mt-2 text-gray-600">
-                        <p>
-                          <strong>Fecha de vencimiento:</strong>{" "}
-                          {list.matExpiration}
-                        </p>
-                        <p>
-                          <strong>Cantidad:</strong> {list.matQuantity}
-                        </p>
-                        <p>
-                          <strong>Número de lote:</strong> {list.lot}
-                        </p>
-                      </div>
-                      {user ? (
-                        <>
-                          <div className="mt-4 flex justify-between gap-3">
-                            <button
-                              onClick={() => openEditModal(list)}
-                              className="bg-blue-500 text-white font-semibold py-1 px-3 rounded hover:bg-blue-600 transition duration-300"
-                            >
-                              Editar
-                            </button>
-                            <button
-                              onClick={() =>
-                                handleDelete(list.id, getListDescartable)
-                              }
-                              className="bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600 transition duration-300"
-                            >
-                              Eliminar
-                            </button>
-                          </div>
-                        </>
-                      ) : (
-                        <></>
-                      )}
+                  <div
+                    key={list.id}
+                    className={`shadow-md ${bgColor} shadow-slate-800/80 rounded-lg p-4 mb-4 max-w-md hover:scale-105 transition-all ease-in-out duration-700 hover:shadow-blue-800/60`}
+                  >
+                    <h2 className="text-lg font-bold text-gray-800 border-b border-gray-600 capitalize flex gap-2">
+                      {icon}
+                      {list.material}
+                    </h2>
+                    <div className="mt-2 text-gray-600">
+                      <p>
+                        <strong>Fecha de vencimiento:</strong>{" "}
+                        {list.matExpiration}
+                      </p>
+                      <p>
+                        <strong>Cantidad:</strong> {list.matQuantity}
+                      </p>
+                      <p>
+                        <strong>Número de lote:</strong> {list.lot}
+                      </p>
                     </div>
+                    <div className="flex justify-center items-center mt-4 p-2 border-t border-gray-600">
+                      <span className="text-gray-800 text-lg font-bold ">
+                        {daysUntilExpiration <= 0 ? (
+                          <>
+                            <span>Venció hace {daysUntilExpiration} días</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>Vence en: {daysUntilExpiration} días</span>
+                          </>
+                        )}
+                      </span>
+                    </div>
+                    {user ? (
+                      <>
+                        <div className="mt-4 flex justify-between gap-3">
+                          <button
+                            onClick={() => openEditModal(list)}
+                            className="bg-blue-500 text-white font-semibold py-1 px-3 rounded hover:bg-blue-600 transition duration-300"
+                          >
+                            Editar
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleDelete(list.id, getListDescartable)
+                            }
+                            className="bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600 transition duration-300"
+                          >
+                            Eliminar
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <></>
+                    )}
                   </div>
                 );
               })}

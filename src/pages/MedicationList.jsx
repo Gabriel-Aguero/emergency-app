@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import ModalMedicacion from "./ModalMedicacion";
 import Swal from "sweetalert2";
@@ -45,9 +45,23 @@ const MedicacionList = ({ idCarro }) => {
     }
   };
 
+  useEffect(() => {
+    getMedicationByCarro(idCarro);
+  }, []);
+
   const getListMedication = async () => {
-    await getMedicationByCarro(idCarro);
-    setViewListMedicacion(true);
+    if (medications.length > 0) {
+      setViewListMedicacion(true);
+    } else {
+      // aqui poongo un alert
+      Swal.fire({
+        icon: "warning",
+        title: "No hay medicaciones registradas",
+        text: "Agrega nuevas medicaciones",
+        confirmButtonText: "Aceptar",
+        confirmButtonColor: "#d33",
+      });
+    }
   };
 
   const openEditModal = (data) => {
@@ -122,7 +136,7 @@ const MedicacionList = ({ idCarro }) => {
           )}
         </div>
 
-        {viewListMedicacion && (
+        {viewListMedicacion && medications.length > 0 && (
           <>
             <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-7xl w-full">
               {medications.map((list) => {
@@ -131,51 +145,65 @@ const MedicacionList = ({ idCarro }) => {
                 );
                 const { bgColor, icon } = getColorAndIcon(daysUntilExpiration);
                 return (
-                  <div key={list.id} className={`mx-auto p-4 mt-5`}>
-                    <div
-                      className={`bg-white shadow-md ${bgColor} shadow-slate-800/80 rounded-lg p-4 mb-4 max-w-md transition-all duration-300 hover:shadow-blue-800/60`}
-                    >
-                      <h2 className=" flex gap-2 items-center p-2 text-lg font-bold text-gray-800 border-b border-gray-600 capitalize">
+                  <div
+                    key={list.id}
+                    className={`${bgColor} shadow-md shadow-slate-800/80 rounded-lg p-4 mb-2 max-w-md hover:scale-105 transition-all ease-in-out duration-700 hover:shadow-blue-800/60`}
+                  >
+                    <div className="flex justify-between items-center border-b border-gray-600">
+                      <h2 className="flex gap-2 items-center p-2 text-xl font-bold text-gray-800  capitalize">
                         {icon}
                         {list.medication}
                       </h2>
-                      <div className="mt-2 text-gray-600 font-bold">
-                        <p>
-                          <strong>Fecha de vencimiento:</strong>{" "}
-                          {list.medExpiration}
-                        </p>
-                        <p>
-                          <strong>Cantidad:</strong> {list.medQuantity}
-                        </p>
-                        <p>
-                          <strong>Número de lote:</strong> {list.lot}
-                        </p>
-                      </div>
-                      {/* oculto los botones de editar y eliminar en caso de no estar logueado*/}
-
-                      {user ? (
-                        <>
-                          <div className="mt-4 flex justify-between gap-3">
-                            <button
-                              onClick={() => openEditModal(list)}
-                              className="bg-blue-500 text-white font-semibold py-1 px-3 rounded hover:bg-blue-600 transition duration-300"
-                            >
-                              Editar
-                            </button>
-                            <button
-                              onClick={() =>
-                                handleDelete(list.id, getListMedication)
-                              }
-                              className="bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600 transition duration-300"
-                            >
-                              Eliminar
-                            </button>
-                          </div>
-                        </>
-                      ) : (
-                        <></>
-                      )}
                     </div>
+                    <div className="mt-2 text-gray-600 font-bold">
+                      <p>
+                        <strong>Fecha de vencimiento:</strong>{" "}
+                        {list.medExpiration}
+                      </p>
+                      <p>
+                        <strong>Cantidad:</strong> {list.medQuantity}
+                      </p>
+                      <p>
+                        <strong>Número de lote:</strong> {list.lot}
+                      </p>
+                    </div>
+                    <div className="flex justify-center items-center mt-4 p-2 border-t border-gray-600">
+                      <span className="text-gray-800 text-lg font-bold ">
+                        {daysUntilExpiration <= 0 ? (
+                          <>
+                            <span>Venció hace {daysUntilExpiration} días</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>Vence en: {daysUntilExpiration} días</span>
+                          </>
+                        )}
+                      </span>
+                    </div>
+                    {/* oculto los botones de editar y eliminar en caso de no estar logueado*/}
+
+                    {user ? (
+                      <>
+                        <div className="mt-4 flex justify-between gap-3">
+                          <button
+                            onClick={() => openEditModal(list)}
+                            className="bg-blue-500 text-white font-semibold py-1 px-3 rounded hover:bg-blue-600 transition duration-300"
+                          >
+                            Editar
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleDelete(list.id, getListMedication)
+                            }
+                            className="bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600 transition duration-300"
+                          >
+                            Eliminar
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <></>
+                    )}
                   </div>
                 );
               })}

@@ -1,28 +1,16 @@
 /* eslint-disable react/prop-types */
 
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
 
 // eslint-disable-next-line react/prop-types
-const ModalCarro = ({ selectedCarros, isModalOpen, onClose }) => {
-  const [cartData, setCartData] = useState({});
+const ModalCarro = ({ selectedCarros, onClose }) => {
+  const [cartData, setCartData] = useState(selectedCarros);
   const { updateCarro } = useContext(AuthContext);
   const today = new Date().toLocaleDateString();
-  // Inicializa cartData con los valores de selectedCarros cuando el modal se abre
-  useEffect(() => {
-    if (isModalOpen && selectedCarros) {
-      setCartData({
-        numCarro: selectedCarros.numCarro || "",
-        precintoMedicacion: selectedCarros.precintoMedicacion || "",
-        precintoDescartable: selectedCarros.precintoDescartable || "",
-        fechaInicio: selectedCarros.fechaInicio || "",
-        fechaUltimoControl: today || "",
-      });
-    }
-  }, [isModalOpen, selectedCarros]);
 
-  if (!isModalOpen) return null;
+  if (!selectedCarros) return null;
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -34,18 +22,29 @@ const ModalCarro = ({ selectedCarros, isModalOpen, onClose }) => {
     });
   };
 
-  const handleOnClick = (e) => {
+  const handleOnClick = async (e) => {
     e.preventDefault();
-    updateCarro(cartData, selectedCarros.id);
-    Swal.fire({
-      position: "top-center",
-      icon: "success",
-      title: "Cambios guardados correctamente",
-      text: "La información del carro ha sido actualizada",
-      showConfirmButton: false,
-      timer: 2000,
-    });
-    onClose();
+
+    try {
+      await updateCarro(cartData, selectedCarros.id); // Envía la actualización a la API
+      Swal.fire({
+        position: "top-center",
+        icon: "success",
+        title: "Cambios guardados correctamente",
+        text: "La información ha sido actualizada",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+      onClose(); // Llama a onClose() que incluye `getListCarro()`
+    } catch (error) {
+      console.error("Error updating medication:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo actualizar la información",
+        confirmButtonColor: "#d33",
+      });
+    }
   };
 
   return (

@@ -8,21 +8,19 @@ import FormInfoCart from "./FormInfoCart";
 
 const BuscarCarroPorServicio = () => {
   const [servicioName, setServicioName] = useState("");
-  const [viewCarros, setViewCarros] = useState(false);
   const [loading, setLoading] = useState(false);
   const { getCarrosByServicio } = useContext(AuthContext);
 
   useEffect(() => {
-    if (servicioName) {
-      // quiero mostrar el spinner antess de loss datos
-      setLoading(true);
-      setTimeout(() => {
-        setViewCarros(!viewCarros);
-        getCarrosByServicio(servicioName);
-        setLoading(false);
-      }, 1000);
-    }
-  }, [servicioName]);
+    setLoading(true);
+  }, []);
+
+  const getCarros = async () => {
+    await getCarrosByServicio(servicioName);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  };
 
   // ordeno los servicios alfabeticamente
   const sortedServicios = [...dataServicio].sort((a, b) =>
@@ -30,8 +28,8 @@ const BuscarCarroPorServicio = () => {
   );
 
   return (
-    <section className="bg-white">
-      <div className="flex items-center justify-center lg:min-h-screen">
+    <section className="bg-white min-h-screen">
+      <div className="flex  justify-center lg:min-h-screen">
         <main className="flex flex-col items-start px-8 py-8 sm:px-12 lg:px-16 lg:py-12">
           <div className="flex flex-col items-center justify-center max-w-xl lg:max-w-3xl">
             <Link to="/" className="block text-blue-600">
@@ -56,10 +54,11 @@ const BuscarCarroPorServicio = () => {
               <div className="flex justify-start items-start gap-2 w-full">
                 <select
                   id="servicio"
+                  value={servicioName}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   onChange={(e) => setServicioName(e.target.value)}
                 >
-                  <option value="" selected disabled>
+                  <option value="" disabled hidden>
                     Seleccione un Servicio
                   </option>
                   {sortedServicios.map((servicio) => (
@@ -68,24 +67,23 @@ const BuscarCarroPorServicio = () => {
                     </option>
                   ))}
                 </select>
+                <button
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  type="button"
+                  onClick={getCarros}
+                >
+                  Buscar
+                </button>
               </div>
             </form>
           </div>
 
-          {/* los carros de paro se muestran al ejecutar el boton ir  */}
-
           {loading ? (
             <div className="flex justify-center items-center mt-20 mx-auto">
-              <SpinnerDiamond
-                size={150}
-                thickness={100}
-                speed={200}
-                color="#09f"
-                secondaryColor="rgba(0, 0, 0, 0.44)"
-              />
+              <span className="loader"></span>
             </div>
           ) : (
-            <FormInfoCart servioName={servicioName} />
+            <FormInfoCart servicioName={servicioName} />
           )}
         </main>
       </div>
