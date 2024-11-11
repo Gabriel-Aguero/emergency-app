@@ -13,7 +13,7 @@ const FormInfoCart = ({ servicioName: propServicioName }) => {
   const { carros, getCarrosByServicio, user } = useContext(AuthContext);
   const location = useLocation();
 
-  const serviceName = propServicioName || location.state?.servicioName;
+  const serviceName = propServicioName || location.state?.serviceName;
   // const { serviceName } = location.state || {};
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedCarros, setSelectedCarros] = useState();
@@ -40,9 +40,16 @@ const FormInfoCart = ({ servicioName: propServicioName }) => {
   };
 
   useEffect(() => {
-    if (serviceName) {
-      recuperarCarrosPorServicio();
-    }
+    console.log(serviceName);
+    // if (serviceName) {
+    //   recuperarCarrosPorServicio();
+    // }
+    getCarrosByServicio(serviceName);
+    setTimeout(() => {
+      if (user) {
+        console.log(carros);
+      }
+    }, 1000);
   }, [serviceName]);
 
   const handleViewDetails = async (idCarro) => {

@@ -27,7 +27,7 @@ const Register = () => {
     e.preventDefault();
     try {
       // Verificar si el servicio existe en la base de datos
-      const servicioName = await checkAndAddService(user.servicioName);
+      // const servicioName = await checkAndAddService(user.servicioName);
 
       // Registrar usuario en la base de datos
       const userCredential = await signup(user.email, user.password);
@@ -39,13 +39,13 @@ const Register = () => {
         lastName: user.lastName,
         legajo: user.legajo,
         email: user.email,
-        servicioName: servicioName,
+        servicioName: "",
       });
 
       Swal.fire({
         position: "top-center",
         icon: "success",
-        title: "Cambios guardados correctamente",
+        title: "Usuario creado correctamente",
         text: "La información ha sido actualizada",
         showConfirmButton: false,
         timer: 2000,
@@ -162,12 +162,13 @@ const Register = () => {
                 </label>
                 <select
                   name="servicioName"
+                  // value={user.servicioName}
                   onChange={handleChangeUsers}
                   className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
                   required
                   // onChange={(e) => setServicioName(e.target.value)}
                 >
-                  <option value="" selected disabled>
+                  <option value="" disabled hidden>
                     Seleccione un Servicio
                   </option>
                   {sortedServicios.map((servicio) => (
