@@ -14,8 +14,7 @@ const Register = () => {
     servicioName: "",
   });
 
-  const { signup, addProfileUser, checkAndAddService } =
-    useContext(AuthContext);
+  const { signup, addProfileUser } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -27,7 +26,7 @@ const Register = () => {
     e.preventDefault();
     try {
       // Verificar si el servicio existe en la base de datos
-      const servicioName = await checkAndAddService(user.servicioName);
+      // const servicioName = await checkAndAddService(user.servicioName);
 
       // Registrar usuario en la base de datos
       const userCredential = await signup(user.email, user.password);
@@ -39,7 +38,7 @@ const Register = () => {
         lastName: user.lastName,
         legajo: user.legajo,
         email: user.email,
-        servicioName: servicioName,
+        servicioName: user.servicioName,
       });
 
       Swal.fire({

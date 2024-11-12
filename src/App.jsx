@@ -15,6 +15,7 @@ import FormInfoCart from "./pages/FormInfoCart.jsx";
 import QRcode from "./components/QRcode.jsx";
 import { ContainerElementsCart } from "./pages/ContainerElementsCart.jsx";
 import TerminosyCondiciones from "./pages/TerminosyCondiciones.jsx";
+import PoliticaDePrivacidad from "./pages/PoliticaDePrivacidad.jsx";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
@@ -50,6 +51,10 @@ function App() {
         <Route
           path="/terminos_y_condiciones"
           element={<TerminosyCondiciones />}
+        />
+        <Route
+          path="/politicas_de_privacidad"
+          element={<PoliticaDePrivacidad />}
         />
         <Route path="/about" element={<About />} />
         <Route path="/contacto" element={<Contacto />} />
