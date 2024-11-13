@@ -14,8 +14,7 @@ const Register = () => {
     servicioName: "",
   });
 
-  const { signup, addProfileUser, checkAndAddService } =
-    useContext(AuthContext);
+  const { signup, addProfileUser } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -39,7 +38,7 @@ const Register = () => {
         lastName: user.lastName,
         legajo: user.legajo,
         email: user.email,
-        servicioName: "",
+        servicioName: user.servicioName,
       });
 
       Swal.fire({
