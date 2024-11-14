@@ -3,7 +3,6 @@ import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import { dataServicio } from "../context/sector";
-import { SpinnerDiamond } from "spinners-react";
 import FormInfoCart from "./FormInfoCart";
 
 const BuscarCarroPorServicio = () => {

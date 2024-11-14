@@ -71,7 +71,7 @@ const ModalMedicacion = ({ dataMedicacion, onClose }) => {
             type="text"
             name="idCarro"
             placeholder={dataMedicacion.idCarro}
-            value={idCarro}
+            value={dataMedicacion.idCarro}
             onChange={handleChange}
             className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm capitalize"
           />

@@ -20,18 +20,17 @@ const Home = () => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {   
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login(user.email, user.password);                
+      await login(user.email, user.password);
       navigate("/formulario_de_datos", { state: { email: user.email } });
-
     } catch (error) {
       console.error("Error logging in: ", error);
     }
   };
 
-  const checkCarros = () => {   
+  const checkCarros = () => {
     navigate("/check_carros");
   };
 
@@ -65,7 +64,7 @@ const Home = () => {
                 to="/register"
                 className="block w-full rounded border border-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring active:bg-blue-500 sm:w-auto"
               >
-                Regitrarme
+                Registrarme
               </Link>
             </div>
           </div>

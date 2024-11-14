@@ -52,7 +52,7 @@ const Footer = () => {
                 to="/terminos_y_condiciones"
                 className="hover:underline me-4 md:me-6 hover:text-white"
               >
-                Terminos y Condiciones
+                Términos y Condiciones
               </Link>
             </li>
             <li>
