@@ -25,7 +25,6 @@ export const dataServicio = [
   { id: "4202", nombre: "Unidad Metabólica" },
   { id: "8404", nombre: "CAIPHO" },
   { id: "4802", nombre: "Hospital de día Oncológico" },
-  { id: "4801", nombre: "Hospital de día Polivalente" },
-  { id: "4801", nombre: "Hospital de día Polivalente" },
+  { id: "4801", nombre: "Hospital de día Polivalente" },  
   { id: "4852", nombre: "Vacunatorio" },
 ];

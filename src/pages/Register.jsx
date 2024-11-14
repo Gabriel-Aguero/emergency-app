@@ -1,10 +1,11 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import { dataServicio } from "../context/sector";
 import Swal from "sweetalert2";
 const Register = () => {
+
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -14,35 +15,38 @@ const Register = () => {
     servicioName: "",
   });
 
-  const { signup, addProfileUser } = useContext(AuthContext);
+  const { signup, addProfileUser, checkAndAddService } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
   const handleChangeUsers = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Verificar si el servicio existe en la base de datos
-      // const servicioName = await checkAndAddService(user.servicioName);
-
       // Registrar usuario en la base de datos
       const userCredential = await signup(user.email, user.password);
+
+      // Recupero el Id de usuario para posteriormente guardarlo en el perfil del usuario. Para poder recuperar y asociar el servicio con el usuario.
       const uid = userCredential.user.uid;
 
+      // Verificar si el servicio existe en la base de datos para no duplicar el servicio. Si existe traigo el mismo sino lo agrego como nuevo servicio
+      // const serviceName = await checkAndAddService(user.servicioName);
+
+      // Agrego los datos del perfil del usuario 
       await addProfileUser({
-        uid: uid,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        legajo: user.legajo,
-        email: user.email,
-        servicioName: user.servicioName,
-      });
+      uid: uid,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      legajo: user.legajo,
+      email: user.email,
+      servicioName: user.servicioName,
+      })
 
       Swal.fire({
-        position: "top-center",
+        position: "center",
         icon: "success",
         title: "Usuario creado correctamente",
         text: "La información ha sido actualizada",
@@ -161,7 +165,7 @@ const Register = () => {
                 </label>
                 <select
                   name="servicioName"
-                  // value={user.servicioName}
+                  value={user.servicioName}
                   onChange={handleChangeUsers}
                   className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
                   required
@@ -238,7 +242,7 @@ const Register = () => {
                     terminos y condiciones asi como la{" "}
                   </Link>
                   y{" "}
-                  <a href="#" className="text-gray-700 underline">
+                  <a to="/politica_de_privacidad" className="text-gray-700 underline">
                     política de privacidad
                   </a>
                   .
