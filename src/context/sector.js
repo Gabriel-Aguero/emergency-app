@@ -1,6 +1,6 @@
 export const dataServicio = [
   { id: "9000", nombre: "sistemas" },
-  { id: "0300", nombre: "Unidad de Cuidados Estacional (UCE)" },
+  { id: "0300", nombre: "Unidad de Contención Estacional (UCE)" },
   { id: "0301", nombre: "Observacion / Emergencia" },
   { id: "0432", nombre: "CIM 32" },
   { id: "0441", nombre: "CIM 41" },
@@ -25,5 +25,6 @@ export const dataServicio = [
   { id: "4202", nombre: "Unidad Metabólica" },
   { id: "8404", nombre: "CAIPHO" },
   { id: "4802", nombre: "Hospital de día Oncológico" },
-  { id: "4801", nombre: "Hospital de día Polivalente" },
+  { id: "4801", nombre: "Hospital de día Polivalente" },  
+  { id: "4852", nombre: "Vacunatorio" },
 ];

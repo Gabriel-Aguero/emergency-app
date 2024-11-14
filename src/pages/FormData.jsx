@@ -73,7 +73,7 @@ const FormData = () => {
 
   // Muestra el detalle de los carros registrados
   const handleViewCar = async () => {
-    navigate("/info_cart", { state: { servicioName: usuario.servicioName } });
+    navigate("/info_cart", { state: { serviceName: usuario.servicioName } });
   };
 
   // ordeno los servicios alfabeticamente
@@ -81,9 +81,10 @@ const FormData = () => {
     a.nombre.localeCompare(b.nombre)
   );
 
-  useEffect(() => {
+  useEffect(() => {   
     setLoading(true);
     dataUsuario();
+    console.log(usuario);
     setTimeout(() => {
       if (user) {
         setLoading(false);
@@ -166,7 +167,7 @@ const FormData = () => {
                           required
                           // onChange={(e) => setServicioName(e.target.value)}
                         >
-                          <option value="" selected disabled>
+                          <option value="" disabled>
                             Seleccione un Servicio
                           </option>
                           {sortedServicios.map((servicio) => (
