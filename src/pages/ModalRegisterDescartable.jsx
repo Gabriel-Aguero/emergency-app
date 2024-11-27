@@ -92,7 +92,7 @@ const ModalRegisterDescartable = ({ idCarro, onClose, onAdd }) => {
             aria-label="Selecciona una opcion"
             required
           >
-            <option value="" disabled>
+            <option value="" disabled hidden>
               Seleccione un material
             </option>
             {sortedDescartable.map((descartableList) => (

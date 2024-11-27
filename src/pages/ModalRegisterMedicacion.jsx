@@ -41,7 +41,7 @@ const ModalRegisterMedicacion = ({ idCarro, onClose, onAdd }) => {
     });
   };
 
-  const sortedMedicacion = dbMedication.sort((a, b) => a.order - b.order);
+  const sortedMedicacion = dbMedication.sort((a, b) => a.medication.localeCompare(b.medication));
 
   return (
     <div className="flex flex-col fixed inset-0 z-50 items-center justify-center gap-4 w-full mt-5 border p-4 shadow-lg shadow-slate-700">
@@ -90,7 +90,7 @@ const ModalRegisterMedicacion = ({ idCarro, onClose, onAdd }) => {
             aria-label="Selecciona una opcion"
             required
           >
-            <option value="" disabled>
+            <option value="" disabled hidden>
               Seleccione una medicación
             </option>
             {sortedMedicacion.map((medicationList) => (
