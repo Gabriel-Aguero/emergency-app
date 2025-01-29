@@ -1,19 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import { dataServicio } from "../context/sector";
 import FormInfoCart from "./FormInfoCart";
 
 const BuscarCarroPorServicio = () => {
-  const [servicioName, setServicioName] = useState("");  
+  const [servicioName, setServicioName] = useState("");
   const { getCarrosByServicio } = useContext(AuthContext);
-  
-  const getCarros = async () => {    
+
+  const getCarros = async () => {
     await getCarrosByServicio(servicioName);
-    setTimeout(() => {
-    }, 1000);
-        
+    setTimeout(() => {}, 1000);
   };
 
   // ordeno los servicios alfabeticamente
@@ -69,9 +67,9 @@ const BuscarCarroPorServicio = () => {
                   Buscar
                 </button>
               </div>
-            </form>            
+            </form>
           </div>
-          <FormInfoCart servicioName={servicioName} />         
+          <FormInfoCart servicioName={servicioName} />
         </main>
       </div>
     </section>
