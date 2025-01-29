@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
@@ -15,7 +15,7 @@ const Register = () => {
     servicioName: "",
   });
 
-  const { signup, addProfileUser, checkAndAddService } = useContext(AuthContext);
+  const { signup, addProfileUser } = useContext(AuthContext);
 
   const navigate = useNavigate();
 

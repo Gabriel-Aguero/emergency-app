@@ -63,6 +63,26 @@ export const dbMedication = [
         idMedication: "16",
         medication: "Vecuronio"  
     },
+    {
+        idMedication: "17",
+        medication: "Difenhidramina"  
+    },
+    {
+        idMedication: "18",
+        medication: "Hidrocortisona 500"  
+    },
+    {
+        idMedication: "19",
+        medication: "Hidrocortisona 100"
+    },
+    {
+        idMedication: "20",
+        medication: "Ranitidina"  
+    },
+    {
+        idMedication: "21",
+        medication: "Dexametasona"  
+    },
 ];
 
 export const dbDescartable = [

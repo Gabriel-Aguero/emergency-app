@@ -6,19 +6,14 @@ import { dataServicio } from "../context/sector";
 import FormInfoCart from "./FormInfoCart";
 
 const BuscarCarroPorServicio = () => {
-  const [servicioName, setServicioName] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [servicioName, setServicioName] = useState("");  
   const { getCarrosByServicio } = useContext(AuthContext);
-
-  useEffect(() => {
-    setLoading(true);
-  }, []);
-
-  const getCarros = async () => {
+  
+  const getCarros = async () => {    
     await getCarrosByServicio(servicioName);
     setTimeout(() => {
-      setLoading(false);
     }, 1000);
+        
   };
 
   // ordeno los servicios alfabeticamente
@@ -67,23 +62,16 @@ const BuscarCarroPorServicio = () => {
                   ))}
                 </select>
                 <button
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded hidden"
                   type="button"
                   onClick={getCarros}
                 >
                   Buscar
                 </button>
               </div>
-            </form>
+            </form>            
           </div>
-
-          {loading ? (
-            <div className="flex justify-center items-center mt-20 mx-auto">
-              <span className="loader"></span>
-            </div>
-          ) : (
-            <FormInfoCart servicioName={servicioName} />
-          )}
+          <FormInfoCart servicioName={servicioName} />         
         </main>
       </div>
     </section>
