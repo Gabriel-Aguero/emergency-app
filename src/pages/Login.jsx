@@ -1,6 +1,7 @@
 import {  useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import  Swal  from 'sweetalert2';
 
 const Login = () => {
   
@@ -24,7 +25,12 @@ const Login = () => {
       await login(user.email, user.password);
       navigate('/formulario_de_datos');  
     } catch (error) {
-      console.error("Error logging in: ", error); 
+      Swal.fire({
+        title: 'Error',
+        text: 'No se pudo ingresar al usuario',
+        icon: 'error',
+        confirmButtonText: 'Aceptar',
+      });      
     }        
   }
     

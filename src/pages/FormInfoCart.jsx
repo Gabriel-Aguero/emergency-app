@@ -8,9 +8,12 @@ import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import ModalCarro from "./ModalCarro";
 import { EyeIcon, IconEdit } from "../components/icons/Icons";
+import Swal from "sweetalert2";
 
 const FormInfoCart = ({ servicioName: propServicioName }) => {
-  const { carros, getCarrosByServicio, user } = useContext(AuthContext);
+  const { carros, getCarrosByServicio, user, deleteCarro } = useContext(
+    AuthContext
+  );
   const location = useLocation();
 
   const serviceName = propServicioName || location.state?.serviceName;
@@ -29,6 +32,33 @@ const FormInfoCart = ({ servicioName: propServicioName }) => {
   const handleEdit = (carro) => {
     setSelectedCarros(carro);
     setIsEditModalOpen(true);
+  };
+
+  const handleEliminar = (idCarro) => {
+    Swal.fire({
+      title: "¿Estás seguro de eliminar este elemento?",
+      text: "Si eliminas este elemento no se podrá recuperar",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Eliminar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteCarro(idCarro).then(() => {
+          Swal.fire({
+            title: "¡Eliminado!",
+            text: "El elemento ha sido eliminado correctamente",
+            icon: "success",
+            confirmButtonText: "Aceptar",
+            confirmButtonColor: "#3085d6",
+          }).then(() => {
+            recuperarCarrosPorServicio();
+          });
+        });
+      }
+    });
   };
 
   const closeEditModal = () => {
@@ -137,23 +167,33 @@ const FormInfoCart = ({ servicioName: propServicioName }) => {
                     <p>{carro.fechaUltimoControl}</p>
                   </div>
 
-                  <div className="w-full flex flex-col md:flex-row items-center justify-between gap-4">
+                  <div className="flex flex-col items-center justify-between gap-2 mt-2">
                     <button
-                      className="w-full inline-flex items-center px-3 m-2 py-2 gap-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                      className="w-full flex justify-center items-center px-3 py-2 gap-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none"
                       onClick={() => handleViewDetails(carro.id)}
                     >
-                      Ver contenido del carro
+                      Ver carro
                       <EyeIcon />
                     </button>
 
                     {user ? (
+                      <>
                       <button
-                        className="w-full flex justify-center items-center px-3 m-2 py-2 gap-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        className="w-full flex justify-center items-center px-3 py-2 gap-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none"
                         onClick={() => handleEdit(carro)}
                       >
                         Editar
                         <IconEdit />
                       </button>
+
+                      <button
+                        className="w-full flex justify-center items-center px-3 py-2 gap-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none"
+                        onClick={() => handleEliminar(carro.id)}
+                      >
+                        Eliminar
+                        <IconEdit />
+                      </button>
+                      </>
                     ) : (
                       <></>
                     )}

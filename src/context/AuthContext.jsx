@@ -252,6 +252,15 @@ export const AuthProvider = ({ children }) => {
     return docRef;
   };
 
+  const deleteCarro = async (idCarro) => {
+    try {
+      const docRef = doc(db, "carro", idCarro);
+      await deleteDoc(docRef);
+    } catch (error) {
+      console.error("Error:", error.message);
+    }
+  };
+
   // Actualizar la lista de medicaciones
   const updateMedication = async (data, medicationId) => {
     try {
@@ -338,6 +347,7 @@ export const AuthProvider = ({ children }) => {
         getMedicationByCarro,
         getDescartableByCarro,
         updateCarro,
+        deleteCarro,
         updateMedication,
         updateDescartable,
         deleteMedication,

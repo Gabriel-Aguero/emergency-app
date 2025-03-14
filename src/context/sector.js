@@ -27,4 +27,8 @@ export const dataServicio = [
   { id: "4802", nombre: "Hospital de día Oncológico" },
   { id: "4801", nombre: "Hospital de día Polivalente" },  
   { id: "4852", nombre: "Vacunatorio" },
+  { id: "8000", nombre: "Cons. Externos Tira Verde" },
+  { id: "8001", nombre: "Cons. Externos Tira Amarilla 1" },
+  { id: "8002", nombre: "Cons. Externos Tira Amarilla 2" },
+  { id: "8003", nombre: "Cons. Externos Ergometría" },
 ];

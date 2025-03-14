@@ -84,7 +84,6 @@ const FormData = () => {
   useEffect(() => {   
     setLoading(true);
     dataUsuario();
-    console.log(usuario);
     setTimeout(() => {
       if (user) {
         setLoading(false);
@@ -96,63 +95,77 @@ const FormData = () => {
   return (
     <>
       {user && (
-        <section className="bg-white">
-          <div className="flex flex-col lg:grid lg:min-h-screen lg:grid-cols-12">
-            <main className="flex flex-col mt-16 items-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6">
-              <div className="max-w-xl lg:max-w-3xl">
-                {loading ? (
-                  <div className="flex justify-center items-center mt-20 m-20">
-                    <span className="loader"></span>
-                  </div>
-                ) : (
-                  <>
-                    <div className="relative -mt-16 md:mt-0">
-                      <a
-                        className="inline-flex size-16 items-center justify-center rounded-full bg-white text-blue-600 sm:size-20"
-                        href="/"
-                      >
-                        <span className="sr-only">Home</span>
-                        <img
-                          src="/logo.svg"
-                          alt="logo"
-                          className="h-auto rounded-full bg-slate-200"
-                        />
-                      </a>
-                      <h1 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl capitalize">
-                        Bienvenido {usuario.firstName} {usuario.lastName}{" "}
-                      </h1>
-                      <p className="mt-4 leading-relaxed text-gray-500">
-                        En este formulario podrás registrar la información sobre
-                        el carro de paro.
-                      </p>
-                    </div>
-                    <form
-                      action="#"
-                      className="mt-8 grid grid-cols-6 gap-6"
-                      onSubmit={cargarCarro}
+        <section className="bg-white">          
+          <main className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto p-8 border-2 border-gray-700-600 shadow-lg rounded-lg">
+              {loading ? (
+                <div className="flex justify-center items-center mt-20 m-20">
+                  <span className="loader"></span>
+                </div>
+              ) : (
+                <>
+                  <div className="flex flex-col gap-4 items-center justify-center">
+                    <a
+                      className="inline-flex size-16 items-center justify-center rounded-full bg-white text-blue-600 sm:size-20"
+                      href="/"
                     >
-                      {/* fecha de inicio  */}
-                      <div className="col-span-6 sm:col-span-3">
-                        <label
-                          htmlFor="fechaInicio"
-                          className="block text-sm font-medium text-gray-700"
-                        >
-                          Fecha de inicio
+                      <span className="sr-only">Home</span>
+                      <img
+                        src="/logo.svg"
+                        alt="logo"
+                        className="h-auto rounded-full bg-slate-200"
+                      />
+                    </a>
+                    <h1 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl capitalize">
+                      Bienvenido {usuario.firstName} {usuario.lastName}{" "}
+                    </h1>
+                    <p className="mt-4 leading-relaxed text-gray-500">
+                      En este formulario podrás registrar la información sobre
+                      el carro de paro.
+                    </p>
+                  </div>
+                  <form
+                    action="#"
+                    className="mt-8 grid grid-cols-2 gap-6 border-2 border-gray-700-600 shadow-lg rounded-lg p-4"
+                    onSubmit={cargarCarro}
+                  >
+
+                    <div className="col-span-2 border-2 border-gray-800 p-4">
+                      <div className="flex flex-col md:flex-row gap-4">
+                        <label htmlFor="cargarCarro" className="flex gap-4">
+                          <IconAlertWarning />
+                          <span className="text-sm text-gray-700">
+                            Para continuar con el registro de información debes
+                            guardar los datos del carro.
+                          </span>
                         </label>
-
-                        <input
-                          type="date"
-                          name="fechaInicio"
-                          placeholder="Fecha de inicio"
-                          value={cartData.fechaInicio}
-                          onChange={handleChange}
-                          className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                          required
-                        />
                       </div>
+                    </div>    
+                    {/* fecha de inicio  */}
+                    <div className="col-span-2 md:col-span-1">
+                     <div className="flex flex-col gap-4">
+                      <label
+                        htmlFor="fechaInicio"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Fecha de inicio
+                      </label>
 
-                      {/* servicio */}
-                      <div className="col-span-6 sm:col-span-3">
+                      <input
+                        type="date"
+                        name="fechaInicio"
+                        placeholder="Fecha de inicio"
+                        value={cartData.fechaInicio}
+                        onChange={handleChange}
+                        className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                        required
+                      />
+                     </div>
+                    </div>
+
+                    {/* servicio */}
+                    <div className="col-span-2 md:col-span-1">
+                      <div className="flex flex-col gap-4">
                         <label
                           htmlFor="servicioName"
                           className="block text-sm font-medium text-gray-700"
@@ -177,9 +190,11 @@ const FormData = () => {
                           ))}
                         </select>
                       </div>
+                    </div>
 
-                      {/* numero de carro */}
-                      <div className="col-span-6 sm:col-span-3">
+                    {/* numero de carro */}
+                    <div className="col-span-2 md:col-span-1">
+                      <div className="flex flex-col gap-4">
                         <label
                           htmlFor="numCarro"
                           className="block text-sm font-medium text-gray-700"
@@ -196,9 +211,11 @@ const FormData = () => {
                           required
                         />
                       </div>
+                    </div>
 
-                      {/* precinto de medicacion */}
-                      <div className="col-span-6 sm:col-span-3">
+                    {/* precinto de medicacion */}
+                    <div className="col-span-2 md:col-span-1">
+                      <div className="flex flex-col gap-4">
                         <label
                           htmlFor="precinto"
                           className="block text-sm font-medium text-gray-700"
@@ -216,9 +233,11 @@ const FormData = () => {
                           required
                         />
                       </div>
+                    </div>
 
-                      {/* precinto de descartable */}
-                      <div className="col-span-6 sm:col-span-3">
+                    {/* precinto de descartable */}
+                    <div className="col-span-2 md:col-span-1">
+                      <div className="flex flex-col gap-4">
                         <label
                           htmlFor="precinto"
                           className="block text-sm font-medium text-gray-700"
@@ -236,9 +255,11 @@ const FormData = () => {
                           required
                         />
                       </div>
+                    </div>
 
-                      {/* fecha de ultimo control */}
-                      <div className="col-span-6 sm:col-span-3">
+                    {/* fecha de ultimo control */}
+                    <div className="col-span-2 md:col-span-1">
+                      <div className="flex flex-col gap-4">
                         <label
                           htmlFor="fecha_ultimo_control"
                           className="block text-sm font-medium text-gray-700"
@@ -257,17 +278,9 @@ const FormData = () => {
                           readOnly
                         />
                       </div>
+                    </div>                   
 
-                      <div className="col-span-6">
-                        <label htmlFor="cargarCarro" className="flex gap-4">
-                          <IconAlertWarning />
-                          <span className="text-sm text-gray-700">
-                            Para continuar con el registro de información debes
-                            guardar los datos del carro.
-                          </span>
-                        </label>
-                      </div>
-
+                    <div className="col-span-2">
                       <div className="col-span-6 flex flex-col gap-4 sm:flex sm:flex-row sm:items-center sm:gap-4">
                         <button
                           className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-8 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
@@ -291,20 +304,14 @@ const FormData = () => {
                           Cerrar sesión
                         </button>
                       </div>
-                    </form>
-                  </>
-                )}
-              </div>
-            </main>
+                    </div>
 
-            <section className="relative flex h-96 items-end lg:col-span-5 lg:h-full xl:col-span-6">
-              <img
-                alt="imagen de carro"
-                src="/carroParo.svg"
-                className="absolute inset-20 top-px sm:top-0 sm:left-0 object-cover"
-              />
-            </section>
-          </div>
+                  </form>
+                </>
+              )}
+            </div>
+          </main>         
+          
         </section>
       )}
     </>
