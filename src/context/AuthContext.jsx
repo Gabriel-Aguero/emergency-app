@@ -31,6 +31,18 @@ export const AuthProvider = ({ children }) => {
   const [medications, setMedications] = useState([]);
   const [descartables, setDescartables] = useState([]);
 
+
+// Escucha cambios en la autenticación
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      setLoading(false);
+  });
+
+  return () => unsubscribe(); // Limpia el listener al desmontar
+}, []);
+
+
   // Crear un usuario en Firebase
   const signup = async (email, password) => {
     const userCredential = await createUserWithEmailAndPassword(
@@ -307,6 +319,15 @@ export const AuthProvider = ({ children }) => {
     await deleteDoc(docRef);
   };
 
+  // Función para obtener el token del usuario
+  const getIdToken = async () => {
+    if (user) {      
+      const idToken = await user.getIdToken();
+      return idToken;      
+    }
+    return null;
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -352,6 +373,7 @@ export const AuthProvider = ({ children }) => {
         updateDescartable,
         deleteMedication,
         deleteDescartable,
+        getIdToken,
       }}
     >
       {children}

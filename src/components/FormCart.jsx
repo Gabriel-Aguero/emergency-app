@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import CheckSquareIcon from './icons/check';
 
@@ -7,7 +7,7 @@ import CheckSquareIcon from './icons/check';
 // eslint-disable-next-line react/prop-types
 const FormCart = () => {
   
-  const { addCarro } = useContext(AuthContext);  
+  const {user, addCarro, getIdToken } = useContext(AuthContext);  
   const [cartData, setCartData] = useState({
     numCarro: '',
     precinto: '',
@@ -16,6 +16,21 @@ const FormCart = () => {
     fecha_ultimo_control: '',            
     servicioName: '',
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = await getIdToken();
+        console.log("Token del usuario:", token);                
+      } catch (error) {
+        console.error("Error al obtener datos:", error);
+      }
+    };
+
+    if (user) {
+      fetchData();
+    }
+  }, [user, getIdToken]);
 
   const handleChange = (e) => {
     e.preventDefault();

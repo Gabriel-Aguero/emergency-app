@@ -6,11 +6,17 @@ import Swal from "sweetalert2";
 
 // eslint-disable-next-line react/prop-types
 const ModalCarro = ({ selectedCarros, onClose }) => {
-  const [cartData, setCartData] = useState(selectedCarros);
-  const { updateCarro } = useContext(AuthContext);
+  
   const today = new Date().toLocaleDateString();
 
+  const [cartData, setCartData] = useState({
+    ...selectedCarros, 
+    fechaUltimoControl: today,
+  });
+  const {updateCarro} = useContext(AuthContext);
+  
   if (!selectedCarros) return null;
+  
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -23,8 +29,7 @@ const ModalCarro = ({ selectedCarros, onClose }) => {
   };
 
   const handleOnClick = async (e) => {
-    e.preventDefault();
-
+    e.preventDefault();    
     try {
       await updateCarro(cartData, selectedCarros.id); // Envía la actualización a la API
       Swal.fire({
@@ -35,7 +40,7 @@ const ModalCarro = ({ selectedCarros, onClose }) => {
         showConfirmButton: false,
         timer: 2000,
       });
-      onClose(); // Llama a onClose() que incluye `getListCarro()`
+      onClose(); 
     } catch (error) {
       console.error("Error updating medication:", error);
       Swal.fire({
@@ -132,29 +137,27 @@ const ModalCarro = ({ selectedCarros, onClose }) => {
           />
         </div>
 
-        <div className="col-span-6 sm:col-span-3">
-          <label
-            htmlFor="fechaUltimoControl"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Fecha Último Control
-          </label>
+          <div className="col-span-6 sm:col-span-3">
+            <label
+              htmlFor="fechaUltimoControl"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Fecha Último Control
+            </label>
 
-          <input
-            type="text"
-            name="fechaUltimoControl"
-            placeholder={today}
-            onChange={handleChange}
-            className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm required"
-            required
-            readOnly
-          />
-        </div>
+            <input
+              type="text"
+              name="fechaUltimoControl"
+              placeholder={today}              
+              readOnly
+              className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm required"
+              required              
+            />
+          </div>
 
         <button
           className="col-span-6 inline-block shrink-0 rounded-md border sm:col-span-3 border-blue-600 bg-blue-600 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
-          type="submit"
-          // onClick={handleOnClick(selectedCarros)}
+          type="submit"          
         >
           Guardar Cambios
         </button>
