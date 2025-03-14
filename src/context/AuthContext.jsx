@@ -55,7 +55,13 @@ export const AuthProvider = ({ children }) => {
 
   // Iniciar sesión en Firebase
   const login = async (email, password) => {
-    return await signInWithEmailAndPassword(auth, email, password);
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);      
+      return userCredential;
+    } catch (error) {
+      console.error("Error logging in: ", error);
+      throw error;
+    }  
   };
 
   // Restablecer la contraseña

@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import { IconAt, EyeIcon, IconEyeOff } from "../components/icons/Icons";
+import Swal from 'sweetalert2';
 
 const Home = () => {
   const [user, setUser] = useState({
@@ -24,9 +25,47 @@ const Home = () => {
     e.preventDefault();
     try {
       await login(user.email, user.password);
-      navigate("/formulario_de_datos", { state: { email: user.email } });
+      // spinner       
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Sesión iniciada correctamente",
+        text: "Ahora puedes acceder a tus datos",
+        showConfirmButton: false,
+        timer: 2000,
+      }).then(() => {
+        navigate("/formulario_de_datos", { state: { email: user.email } });
+      });      
     } catch (error) {
-      console.error("Error logging in: ", error);
+      console.log("Error capturado:", error);
+      let errorMessage = "Ocurrió un error al iniciar sesión. Inténtalo de nuevo.";
+      
+      // Maneja errores específicos de Firebase
+      switch (error.code) {
+        case "auth/wrong-password":
+          errorMessage = "Contraseña incorrecta. Inténtalo de nuevo.";
+          break;
+        case "auth/user-not-found":
+          errorMessage = "El usuario no existe. Verifica tu correo electrónico.";
+          break;
+        case "auth/invalid-email":
+          errorMessage = "El correo electrónico no es válido.";
+          break;
+        case "auth/invalid-credential":
+          errorMessage = "Credenciales inválidas. Verifica tu correo electrónico y contraseña.";
+          break;
+        default:
+          errorMessage = error.message; // Mensaje de error por defecto
+      }
+
+      console.log("Mostrando alerta...");
+      
+          Swal.fire({
+            title: 'Error',
+            text: errorMessage,
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+          }); 
     }
   };
 
