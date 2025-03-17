@@ -1,67 +1,59 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { useState, useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { IconAdd } from "../components/icons/Icons";
 import Swal from "sweetalert2";
 import ModalDescartable from "./ModalDescartable";
-import ModalRegisterDescartable from "./ModalRegisterDescartable";
-import DoneAllIcon from "@mui/icons-material/DoneAll";
-import WarningIcon from "@mui/icons-material/Warning";
-import { green, pink, yellow } from "@mui/material/colors";
-import NotificationImportantIcon from "@mui/icons-material/NotificationImportant";
 
 const DescartableList = ({ idCarro }) => {
-  const { deleteDescartable, getDescartableByCarro, descartables, user } =
-    useContext(AuthContext);
-  const [dataDescartable, setDataDescartable] = useState({});
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [viewListDescartable, setViewListDescartable] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const {
+    deleteDescartable,
+    getDescartableByCarro,
+    descartables,
+    isAuthenticated,
+  } = useContext(AuthContext);
 
-  const getDaysUntilExpiration = (expirationDate) => {
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [dataDescartable, setDataDescartable] = useState(null);
+
+  const getDaysUntilExpirationDes = (expirationDateDes) => {
     const today = new Date();
-    const expDate = new Date(expirationDate);
+    const expDate = new Date(expirationDateDes);
     const diffTime = expDate - today;
-    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const days = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (days < 0) {
+      return "Vencido";
+    }
+    return days;
   };
 
-  const getColorAndIcon = (days) => {
+  const getColorAndIconDes = (days) => {
     if (days < 20) {
       return {
         bgColor: "bg-red-300",
-        icon: <NotificationImportantIcon sx={{ color: pink[900] }} />,
+        icon: "​🔔​",
       };
     } else if (days >= 20 && days < 30) {
       return {
         bgColor: "bg-yellow-200",
-        icon: <WarningIcon sx={{ color: yellow[900] }} />,
+        icon: "⚠️​",
       };
     } else if (days >= 30) {
       return {
         bgColor: "bg-green-300",
-        icon: <DoneAllIcon sx={{ color: green[900] }} />,
+        icon: "✅​",
       };
     }
   };
 
   useEffect(() => {
-    getListDescartableByCarro(idCarro);
-  }, []);
+    loadDescartable();
+  }, [idCarro, getDescartableByCarro]);
 
-  const getListDescartableByCarro = async (idCarro) => {
+  const loadDescartable = async () => {
     await getDescartableByCarro(idCarro);
-    setIsLoading(false);
-  };
-
-  const getListDescartable = async () => {
-    if (isLoading) return;
-    if (descartables.length > 0) {
-      setViewListDescartable(true);
-      getListDescartableByCarro(idCarro);
-    } else {
-      // aqui poongo un alert
+    if (descartables.length === 0) {
       Swal.fire({
         icon: "warning",
         title: "No hay descartables registrados",
@@ -79,16 +71,6 @@ const DescartableList = ({ idCarro }) => {
 
   const closeEditModal = () => {
     setIsEditModalOpen(false);
-    setDataDescartable(null);
-  };
-
-  const openAddModal = () => {
-    // abre el modal
-    setIsAddModalOpen(true);
-  };
-
-  const closeAddModal = () => {
-    setIsAddModalOpen(false);
   };
 
   const handleDelete = (id, getListDescartable) => {
@@ -120,117 +102,85 @@ const DescartableList = ({ idCarro }) => {
 
   return (
     <>
-      <div className="flex flex-col items-center min-h-screen">
-        <div className="flex flex-col items-center justify-center gap-4 ">
-          <h1 className="text-xl font-bold text-gray-900/60 sm:text-3xl md:text-3xl mt-10">
-            Lista de descartables
-          </h1>
-          <button
-            className="bg-blue-500 text-white rounded-md flex gap-2 p-2 hover:bg-blue-700 transition duration-200"
-            onClick={() => getListDescartable()}
-          >
-            Ver lista de descartables
-          </button>
+      <table className="overflow-x-auto min-w-full bg-white border border-gray-200 scroll-m-10">
+        <thead>
+          <tr className="bg-gray-100">
+            <th className="py-2 px-4 text-left">Material</th>
+            <th className="py-2 px-4 text-left">Lote</th>
+            <th className="py-2 px-4 text-center">Cantidad</th>
+            <th className="py-2 px-4 text-right">Fecha de Vencimiento</th>
+            <th className="py-2 px-4 text-right">Días restantes</th>
+            <th className="py-2 px-4 text-right">Estado</th>
+            {isAuthenticated && (
+              <>
+                <th className="py-2">Editar</th>
+                <th className="py-2">Eliminar</th>
+              </>
+            )}
+          </tr>
+        </thead>
+        <tbody>
+          {descartables.map((descartable) => {
+            const daysUntilExpirationDes = getDaysUntilExpirationDes(
+              descartable.matExpiration
+            );
+            const { bgColor, icon } = getColorAndIconDes(
+              daysUntilExpirationDes
+            );
 
-          {user && (
-            <div className="flex flex-col items-center justify-center gap-4">
-              <button
-                className="bg-blue-500 text-white rounded-md flex gap-2 p-2 hover:bg-blue-700 transition duration-200"
-                onClick={openAddModal}
+            return (
+              <tr
+                key={descartable.id}
+                className={`${bgColor} border-b border-gray-200 hover:bg-opacity-75`}
               >
-                Agregar nuevo material <IconAdd />
-              </button>
-            </div>
-          )}
-        </div>
+                <td className="py-2 px-4 text-left">{descartable.material}</td>
+                <td className="py-2 px-4 text-left">{descartable.lot}</td>
+                <td className="py-2 px-4 text-center">
+                  {descartable.matQuantity}
+                </td>
+                <td className="py-2 px-4 text-right">
+                  {descartable.matExpiration}
+                </td>
+                <td className="py-2 px-4 text-right">
+                  {daysUntilExpirationDes === "Vencido"
+                    ? "Vencido"
+                    : `${daysUntilExpirationDes} días`}
+                </td>
+                <td className="py-2 px-4 text-center">{icon}</td>
 
-        {viewListDescartable && descartables.length > 0 && (
-          <>
-            <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-7xl w-full">
-              {descartables.map((list) => {
-                const daysUntilExpiration = getDaysUntilExpiration(
-                  list.matExpiration
-                );
-                const { bgColor, icon } = getColorAndIcon(daysUntilExpiration);
-                return (
-                  <div
-                    key={list.id}
-                    className={`shadow-md ${bgColor} shadow-slate-800/80 rounded-lg p-4 mb-4 max-w-md hover:scale-105 transition-all ease-in-out duration-700 hover:shadow-blue-800/60`}
-                  >
-                    <h2 className="text-lg font-bold text-gray-800 border-b border-gray-600 capitalize flex gap-2">
-                      {icon}
-                      {list.material}
-                    </h2>
-                    <div className="mt-2 text-gray-600">
-                      <p>
-                        <strong>Fecha de vencimiento:</strong>{" "}
-                        {list.matExpiration}
-                      </p>
-                      <p>
-                        <strong>Cantidad:</strong> {list.matQuantity}
-                      </p>
-                      <p>
-                        <strong>Número de lote:</strong> {list.lot}
-                      </p>
-                    </div>
-                    <div className="flex justify-center items-center mt-4 p-2 border-t border-gray-600">
-                      <span className="text-gray-800 text-lg font-bold ">
-                        {daysUntilExpiration <= 0 ? (
-                          <>
-                            <span>Venció hace {daysUntilExpiration} días</span>
-                          </>
-                        ) : (
-                          <>
-                            <span>Vence en: {daysUntilExpiration} días</span>
-                          </>
-                        )}
-                      </span>
-                    </div>
-                    {user ? (
-                      <>
-                        <div className="mt-4 flex justify-between gap-3">
-                          <button
-                            onClick={() => openEditModal(list)}
-                            className="bg-blue-500 text-white font-semibold py-1 px-3 rounded hover:bg-blue-600 transition duration-300"
-                          >
-                            Editar
-                          </button>
-                          <button
-                            onClick={() =>
-                              handleDelete(list.id, getListDescartable)
-                            }
-                            className="bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600 transition duration-300"
-                          >
-                            Eliminar
-                          </button>
-                        </div>
-                      </>
-                    ) : (
-                      <></>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </>
-        )}
-      </div>
+                {isAuthenticated && (
+                  <>
+                    {" "}
+                    <td className="py-2 px-4">
+                      <button
+                        onClick={() => openEditModal(descartable)}
+                        className="bg-blue-500 text-white font-semibold py-1 px-3 rounded hover:bg-blue-600 transition duration-300"
+                      >
+                        Editar
+                      </button>
+                    </td>
+                    <td className="py-2 px-4">
+                      <button
+                        onClick={() => handleDelete(descartables.id)}
+                        className="bg-red-500 text-white font-semibold py-1 px-3 rounded hover:bg-red-600 transition duration-300"
+                      >
+                        Eliminar
+                      </button>
+                    </td>
+                  </>
+                )}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
 
       {isEditModalOpen && (
         <ModalDescartable
           dataDescartable={dataDescartable}
           onClose={() => {
             closeEditModal();
-            getListDescartable();
           }}
-        />
-      )}
-
-      {isAddModalOpen && (
-        <ModalRegisterDescartable
-          idCarro={idCarro}
-          onClose={closeAddModal}
-          onAdd={getListDescartable}
         />
       )}
     </>

@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import { IconAt, EyeIcon, IconEyeOff } from "../components/icons/Icons";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 const Home = () => {
   const [user, setUser] = useState({
@@ -25,7 +25,7 @@ const Home = () => {
     e.preventDefault();
     try {
       await login(user.email, user.password);
-      // spinner       
+      // spinner
       Swal.fire({
         position: "center",
         icon: "success",
@@ -34,38 +34,39 @@ const Home = () => {
         showConfirmButton: false,
         timer: 2000,
       }).then(() => {
-        navigate("/formulario_de_datos", { state: { email: user.email } });
-      });      
+        navigate("/formulario_de_datos");
+      });
     } catch (error) {
       console.log("Error capturado:", error);
-      let errorMessage = "Ocurrió un error al iniciar sesión. Inténtalo de nuevo.";
-      
+      let errorMessage =
+        "Ocurrió un error al iniciar sesión. Inténtalo de nuevo.";
+
       // Maneja errores específicos de Firebase
       switch (error.code) {
         case "auth/wrong-password":
           errorMessage = "Contraseña incorrecta. Inténtalo de nuevo.";
           break;
         case "auth/user-not-found":
-          errorMessage = "El usuario no existe. Verifica tu correo electrónico.";
+          errorMessage =
+            "El usuario no existe. Verifica tu correo electrónico.";
           break;
         case "auth/invalid-email":
           errorMessage = "El correo electrónico no es válido.";
           break;
         case "auth/invalid-credential":
-          errorMessage = "Credenciales inválidas. Verifica tu correo electrónico y contraseña.";
+          errorMessage =
+            "Credenciales inválidas. Verifica tu correo electrónico y contraseña.";
           break;
         default:
           errorMessage = error.message; // Mensaje de error por defecto
       }
 
-      console.log("Mostrando alerta...");
-      
-          Swal.fire({
-            title: 'Error',
-            text: errorMessage,
-            icon: 'error',
-            confirmButtonText: 'Aceptar',
-          }); 
+      Swal.fire({
+        title: "Error",
+        text: errorMessage,
+        icon: "error",
+        confirmButtonText: "Aceptar",
+      });
     }
   };
 
@@ -125,7 +126,7 @@ const Home = () => {
 
           <form
             onSubmit={handleSubmit}
-            className="mx-auto mb-0 mt-8 max-w-md space-y-4"
+            className="mx-auto mb-0 mt-8 max-w-md space-y-4 border-2 border-gray-700 p-4 rounded-lg"
           >
             <div>
               <label className="sr-only">Email</label>

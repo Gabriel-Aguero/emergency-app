@@ -1,23 +1,33 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { dataServicio } from "../context/sector";
-import FormInfoCart from "./FormInfoCart";
 
 const BuscarCarroPorServicio = () => {
   const [servicioName, setServicioName] = useState("");
-  const { getCarrosByServicio } = useContext(AuthContext);
+  const { getCarrosByServicio, carros } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const getCarros = async () => {
     await getCarrosByServicio(servicioName);
     setTimeout(() => {}, 1000);
   };
 
+  const handleViewDetails = (idCarro) => {
+    navigate(`/elementos_del_carro/${idCarro}`);
+  };
+
   // ordeno los servicios alfabeticamente
   const sortedServicios = [...dataServicio].sort((a, b) =>
     a.nombre.localeCompare(b.nombre)
   );
+
+  useEffect(() => {
+    if (servicioName) {
+      getCarrosByServicio(servicioName);
+    }
+  }, [servicioName, getCarrosByServicio]);
 
   return (
     <section className="bg-white min-h-screen">
@@ -68,8 +78,49 @@ const BuscarCarroPorServicio = () => {
                 </button>
               </div>
             </form>
+
+            {servicioName && carros.length > 0 ? (
+              <div className="w-full mt-8">
+                <h2 className="text-xl font-bold text-gray-900 mb-4">
+                  Carros en {servicioName}
+                </h2>
+                <ul className="space-y-4">
+                  {carros.map((carro) => (
+                    <li
+                      key={carro.id}
+                      className="p-4 bg-gray-50 border border-gray-200 rounded-lg shadow-sm flex flex-col justify-between gap-2 font-bold"
+                    >
+                      <h3 className="text-lg font-semibold text-gray-800">
+                        # {carro.numCarro}
+                      </h3>
+                      <p className="text-md text-gray-600">
+                        Fecha Inicio: {carro.fechaInicio}
+                      </p>
+                      <p className="text-md text-gray-600">
+                        Precinto Medicación: {carro.precintoMedicacion}
+                      </p>
+                      <p className="text-md text-gray-600">
+                        Precinto Descartable: {carro.precintoDescartable}
+                      </p>
+                      <p className="text-md text-gray-600">
+                        Fecha de último control: {carro.fechaUltimoControl}
+                      </p>
+                      <button
+                        className="mt-2 inline-block text-blue-600 hover:text-blue-800"
+                        onClick={() => handleViewDetails(carro.id)}
+                      >
+                        Ver detalles →
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : servicioName && carros.length === 0 ? (
+              <p className="mt-8 text-gray-600 text-xl">
+                No hay carros registrados en este servicio.
+              </p>
+            ) : null}
           </div>
-          <FormInfoCart servicioName={servicioName} />
         </main>
       </div>
     </section>

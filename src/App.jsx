@@ -11,7 +11,6 @@ import Footer from "./components/Footer.jsx";
 import { Contacto } from "./pages/Contacto.jsx";
 import FormResetPassword from "./pages/FormResetPassword.jsx";
 import About from "./pages/About.jsx";
-import FormInfoCart from "./pages/FormInfoCart.jsx";
 import QRcode from "./components/QRcode.jsx";
 import { ContainerElementsCart } from "./pages/ContainerElementsCart.jsx";
 import TerminosyCondiciones from "./pages/TerminosyCondiciones.jsx";
@@ -42,9 +41,8 @@ function App() {
             </ProtectedRoutes>
           }
         />
-        <Route path="/info_cart" element={<FormInfoCart />} />
         <Route
-          path="/elementos_del_carro"
+          path="/elementos_del_carro/:idCarro"
           element={<ContainerElementsCart />}
         />
         <Route path="/reset_password" element={<FormResetPassword />} />
@@ -61,7 +59,7 @@ function App() {
         <Route path="/qrcode" element={<QRcode />} />
       </Routes>
       <Footer />
-     </>
+    </>
   );
 }
 

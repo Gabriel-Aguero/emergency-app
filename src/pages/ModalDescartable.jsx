@@ -155,7 +155,7 @@ const ModalDescartable = ({ dataDescartable, onClose }) => {
         <button
           className="col-span-6 inline-block shrink-0 rounded-md border sm:col-span-3 border-blue-600 bg-blue-600 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
           type="submit"
-          //   onClick={handleOnClick(dataDescartable)}
+          onClick={handleOnClick(dataDescartable)}
         >
           Guardar Cambios
         </button>

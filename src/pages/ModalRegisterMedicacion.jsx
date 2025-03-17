@@ -17,6 +17,7 @@ const ModalRegisterMedicacion = ({ idCarro, onClose, onAdd }) => {
 
   const handleSaveDataMedication = async (e) => {
     e.preventDefault();
+    console.log(dataMedicacion);
     await addMedication(dataMedicacion);
     Swal.fire({
       position: "center",
@@ -41,7 +42,9 @@ const ModalRegisterMedicacion = ({ idCarro, onClose, onAdd }) => {
     });
   };
 
-  const sortedMedicacion = dbMedication.sort((a, b) => a.medication.localeCompare(b.medication));
+  const sortedMedicacion = dbMedication.sort((a, b) =>
+    a.medication.localeCompare(b.medication)
+  );
 
   return (
     <div className="flex flex-col fixed inset-0 z-50 items-center justify-center gap-4 w-full mt-5 border p-4 shadow-lg shadow-slate-700">
@@ -163,7 +166,7 @@ const ModalRegisterMedicacion = ({ idCarro, onClose, onAdd }) => {
 
         <button
           className="col-span-6 inline-block shrink-0 rounded-md border sm:col-span-3 border-blue-600 bg-blue-600 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
-          type="submit" // onClick={handleOnClick(selectedCarros)}
+          type="submit"
         >
           Guardar Cambios
         </button>

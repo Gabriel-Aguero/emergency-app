@@ -13,11 +13,13 @@ import {
   collection,
   addDoc,
   getDocs,
+  getDoc,
   query,
   where,
   updateDoc,
   doc,
   deleteDoc,
+  setDoc,
 } from "firebase/firestore";
 
 export const AuthContext = createContext();
@@ -30,38 +32,78 @@ export const AuthProvider = ({ children }) => {
   const [servicios, setServicios] = useState([]);
   const [medications, setMedications] = useState([]);
   const [descartables, setDescartables] = useState([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-
-// Escucha cambios en la autenticación
+  // Escucha cambios en la autenticación
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-      setLoading(false);
-  });
-
-  return () => unsubscribe(); // Limpia el listener al desmontar
-}, []);
-
+    const storedUser = localStorage.getItem("usuario");
+    if (storedUser) {
+      setUsuario(JSON.parse(storedUser));
+      setIsAuthenticated(true); // Establecer autenticación como verdadera
+    }
+  }, []);
 
   // Crear un usuario en Firebase
-  const signup = async (email, password) => {
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    return userCredential;
+  const signup = async (
+    email,
+    password,
+    firstName,
+    lastName,
+    servicioName,
+    legajo
+  ) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+
+      // Agregar datos a la tabla usuario
+      await setDoc(doc(db, "usuario", user.uid), {
+        uid: user.uid,
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        legajo: legajo,
+        servicioName: servicioName,
+      });
+
+      return user;
+    } catch (error) {
+      console.error("Error al crear el usuario:", error);
+      throw error; // Lanza el error para manejarlo en el componente
+    }
   };
 
   // Iniciar sesión en Firebase
   const login = async (email, password) => {
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);      
-      return userCredential;
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+
+      const q = query(collection(db, "usuario"), where("email", "==", email));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0];
+        const userData = userDoc.data();
+        const usuarioCompleto = { ...user, ...userData };
+        setUsuario(usuarioCompleto);
+        localStorage.setItem("usuario", JSON.stringify(usuarioCompleto));
+        return usuarioCompleto;
+      } else {
+        throw new Error("No se encontraron datos adicionales del usuario.");
+      }
     } catch (error) {
       console.error("Error logging in: ", error);
       throw error;
-    }  
+    }
   };
 
   // Restablecer la contraseña
@@ -71,6 +113,9 @@ export const AuthProvider = ({ children }) => {
 
   // Cerrar sesión en Firebase
   const logout = () => {
+    setUsuario(null);
+    setIsAuthenticated(false);
+    localStorage.removeItem("usuario");
     signOut(auth);
   };
 
@@ -142,6 +187,21 @@ export const AuthProvider = ({ children }) => {
         fechaUltimoControl,
         servicioName,
       });
+
+      // Crea un objeto con el nuevo carro y su ID
+      const newCarro = {
+        id: docRef.id, // Usa el ID generado por Firestore
+        numCarro,
+        precintoMedicacion,
+        precintoDescartable,
+        fechaInicio,
+        fechaUltimoControl,
+        servicioName,
+      };
+
+      // Actualiza el estado de los carros
+      setCarros((prevCarros) => [...prevCarros, newCarro]);
+
       return docRef.id;
     } catch (error) {
       console.log(error);
@@ -204,21 +264,26 @@ export const AuthProvider = ({ children }) => {
 
   // Recuperar el listado de carros segun el servicio
   const getCarrosByServicio = async (servicioName) => {
-    const q = query(
-      collection(db, "carro"),
-      where("servicioName", "==", servicioName)
-    );
-    const querySnapshot = await getDocs(q);
-    const carrosList = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      numCarro: doc.data().numCarro,
-      precintoMedicacion: doc.data().precintoMedicacion,
-      precintoDescartable: doc.data().precintoDescartable,
-      fechaInicio: doc.data().fechaInicio,
-      fechaUltimoControl: doc.data().fechaUltimoControl,
-      servicioName: doc.data().servicioName,
-    }));
-    setCarros(carrosList);
+    try {
+      const q = query(
+        collection(db, "carro"),
+        where("servicioName", "==", servicioName)
+      );
+      const querySnapshot = await getDocs(q);
+      const carrosList = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        numCarro: doc.data().numCarro,
+        precintoMedicacion: doc.data().precintoMedicacion,
+        precintoDescartable: doc.data().precintoDescartable,
+        fechaInicio: doc.data().fechaInicio,
+        fechaUltimoControl: doc.data().fechaUltimoControl,
+        servicioName: doc.data().servicioName,
+      }));
+      setCarros(carrosList); // Actualiza el estado de los carros
+    } catch (error) {
+      console.error("Error al obtener los carros:", error);
+      throw error; // Lanza el error para manejarlo en el componente
+    }
   };
 
   // Obtener los medicamentos por el carro
@@ -270,12 +335,19 @@ export const AuthProvider = ({ children }) => {
     return docRef;
   };
 
+  // Función para eliminar un carro
   const deleteCarro = async (idCarro) => {
     try {
-      const docRef = doc(db, "carro", idCarro);
-      await deleteDoc(docRef);
+      // Elimina el carro de Firestore
+      await deleteDoc(doc(db, "carro", idCarro));
+
+      // Actualiza el estado de los carros
+      setCarros((prevCarros) =>
+        prevCarros.filter((carro) => carro.id !== idCarro)
+      );
     } catch (error) {
-      console.error("Error:", error.message);
+      console.error("Error al eliminar el carro:", error);
+      throw error; // Lanza el error para manejarlo en el componente
     }
   };
 
@@ -327,9 +399,9 @@ export const AuthProvider = ({ children }) => {
 
   // Función para obtener el token del usuario
   const getIdToken = async () => {
-    if (user) {      
+    if (user) {
       const idToken = await user.getIdToken();
-      return idToken;      
+      return idToken;
     }
     return null;
   };
@@ -355,6 +427,7 @@ export const AuthProvider = ({ children }) => {
         signup,
         login,
         logout,
+        isAuthenticated,
         user,
         loading,
         usuario,

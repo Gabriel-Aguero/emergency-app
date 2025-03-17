@@ -3,36 +3,42 @@
 const About = () => {
   const items = [
     {
+      id: 1,
       title: "Sobre mí",
       description:
         "👋 Hola soy Gabriel Agüero, Licenciado en Enfermería y Programador Frontend. Cuento con una gran experiencia en el desarrollo de aplicaciones web y mi deseo es crear herramientas que ayuden a la labor de los profesionales de la salud. 💪",
       icons: "👨‍💻",
     },
     {
+      id: 2,
       title: "Objetivo",
       description:
         "Esta aplicación fue creada para mejorar la gestión del carro de paro en hospitales y clínicas, facilitando el control de medicamentos, descartables y gestionando su vencimiento. El objetivo principal es optimizar el proceso de verificación en tiempo y calidad, y a su vez reducir los errores por vencimientos a la hora de requerir el uso de elementos del carro de paro, proporcionando una herramienta simple y accesible para los profesionales de la salud.",
       icons: "⚡",
     },
     {
+      id: 3,
       title: "Fundamentos",
       description:
         "En un entorno crítico como el hospitalario, contar con información precisa y actualizada es clave para salvar vidas. Esta aplicación busca cubrir esa necesidad, ayudando a los equipos de salud a estar siempre preparados.",
       icons: "📊",
     },
     {
+      id: 4,
       title: "Tecnologías Utilizada",
       description:
         "La aplicación se ha desarrollado utilizando, HTML, CSS y JavaScript. Además, se ha utilizado React para el front-end y Firebase para el back-end. También se han utilizado diferentes librerías que complementan el sitio web. Para darle estilo al sitio se ha utilizado Tailwind CSS buscando proporcionar un diseño atractivo y moderno.",
       icons: "💻",
     },
     {
+      id: 5,
       title: "Soporte y Mantenimiento",
       description:
         "Me comprometo a ofrecerte soporte continuo y realizar las actualizaciones periódicas para mantener la aplicación al día con los últimos avances tecnológicos y normativos",
       icons: "💬",
     },
     {
+      id: 6,
       title: "Colabora",
       description:
         "Tu contribución es importante. Si tienes ideas o mejoras, no dudes en compartirlas. Juntos podemos optimizar la experiencia y funcionalidad de la aplicación.",
@@ -53,6 +59,7 @@ const About = () => {
           {items.map((item) => (
             <>
               <a
+                key={item.id}
                 className="block rounded-xl border border-gray-800 p-8 shadow-xl transition hover:border-cyan-500/10 hover:shadow-cyan-500/10"
                 href="#"
               >
