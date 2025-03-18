@@ -33,27 +33,11 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/check_carros" element={<FormCheckListCart />} />
-        <Route
-          path="/formulario_de_datos"
-          element={
-            <ProtectedRoutes>
-              <FormData />
-            </ProtectedRoutes>
-          }
-        />
-        <Route
-          path="/elementos_del_carro/:idCarro"
-          element={<ContainerElementsCart />}
-        />
+        <Route path="/formulario_de_datos" element={ <FormData /> } />
+        <Route path="/elementos_del_carro/:idCarro" element={<ContainerElementsCart />} />
         <Route path="/reset_password" element={<FormResetPassword />} />
-        <Route
-          path="/terminos_y_condiciones"
-          element={<TerminosyCondiciones />}
-        />
-        <Route
-          path="/politicas_de_privacidad"
-          element={<PoliticaDePrivacidad />}
-        />
+        <Route path="/terminos_y_condiciones" element={<TerminosyCondiciones />} />
+        <Route path="/politicas_de_privacidad" element={<PoliticaDePrivacidad />} />
         <Route path="/about" element={<About />} />
         <Route path="/contacto" element={<Contacto />} />
         <Route path="/qrcode" element={<QRcode />} />

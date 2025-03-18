@@ -162,10 +162,10 @@ const FormData = () => {
   );
 
   useEffect(() => {
-    if (usuario.servicioName) {
+    if (usuario && usuario.servicioName) {
       getCarrosByServicio(usuario.servicioName);
     }
-  }, [usuario.servicioName]);
+  }, [usuario, usuario.servicioName]);
 
   if (!isAuthenticated) return null;
 

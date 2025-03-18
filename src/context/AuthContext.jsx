@@ -96,6 +96,7 @@ export const AuthProvider = ({ children }) => {
         const usuarioCompleto = { ...user, ...userData };
         setUsuario(usuarioCompleto);
         localStorage.setItem("usuario", JSON.stringify(usuarioCompleto));
+        setIsAuthenticated(true);
         return usuarioCompleto;
       } else {
         throw new Error("No se encontraron datos adicionales del usuario.");

@@ -24,20 +24,30 @@ const Home = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login(user.email, user.password);
-      // spinner
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Sesión iniciada correctamente",
-        text: "Ahora puedes acceder a tus datos",
-        showConfirmButton: false,
-        timer: 2000,
-      }).then(() => {
+      // Mostrar spinner
+    Swal.fire({
+      title: "Iniciando sesión...",
+      text: "Por favor, espera un momento.",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
+    await login(user.email, user.password);
+    
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Sesión iniciada correctamente",
+      text: "Ahora puedes acceder a tus datos",
+      showConfirmButton: false,
+      timer: 2000,
+    }).then(() => {
         navigate("/formulario_de_datos");
       });
     } catch (error) {
-      console.log("Error capturado:", error);
+      // console.log("Error capturado:", error);
       let errorMessage =
         "Ocurrió un error al iniciar sesión. Inténtalo de nuevo.";
 
