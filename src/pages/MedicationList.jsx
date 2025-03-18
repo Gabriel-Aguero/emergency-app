@@ -29,20 +29,31 @@ const MedicacionList = ({ idCarro }) => {
   };
 
   const getColorAndIcon = (days) => {
-    if (days < 20) {
+    if (days === "Vencido" || days < 0) {
       return {
         bgColor: "bg-red-300",
-        icon: "​🔔​",
+        icon: "🔔",
+    }
+    } else if (days >= 0 && days < 20) {
+      return {
+        bgColor: "bg-red-300",
+        icon: "🔔",
       };
     } else if (days >= 20 && days < 30) {
       return {
         bgColor: "bg-yellow-200",
-        icon: "⚠️​",
+        icon: "⚠️",
       };
     } else if (days >= 30) {
       return {
         bgColor: "bg-green-300",
-        icon: "✅​",
+        icon: "✅",
+      };
+    } else {
+      // Valor por defecto para casos no manejados
+      return {
+        bgColor: "bg-gray-200",
+        icon: "❓",
       };
     }
   };
