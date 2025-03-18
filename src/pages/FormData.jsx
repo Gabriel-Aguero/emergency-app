@@ -41,7 +41,8 @@ const FormData = () => {
   });
 
   // Función para cerrar sesión
-  const handleLogout = async () => {
+  const handleLogout = async (e) => {
+    e.preventDefault();
     await logout();
     navigate("/");
   };

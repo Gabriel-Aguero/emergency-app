@@ -12,8 +12,7 @@ import {
 import {
   collection,
   addDoc,
-  getDocs,
-  getDoc,
+  getDocs,  
   query,
   where,
   updateDoc,
@@ -113,11 +112,16 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Cerrar sesión en Firebase
-  const logout = () => {
-    setUsuario(null);
-    setIsAuthenticated(false);
-    localStorage.removeItem("usuario");
-    signOut(auth);
+  const logout = async () => {
+    try {
+     await signOut(auth);
+      setUsuario(null);
+      setIsAuthenticated(false);
+      localStorage.removeItem("usuario");      
+    } catch (error) {
+      console.error("Error al cerrar sesión: ", error);
+      throw error; // Lanza el error para manejarlo en el componente
+    }
   };
 
   // Verificar si el servicio existe en la colección servicio

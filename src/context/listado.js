@@ -83,6 +83,30 @@ export const dbMedication = [
         idMedication: "21",
         medication: "Dexametasona"  
     },
+    {
+        idMedication: "22",
+        medication: "Dextrosa 5% x 500 ml"  
+    },
+    {
+        idMedication: "23",
+        medication: "Agua Destilada x 500 ml"  
+    },
+    {
+        idMedication: "24",
+        medication: "Dextrosa 10% x 500 ml"
+    },
+    {
+        idMedication: "25",
+        medication: "Dextrosa 25% x 500 ml"
+    },
+    {
+        idMedication: "26",
+        medication: "Dextrosa 50% Ampollas"
+    },
+    {
+        idMedication: "27",
+        medication: "Solución Fisiológica Ampollas"  
+    },
 ];
 
 export const dbDescartable = [
